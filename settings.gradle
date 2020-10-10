@@ -1,0 +1,4 @@
+include ':gnbshared'
+include ':gnbsharedui'
+include ':app'
+rootProject.name = "SdnManager"

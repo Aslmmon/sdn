@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/login_navigation"
+    app:startDestination="@id/signInFragment">
+
+    <fragment
+        android:id="@+id/forgetPasswordFragment"
+        android:name="com.softwareDrivingNetwork.sdn.features.login.fragment.ForgetPasswordFragment"
+        android:label="fragment_forget_password"
+        tools:layout="@layout/fragment_forget_password" />
+    <fragment
+        android:id="@+id/signInFragment"
+        android:name="com.softwareDrivingNetwork.sdn.features.login.fragment.SignInFragment"
+        android:label="SignInFragment" >
+        <action
+            android:id="@+id/goToForgetPassword"
+            app:destination="@id/forgetPasswordFragment" />
+    </fragment>
+</navigation>
