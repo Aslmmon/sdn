@@ -11,7 +11,7 @@ data class LastLocation(
     @SerializedName("extrajson")
     val extrajson: Any,
     @SerializedName("heading")
-    val heading: Int,
+    val heading: Double,
     @SerializedName("lat")
     val lat: Double,
     @SerializedName("lng")
@@ -23,5 +23,5 @@ data class LastLocation(
     @SerializedName("sdn_mileage")
     val sdnMileage: Any,
     @SerializedName("speed")
-    val speed: Int
+    val speed: Double
 )

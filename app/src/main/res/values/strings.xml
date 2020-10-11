@@ -43,6 +43,8 @@
     <string name="are_you_sure_you_want_to_log_out_title">Are you Sure you want to log out ?</string>
     <string name="settings_title">Settings</string>
     <string name="vehicles_title">Vehicles</string>
+    <string name="cameras_title">Cameras</string>
+
     <string name="plate_number">Plate# : </string>
     <string name="liscense_start">License Start : </string>
     <string name="liscense_end">License End : </string>

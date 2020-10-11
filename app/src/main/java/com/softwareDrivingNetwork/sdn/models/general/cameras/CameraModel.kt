@@ -3,7 +3,7 @@ package com.softwareDrivingNetwork.sdn.models.general.cameras
 
 import com.google.gson.annotations.SerializedName
 
-data class Data(
+data class CameraModel(
     @SerializedName("accountid")
     val accountid: String,
     @SerializedName("ai_type")
@@ -17,9 +17,9 @@ data class Data(
     @SerializedName("install_date")
     val installDate: String,
     @SerializedName("last_command_date")
-    val lastCommandDate: Any,
+    val lastCommandDate: String,
     @SerializedName("last_loc_update")
-    val lastLocUpdate: Any,
+    val lastLocUpdate: String,
     @SerializedName("last_location")
     val lastLocation: LastLocation,
     @SerializedName("last_update_date")

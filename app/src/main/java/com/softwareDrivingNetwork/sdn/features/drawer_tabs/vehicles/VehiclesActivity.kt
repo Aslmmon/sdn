@@ -2,6 +2,7 @@ package com.softwareDrivingNetwork.sdn.features.drawer_tabs.vehicles
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.softwareDrivingNetwork.sdn.R
@@ -22,8 +23,14 @@ class VehiclesActivity : BaseActivity() {
         getVehiclesList()
 
         vehiclesViewModel.vehiclesResponse.observe(this, Observer {
-            Log.i("data",it.data.toString())
-            vehiclesAdapter.submitList(it.data)
+            if(it.type == "error"){
+                Toast.makeText(this, it.text, Toast.LENGTH_SHORT).show()
+                dismissProgressDialog()
+            }else{
+                vehiclesAdapter.submitList(it.data)
+                dismissProgressDialog()
+            }
+
 
         })
 
@@ -39,6 +46,7 @@ class VehiclesActivity : BaseActivity() {
     }
 
     private fun getVehiclesList() {
+        showProgress()
         vehiclesViewModel.getVehiclersList(getStringifiedData()!!)
     }
 

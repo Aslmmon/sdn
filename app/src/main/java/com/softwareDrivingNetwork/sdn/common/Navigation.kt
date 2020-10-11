@@ -3,6 +3,7 @@ package com.softwareDrivingNetwork.sdn.common
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import com.softwareDrivingNetwork.sdn.features.drawer_tabs.cameras.CamerasActivity
 import com.softwareDrivingNetwork.sdn.features.drawer_tabs.vehicles.VehiclesActivity
 import com.softwareDrivingNetwork.sdn.features.home.MainActivity
 import com.softwareDrivingNetwork.sdn.features.home.fragments.history.HistoryTracks
@@ -29,6 +30,11 @@ object Navigation {
 
     fun goToVehiclesActivity(ctx: Context) {
         val intent = Intent(ctx, VehiclesActivity::class.java)
+        ctx.startActivity(intent)
+    }
+
+    fun goToCamerasActivity(ctx: Context) {
+        val intent = Intent(ctx, CamerasActivity::class.java)
         ctx.startActivity(intent)
     }
 }

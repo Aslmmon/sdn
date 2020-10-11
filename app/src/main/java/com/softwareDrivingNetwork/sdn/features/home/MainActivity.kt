@@ -15,6 +15,7 @@ import androidx.navigation.ui.*
 import com.google.android.material.navigation.NavigationView
 import com.softwareDrivingNetwork.sdn.R
 import com.softwareDrivingNetwork.sdn.common.BaseActivity
+import com.softwareDrivingNetwork.sdn.common.Navigation.goToCamerasActivity
 import com.softwareDrivingNetwork.sdn.common.Navigation.goToHistoryActivityWithFinish
 import com.softwareDrivingNetwork.sdn.common.Navigation.goToVehiclesActivity
 import com.softwareDrivingNetwork.sdn.common.showCustomAlertDialog
@@ -108,6 +109,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
 
             R.id.vehicles -> goToVehiclesActivity(this)
+            R.id.cameras -> goToCamerasActivity(this)
         }
         closeDrawer()
         return true
@@ -117,9 +119,4 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         drawer_layout.closeDrawer(GravityCompat.START)
     }
 
-    fun loadFragment(fragment: Fragment?) {
-        val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
-        fragment?.let { transaction.replace(R.id.nav_host_fragment, it) }
-        transaction.commit()
-    }
 }
