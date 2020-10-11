@@ -29,7 +29,7 @@
             android:layout_marginTop="@dimen/_20sdp"
             android:id="@+id/tv_driver_name"
             android:textColor="@color/colorAccent"
-            android:textSize="@dimen/_22sdp"
+            android:textSize="@dimen/_18sdp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

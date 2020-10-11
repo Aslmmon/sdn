@@ -11,14 +11,32 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
+
+
+        <!-- Layout to contain contents of main body of screen (drawer will slide over this) -->
+        <fragment
+            android:id="@+id/nav_host_fragment"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:defaultNavHost="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:navGraph="@navigation/nav_graph" />
+
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
+            app:layout_constraintEnd_toEndOf="parent"
             android:layout_height="?android:attr/actionBarSize"
-            android:background="@color/white_color"
+            android:background="@null"
+            app:theme="@style/CustomActionBar"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.DayNight">
+            >
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -35,20 +53,6 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.appcompat.widget.Toolbar>
-
-
-        <!-- Layout to contain contents of main body of screen (drawer will slide over this) -->
-        <fragment
-            android:id="@+id/nav_host_fragment"
-            android:name="androidx.navigation.fragment.NavHostFragment"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:defaultNavHost="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
-            app:navGraph="@navigation/nav_graph" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -60,6 +64,8 @@
         android:background="@color/white_color"
         app:headerLayout="@layout/menu_header"
         app:menu="@menu/main_menu" />
+
+
 
 
 </androidx.drawerlayout.widget.DrawerLayout>

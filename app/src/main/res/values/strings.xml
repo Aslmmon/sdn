@@ -52,5 +52,6 @@
 
     <string name="camera_title">Camera</string>
     <string name="drivers_title">Drivers</string>
+    <string name="google_maps_key">AIzaSyBIhRGLhtlX6nlV0y8aHPYJAnxC_zP_3YI</string>
 
 </resources>

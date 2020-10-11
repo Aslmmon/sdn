@@ -29,7 +29,6 @@ class DriversActivity : BaseActivity() {
             driverAdapter.submitList(it.data)
         })
         vehiclesViewModel.errorResponse.observe(this, Observer {
-            dismissProgressDialog()
             Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
         })
 
