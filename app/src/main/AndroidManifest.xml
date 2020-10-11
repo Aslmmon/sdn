@@ -13,7 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".features.drawer_tabs.cameras.CamerasActivity"></activity>
+        <activity android:name=".features.drawer_tabs.drivers.DriversActivity"></activity>
+        <activity android:name=".features.drawer_tabs.cameras.CamerasActivity" />
         <activity android:name=".features.drawer_tabs.vehicles.VehiclesActivity" />
         <activity android:name=".features.login.LoginActivity" />
         <activity

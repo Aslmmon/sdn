@@ -44,7 +44,10 @@
                     android:id="@+id/cameras"
                     android:icon="@drawable/ic_cameras"
                     android:title="@string/camera_title" />
-
+                <item
+                    android:id="@+id/drivers"
+                    android:icon="@drawable/ic_driver"
+                    android:title="@string/drivers_title" />
 
             </group>
         </menu>

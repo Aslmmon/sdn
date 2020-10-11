@@ -18,8 +18,6 @@ class CamerasActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        supportActionBar?.title = resources.getString(R.string.cameras_title)
-        showBackButton()
         initializeAdapter()
         getCameraList()
         vehiclesViewModel.camerasResponse.observe(this, Observer {
@@ -46,4 +44,7 @@ class CamerasActivity : BaseActivity() {
     }
 
     override fun provideLayout() = R.layout.activity_cameras
+
+    override fun passNameToActivity(): String?  = resources.getString(R.string.cameras_title)
+
 }

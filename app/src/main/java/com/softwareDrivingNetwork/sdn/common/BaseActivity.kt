@@ -6,6 +6,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.softwareDrivingNetwork.sdn.R
 import com.softwareDrivingNetwork.sdn.models.User
 import com.softwareDrivingNetwork.sdn.models.login.SignInBody
 import org.koin.android.ext.android.inject
@@ -20,11 +21,18 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(provideLayout())
+        if(passNameToActivity() != null){
+            supportActionBar?.title = passNameToActivity()
+            showBackButton()
+        }
         loadingDialog = CustomProgress()
 
     }
 
+
+
     abstract fun provideLayout(): Int
+    abstract fun passNameToActivity(): String?
 
     fun showProgress() {
         loadingDialog.show(this, "Loading ...")

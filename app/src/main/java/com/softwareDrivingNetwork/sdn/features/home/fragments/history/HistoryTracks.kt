@@ -10,12 +10,12 @@ import com.softwareDrivingNetwork.sdn.common.BaseFragment
 
 class HistoryTracks : BaseActivity() {
     override fun provideLayout() = R.layout.fragment_history_tracks
+    override fun passNameToActivity(): String? =
+        resources.getString(R.string.history_tracking_title)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        supportActionBar?.title = resources.getString(R.string.history_tracking_title)
-        showBackButton()
 
 
     }

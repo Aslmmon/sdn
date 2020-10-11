@@ -8,6 +8,7 @@ import com.softwareDrivingNetwork.sdn.common.launchDataLoad
 import com.softwareDrivingNetwork.sdn.core.repo.GeneralRepo
 import com.softwareDrivingNetwork.sdn.core.repo.LoginRepo
 import com.softwareDrivingNetwork.sdn.models.general.cameras.CameraListResponse
+import com.softwareDrivingNetwork.sdn.models.general.drivers.DriversListReponse
 import com.softwareDrivingNetwork.sdn.models.general.vehicles.VehiclesListResponse
 import com.softwareDrivingNetwork.sdn.models.login.SignInBody
 import com.softwareDrivingNetwork.sdn.models.login.SignInResponseDay
@@ -25,6 +26,10 @@ class VehiclesViewModel(var generalRepo: GeneralRepo) : ViewModel() {
     private val _camerasResponse = MutableLiveData<CameraListResponse>()
     val camerasResponse: LiveData<CameraListResponse> = _camerasResponse
 
+    private val _driversResponse = MutableLiveData<DriversListReponse>()
+    val driversResponse: LiveData<DriversListReponse> = _driversResponse
+
+
     fun getVehiclersList(user: String) {
         launchDataLoad(execution = {
             _vehiclesResponse.value = generalRepo.getVehiclesList(user)
@@ -37,11 +42,22 @@ class VehiclesViewModel(var generalRepo: GeneralRepo) : ViewModel() {
     fun getCameraList(user: String) {
         launchDataLoad(execution = {
             val result = generalRepo.getCameraList(user)
-            if(result.type != "error"){_camerasResponse.value = result}
-            else _errorResponse.value =  result.value
+            if (result.type != "error") {
+                _camerasResponse.value = result
+            } else _errorResponse.value = result.value
         }, errorReturned = {
             _errorResponse.value = it.message
         })
+    }
 
+    fun getDriversList(user: String) {
+        launchDataLoad(execution = {
+            val result = generalRepo.getDrivers(user)
+            if (result.type != "error") {
+                _driversResponse.value = result
+            } else _errorResponse.value = result.value
+        }, errorReturned = {
+            _errorResponse.value = it.message
+        })
     }
 }

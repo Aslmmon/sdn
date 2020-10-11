@@ -20,4 +20,5 @@ class LoginActivity : BaseActivity() {
     }
 
     override fun provideLayout(): Int = R.layout.activity_login
+    override fun passNameToActivity(): String? = null
 }

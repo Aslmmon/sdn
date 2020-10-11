@@ -17,18 +17,15 @@ class VehiclesActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        supportActionBar?.title = resources.getString(R.string.vehicles_title)
-        showBackButton()
         initialize()
         getVehiclesList()
 
         vehiclesViewModel.vehiclesResponse.observe(this, Observer {
+            dismissProgressDialog()
             if(it.type == "error"){
                 Toast.makeText(this, it.text, Toast.LENGTH_SHORT).show()
-                dismissProgressDialog()
             }else{
                 vehiclesAdapter.submitList(it.data)
-                dismissProgressDialog()
             }
 
 
@@ -51,4 +48,5 @@ class VehiclesActivity : BaseActivity() {
     }
 
     override fun provideLayout() = R.layout.activity_vehicles
+    override fun passNameToActivity(): String?  = resources.getString(R.string.vehicles_title)
 }

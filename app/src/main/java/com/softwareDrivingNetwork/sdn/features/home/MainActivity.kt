@@ -16,6 +16,7 @@ import com.google.android.material.navigation.NavigationView
 import com.softwareDrivingNetwork.sdn.R
 import com.softwareDrivingNetwork.sdn.common.BaseActivity
 import com.softwareDrivingNetwork.sdn.common.Navigation.goToCamerasActivity
+import com.softwareDrivingNetwork.sdn.common.Navigation.goToDriversActivity
 import com.softwareDrivingNetwork.sdn.common.Navigation.goToHistoryActivityWithFinish
 import com.softwareDrivingNetwork.sdn.common.Navigation.goToVehiclesActivity
 import com.softwareDrivingNetwork.sdn.common.showCustomAlertDialog
@@ -31,6 +32,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     lateinit var appBarConfiguration: AppBarConfiguration
     override fun provideLayout() = R.layout.activity_main
+    override fun passNameToActivity(): String? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -107,9 +109,9 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                     )
                 })
 
-
             R.id.vehicles -> goToVehiclesActivity(this)
             R.id.cameras -> goToCamerasActivity(this)
+            R.id.drivers -> goToDriversActivity(this)
         }
         closeDrawer()
         return true

@@ -17,6 +17,8 @@ import org.koin.android.ext.android.inject
 
 class SplashActivity : BaseActivity() {
 
+    override fun passNameToActivity(): String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         GlobalScope.launch {
