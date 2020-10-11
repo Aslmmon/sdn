@@ -11,6 +11,7 @@ import com.google.gson.GsonBuilder
 import com.mobsandgeeks.saripaar.Validator
 import com.softwareDrivingNetwork.sdn.R
 import com.softwareDrivingNetwork.sdn.models.User
+import com.softwareDrivingNetwork.sdn.models.login.SignInBody
 import org.koin.android.ext.android.inject
 
 abstract class BaseFragment : Fragment() {
@@ -59,9 +60,13 @@ abstract class BaseFragment : Fragment() {
         sharedPrefsEditor.putString(Constants.USER_DATA, json).apply()
     }
 
-    fun getUserData(user: User): User? {
+    fun getUserData(): User? {
         val gson = GsonBuilder().create()
         val json = sharedPreferences.getString(Constants.USER_DATA, "")
         return gson.fromJson(json, User::class.java)
+    }
+    fun getStringifiedData(): String? {
+        val signInBody = SignInBody(token = getUserData()?.token, _userid = getUserData()?._userId)
+        return stringify(signInBody)
     }
 }

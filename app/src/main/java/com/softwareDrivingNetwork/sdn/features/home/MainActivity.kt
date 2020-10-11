@@ -99,15 +99,8 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.nav_history_track -> goToHistoryActivityWithFinish(
-                this
-            )
-            R.id.log_out ->
-                showCustomAlertDialog(onYesClicked = {
-                    if (clearAllSavedLocalData()) com.softwareDrivingNetwork.sdn.common.Navigation.goToLoginActivityWithFinish(
-                        this
-                    )
-                })
+            R.id.nav_history_track -> goToHistoryActivityWithFinish(this)
+            R.id.log_out -> showCustomAlertDialog(onYesClicked = { if (clearAllSavedLocalData()) com.softwareDrivingNetwork.sdn.common.Navigation.goToLoginActivityWithFinish(this) })
 
             R.id.vehicles -> goToVehiclesActivity(this)
             R.id.cameras -> goToCamerasActivity(this)

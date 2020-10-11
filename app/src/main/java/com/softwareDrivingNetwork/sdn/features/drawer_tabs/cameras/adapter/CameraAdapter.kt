@@ -8,9 +8,10 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import com.softwareDrivingNetwork.sdn.R
 import com.softwareDrivingNetwork.sdn.models.general.cameras.CameraModel
+import kotlinx.android.synthetic.main.camera_item_chooser_layout.view.*
 import kotlinx.android.synthetic.main.camera_item_layout.view.*
 
-class CameraAdapter(private val interaction: Interaction? = null) :
+class CameraAdapter(val flag: Int?=null, private val interaction: Interaction? = null) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     val DIFF_CALLBACK = object : DiffUtil.ItemCallback<CameraModel>() {
@@ -26,20 +27,35 @@ class CameraAdapter(private val interaction: Interaction? = null) :
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        if (flag == 1) {
+            return CameraViewHolder2(
+                LayoutInflater.from(parent.context).inflate(
+                    R.layout.camera_item_chooser_layout,
+                    parent,
+                    false
+                ),
+                interaction
+            )
+        } else {
+            return CameraViewHolder(
+                LayoutInflater.from(parent.context).inflate(
+                    R.layout.camera_item_layout,
+                    parent,
+                    false
+                ),
+                interaction
+            )
+        }
 
-        return CameraViewHolder(
-            LayoutInflater.from(parent.context).inflate(
-                R.layout.camera_item_layout,
-                parent,
-                false
-            ),
-            interaction
-        )
+
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is CameraViewHolder -> {
+                holder.bind(differ.currentList[position])
+            }
+            is CameraViewHolder2 -> {
                 holder.bind(differ.currentList[position])
             }
         }
@@ -50,7 +66,6 @@ class CameraAdapter(private val interaction: Interaction? = null) :
     }
 
     fun submitList(list: List<CameraModel>) {
-
         differ.submitList(list)
     }
 
@@ -76,6 +91,22 @@ class CameraAdapter(private val interaction: Interaction? = null) :
 
         }
     }
+
+    class CameraViewHolder2
+    constructor(
+        itemView: View,
+        private val interaction: Interaction?
+    ) : RecyclerView.ViewHolder(itemView) {
+
+        fun bind(item: CameraModel) = with(itemView) {
+            itemView.setOnClickListener {
+                interaction?.onItemSelected(adapterPosition, item)
+            }
+            itemView.checkbox_camera.text = item.sensorName
+
+        }
+    }
+
 
     interface Interaction {
         fun onItemSelected(position: Int, item: CameraModel)

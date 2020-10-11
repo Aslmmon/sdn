@@ -3,16 +3,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/nav_live_track">
+    app:startDestination="@id/cameraVehicleChooser">
 
-    <fragment
-        android:id="@+id/nav_live_track"
-        android:name="com.softwareDrivingNetwork.sdn.features.home.fragments.live.LiveTracking"
-        android:label="fragment_live_tracking"
-        tools:layout="@layout/fragment_live_tracking" />
     <fragment
         android:id="@+id/nav_history_track"
         android:name="com.softwareDrivingNetwork.sdn.features.home.fragments.history.HistoryTracks"
         android:label="fragment_history_tracks"
         tools:layout="@layout/fragment_history_tracks" />
+    <fragment
+        android:id="@+id/cameraVehicleChooser"
+        android:name="com.softwareDrivingNetwork.sdn.features.home.fragments.camera_vehicle_chooser.CameraVehicleChooser"
+        android:label="fragment_camera_vehicle_chooser"
+        tools:layout="@layout/fragment_camera_vehicle_chooser" >
+        <action
+            android:id="@+id/goToLiveTrack"
+            app:destination="@id/liveTracking" />
+    </fragment>
+    <fragment
+        android:id="@+id/liveTracking"
+        android:name="com.softwareDrivingNetwork.sdn.features.home.fragments.live.LiveTracking"
+        android:label="fragment_live_tracking"
+        tools:layout="@layout/fragment_live_tracking" />
 </navigation>
