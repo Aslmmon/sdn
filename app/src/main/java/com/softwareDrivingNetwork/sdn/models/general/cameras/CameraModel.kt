@@ -25,9 +25,9 @@ data class CameraModel(
     @SerializedName("last_update_date")
     val lastUpdateDate: Any,
     @SerializedName("location_lat")
-    val locationLat: Any,
+    val locationLat: Double?=null,
     @SerializedName("location_lng")
-    val locationLng: Any,
+    val locationLng: Double?=null,
     @SerializedName("location_url")
     val locationUrl: String,
     @SerializedName("plate_no")

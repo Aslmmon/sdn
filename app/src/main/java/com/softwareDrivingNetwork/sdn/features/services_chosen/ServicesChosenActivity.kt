@@ -12,9 +12,7 @@ class ServicesChosenActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         supportActionBar?.title = resources.getString(R.string.general_services_title)
 
-        btn_fleet.setOnClickListener {
-            Navigation.goToMainActivity(this)
-        }
+        btn_fleet.setOnClickListener { Navigation.goToMainActivity(this) }
     }
 
     override fun provideLayout() = R.layout.activity_services_chosen

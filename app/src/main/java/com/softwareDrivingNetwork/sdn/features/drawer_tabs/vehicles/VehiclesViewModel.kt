@@ -44,7 +44,7 @@ class VehiclesViewModel(var generalRepo: GeneralRepo) : ViewModel() {
             val result = generalRepo.getCameraList(user)
             if (result.type != "error") {
                 _camerasResponse.value = result
-            } else _errorResponse.value = result.value
+            } else _errorResponse.value = result.text
         }, errorReturned = {
             _errorResponse.value = it.message
         })

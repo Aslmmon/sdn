@@ -1,7 +1,6 @@
 package com.softwareDrivingNetwork.sdn.features.drawer_tabs.cameras
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import com.softwareDrivingNetwork.sdn.R
@@ -10,10 +9,13 @@ import com.softwareDrivingNetwork.sdn.features.drawer_tabs.cameras.adapter.Camer
 import com.softwareDrivingNetwork.sdn.features.drawer_tabs.vehicles.VehiclesViewModel
 import kotlinx.android.synthetic.main.activity_cameras.*
 import org.koin.android.viewmodel.ext.android.viewModel
+import java.nio.channels.Selector
 
 class CamerasActivity : BaseActivity() {
     lateinit var camerasAdapter: CameraAdapter
     private val vehiclesViewModel: VehiclesViewModel by viewModel()
+    private lateinit var itemSelector: Selector
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,5 +48,6 @@ class CamerasActivity : BaseActivity() {
     override fun provideLayout() = R.layout.activity_cameras
 
     override fun passNameToActivity(): String?  = resources.getString(R.string.cameras_title)
+
 
 }

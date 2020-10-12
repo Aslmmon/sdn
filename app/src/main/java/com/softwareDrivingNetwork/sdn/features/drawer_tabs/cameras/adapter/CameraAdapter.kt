@@ -99,8 +99,9 @@ class CameraAdapter(val flag: Int?=null, private val interaction: Interaction? =
     ) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(item: CameraModel) = with(itemView) {
-            itemView.setOnClickListener {
-                interaction?.onItemSelected(adapterPosition, item)
+
+            itemView.checkbox_camera.setOnCheckedChangeListener { buttonView, isChecked ->
+                interaction?.onItemSelected(position = adapterPosition,item = item)
             }
             itemView.checkbox_camera.text = item.sensorName
 
