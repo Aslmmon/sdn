@@ -3,12 +3,9 @@ package com.softwareDrivingNetwork.sdn.features.home
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout.SimpleDrawerListener
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
-import androidx.navigation.Navigation
 import androidx.navigation.Navigation.*
 import androidx.navigation.findNavController
 import androidx.navigation.ui.*
@@ -20,8 +17,6 @@ import com.softwareDrivingNetwork.sdn.common.Navigation.goToDriversActivity
 import com.softwareDrivingNetwork.sdn.common.Navigation.goToHistoryActivityWithFinish
 import com.softwareDrivingNetwork.sdn.common.Navigation.goToVehiclesActivity
 import com.softwareDrivingNetwork.sdn.common.showCustomAlertDialog
-import com.softwareDrivingNetwork.sdn.features.home.fragments.history.HistoryTracks
-import com.softwareDrivingNetwork.sdn.features.home.fragments.live.LiveTracking
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -45,14 +40,18 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     private fun init() {
 
         val navController = findNavController(this, R.id.nav_host_fragment)
-        val supportActionBar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_live_track, R.id.nav_history_track
+                R.id.cameraVehicleChooser ,R.id.nav_live_track
             )
         )
-        setSupportActionBar(supportActionBar)//needs to be after binding
+       // NavigationUI.setupActionBarWithNavController(this, navController)
+
         toolbar.setupWithNavController(navController, appBarConfiguration)
+         setSupportActionBar(toolbar)//needs to be after binding
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        supportActionBar?.setHomeButtonEnabled(false)
+        toolbar?.navigationIcon = null
         navigation_view.setNavigationItemSelectedListener(this)
     }
 

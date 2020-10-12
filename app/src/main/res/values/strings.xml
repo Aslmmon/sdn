@@ -53,5 +53,19 @@
     <string name="camera_title">Camera</string>
     <string name="drivers_title">Drivers</string>
     <string name="google_maps_key">AIzaSyBIhRGLhtlX6nlV0y8aHPYJAnxC_zP_3YI</string>
+    <string name="choose_camera_title">Choose Camera</string>
+    <string name="choose_type_title">Choose Type</string>
+    <string name="choose_groups_title">Choose Groups</string>
+    <string name="submit_title">Submit</string>
 
+    <string-array name="cameras_array">
+        <item>Camera</item>
+        <item>Vehicle</item>
+    </string-array>
+
+    <string-array name="groups_array">
+        <item>Default</item>
+        <item>Group 1</item>
+    </string-array>
 </resources>
+

@@ -5,14 +5,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.mobsandgeeks.saripaar.Validator
-import com.softwareDrivingNetwork.sdn.R
 import com.softwareDrivingNetwork.sdn.models.User
 import com.softwareDrivingNetwork.sdn.models.login.SignInBody
+import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.ext.android.inject
+
 
 abstract class BaseFragment : Fragment() {
     lateinit var loadingDialog: CustomProgress
@@ -28,6 +30,7 @@ abstract class BaseFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         validator = Validator(this)
+        hideBackButtonInToolbar()
         loadingDialog = CustomProgress()
         return inflater.inflate(provideLayout(), container, false)
 
@@ -60,6 +63,12 @@ abstract class BaseFragment : Fragment() {
         sharedPrefsEditor.putString(Constants.USER_DATA, json).apply()
     }
 
+    fun hideBackButtonInToolbar(){
+        (activity as AppCompatActivity?)?.supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        (activity as AppCompatActivity?)?.supportActionBar?.setHomeButtonEnabled(false)
+        activity?.toolbar?.navigationIcon = null
+
+    }
     fun getUserData(): User? {
         val gson = GsonBuilder().create()
         val json = sharedPreferences.getString(Constants.USER_DATA, "")
@@ -69,4 +78,11 @@ abstract class BaseFragment : Fragment() {
         val signInBody = SignInBody(token = getUserData()?.token, _userid = getUserData()?._userId)
         return stringify(signInBody)
     }
+     fun showToolbar() {
+        activity?.toolbar?.visibility = View.VISIBLE
+    }
+     fun removeToolbar() {
+        activity?.toolbar?.visibility = View.GONE
+    }
+
 }

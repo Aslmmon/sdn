@@ -46,4 +46,12 @@
     </style>
 
     <style name="navigationTheme"/>
+
+    <style name="headerStyleText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:layout_margin">@dimen/_10sdp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>

@@ -7,7 +7,7 @@ import com.softwareDrivingNetwork.sdn.features.drawer_tabs.cameras.CamerasActivi
 import com.softwareDrivingNetwork.sdn.features.drawer_tabs.drivers.DriversActivity
 import com.softwareDrivingNetwork.sdn.features.drawer_tabs.vehicles.VehiclesActivity
 import com.softwareDrivingNetwork.sdn.features.home.MainActivity
-import com.softwareDrivingNetwork.sdn.features.home.fragments.history.HistoryTracks
+import com.softwareDrivingNetwork.sdn.features.drawer_tabs.history.HistoryTracks
 import com.softwareDrivingNetwork.sdn.features.login.LoginActivity
 
 object Navigation {
