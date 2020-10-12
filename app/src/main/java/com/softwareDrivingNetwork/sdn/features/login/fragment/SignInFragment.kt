@@ -78,7 +78,7 @@ class SignInFragment : BaseFragment(), Validator.ValidationListener {
             val user =
                 User(name = data.fullname, email = data.email, token = tokenUser, _userId = userId)
             saveUserData(user)
-            activity?.let { it1 -> Navigation.goToMainActivityWithFinish(it1) }
+            activity?.let { it1 -> Navigation.goToServicesActivityWithFinish(it1) }
         })
     }
 

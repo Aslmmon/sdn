@@ -45,6 +45,7 @@
     <string name="vehicles_title">Vehicles</string>
 
     <string name="cameras_title">Cameras</string>
+    <string name="general_services_title">General Services</string>
 
     <string name="plate_number">Plate# : </string>
     <string name="liscense_start">License Start : </string>
@@ -57,6 +58,9 @@
     <string name="choose_type_title">Choose Type</string>
     <string name="choose_groups_title">Choose Groups</string>
     <string name="submit_title">Submit</string>
+    <string name="fleet_vision_title">Fleet Vision</string>
+    <string name="business_vision_title">Business Vision</string>
+    <string name="school_vision_title">School Vision</string>
 
     <string-array name="cameras_array">
         <item>Camera</item>

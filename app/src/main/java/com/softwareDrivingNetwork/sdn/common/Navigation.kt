@@ -9,6 +9,7 @@ import com.softwareDrivingNetwork.sdn.features.drawer_tabs.vehicles.VehiclesActi
 import com.softwareDrivingNetwork.sdn.features.home.MainActivity
 import com.softwareDrivingNetwork.sdn.features.drawer_tabs.history.HistoryTracks
 import com.softwareDrivingNetwork.sdn.features.login.LoginActivity
+import com.softwareDrivingNetwork.sdn.features.services_chosen.ServicesChosenActivity
 
 object Navigation {
 
@@ -16,7 +17,14 @@ object Navigation {
         (ctx as Activity).startActivity(Intent(ctx, MainActivity::class.java))
         ctx.finish()
     }
+    fun goToMainActivity(ctx: Context) {
+        (ctx as Activity).startActivity(Intent(ctx, MainActivity::class.java))
+    }
 
+    fun goToServicesActivityWithFinish(ctx: Context) {
+        (ctx as Activity).startActivity(Intent(ctx,ServicesChosenActivity::class.java))
+        ctx.finish()
+    }
     fun goToLoginActivityWithFinish(ctx: Context) {
         val intent = Intent(ctx, LoginActivity::class.java)
         ctx.startActivity(intent)

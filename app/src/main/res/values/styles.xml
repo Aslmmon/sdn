@@ -10,6 +10,18 @@
     </style>
 
 
+    <style name="Theme.MyAwesomeApp.Orange" parent="AppTheme">
+        <item name="colorPrimary">@color/orange</item>
+    </style>
+
+    <style name="Theme.MyAwesomeApp.Pink" parent="AppTheme">
+        <item name="colorPrimary">@color/pink</item>
+    </style>
+    <style name="Theme.MyAwesomeApp.Blue" parent="AppTheme">
+        <item name="colorPrimary">@color/colorPrimary</item>
+    </style>
+
+
     <style name="CustomActionBar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
     <item name="android:windowActionBarOverlay">true</item>
     <!-- Support library compatibility -->

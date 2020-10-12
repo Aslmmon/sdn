@@ -25,6 +25,7 @@ abstract class BaseActivity : AppCompatActivity() {
             supportActionBar?.title = passNameToActivity()
             showBackButton()
         }
+     //   setTheme(R.style.Theme_MyAwesomeApp_Blue)
         loadingDialog = CustomProgress()
 
     }
