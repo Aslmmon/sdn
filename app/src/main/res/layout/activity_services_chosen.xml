@@ -7,7 +7,7 @@
     tools:context=".features.services_chosen.ServicesChosenActivity">
 
 
-    <com.google.android.material.button.MaterialButton
+    <Button
         android:id="@+id/btn_fleet"
         style="@style/buttonStyle"
         android:backgroundTint="@color/orange"
@@ -19,7 +19,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/hr_guidline" />
 
-    <com.google.android.material.button.MaterialButton
+    <Button
         android:id="@+id/btn_Business"
         style="@style/buttonStyle"
         android:backgroundTint="@color/colorPrimary"
@@ -31,7 +31,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_fleet" />
 
-    <com.google.android.material.button.MaterialButton
+    <Button
         android:id="@+id/btn_school"
         style="@style/buttonStyle"
         android:backgroundTint="@color/pink"

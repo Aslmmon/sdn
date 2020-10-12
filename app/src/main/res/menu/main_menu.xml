@@ -20,10 +20,10 @@
     <item android:title="@string/fleet_reports_title">
         <menu>
             <group android:checkableBehavior="single">
-                <item
-                    android:id="@+id/captured_events"
-                    android:icon="@drawable/ic_live_tracking"
-                    android:title="@string/captured_events_title" />
+<!--                <item-->
+<!--                    android:id="@+id/captured_events"-->
+<!--                    android:icon="@drawable/ic_live_tracking"-->
+<!--                    android:title="@string/captured_events_title" />-->
 
                 <item
                     android:id="@+id/nav_notification"

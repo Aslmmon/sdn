@@ -4,6 +4,7 @@ package com.softwareDrivingNetwork.sdn.common
 
 import android.app.Dialog
 import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
@@ -15,9 +16,14 @@ import androidx.lifecycle.viewModelScope
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputLayout
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.softwareDrivingNetwork.sdn.R
+import com.softwareDrivingNetwork.sdn.SDNApp
+import com.softwareDrivingNetwork.sdn.core.di.getSharedPrefrences
+import com.softwareDrivingNetwork.sdn.models.User
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 
 
 fun ViewModel.launchDataLoad(
@@ -38,12 +44,28 @@ fun ViewModel.launchDataLoad(
     }
 }
 
-fun String.stringify(): String {
-    val gson = Gson()
-    return gson.toJson(this)
+
+fun saveUserData(user: User) {
+    val sharedPrefsEditor = getSharedPrefrences(androidApplication = SDNApp.context).edit()
+    val gson = GsonBuilder().create()
+    val json = gson.toJson(
+        User(
+            name = user.name,
+            token = user.token,
+            _userId = user._userId,
+            email = user.email
+        )
+    )
+    sharedPrefsEditor.putString(Constants.USER_DATA, json).apply()
 }
 
-fun Context.showCustomAlertDialog( onYesClicked: () -> Unit) {
+fun <T> stringify(data: T): String? {
+    val gson = Gson()
+
+    return gson.toJson(data)
+}
+
+fun Context.showCustomAlertDialog(onYesClicked: () -> Unit) {
     val dialog = Dialog(this)
     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
     dialog.setCancelable(false)

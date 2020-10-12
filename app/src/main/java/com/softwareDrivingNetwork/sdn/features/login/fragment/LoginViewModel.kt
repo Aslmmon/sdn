@@ -12,8 +12,12 @@ import com.softwareDrivingNetwork.sdn.models.login.response.SessionTokenResponse
 
 class LoginViewModel(var loginRepo: LoginRepo) : ViewModel() {
 
-    private val _signInResponse = MutableLiveData<SessionTokenResponse>()
-    val signInResponse: LiveData<SessionTokenResponse> = _signInResponse
+//    private val _signInResponse = MutableLiveData<SessionTokenResponse>()
+//    val signInResponse: LiveData<SessionTokenResponse> = _signInResponse
+
+    private val _signInResponse = MutableLiveData<String>()
+    val signInResponse: LiveData<String> = _signInResponse
+
 
     private val _resetPasswordResponse = MutableLiveData<ResetPasswordResponse>()
     val resetPasswordResponse: LiveData<ResetPasswordResponse> = _resetPasswordResponse
@@ -22,8 +26,8 @@ class LoginViewModel(var loginRepo: LoginRepo) : ViewModel() {
     val errorResponse: LiveData<Throwable> = _errorResponse
 
 
-    private val _userData = MutableLiveData<SignInResponseDay>()
-    val userData: LiveData<SignInResponseDay> = _userData
+//    private val _userData = MutableLiveData<SignInResponseDay>()
+//    val userData: LiveData<SignInResponseDay> = _userData
 
     fun signIn(user: SignInBody) {
         launchDataLoad(execution = {
@@ -43,15 +47,15 @@ class LoginViewModel(var loginRepo: LoginRepo) : ViewModel() {
         })
 
     }
-
-    fun getUserData(user: String) {
-        launchDataLoad(execution = {
-            _userData.value = loginRepo.getUserById(user)
-        }, errorReturned = {
-            _errorResponse.value = it
-        })
-
-    }
+//
+//    fun getUserData(user: String) {
+//        launchDataLoad(execution = {
+//            _userData.value = loginRepo.getUserById(user)
+//        }, errorReturned = {
+//            _errorResponse.value = it
+//        })
+//
+//    }
 
 
 }

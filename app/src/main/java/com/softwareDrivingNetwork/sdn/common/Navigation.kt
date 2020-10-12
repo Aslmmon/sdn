@@ -17,16 +17,25 @@ object Navigation {
         (ctx as Activity).startActivity(Intent(ctx, MainActivity::class.java))
         ctx.finish()
     }
+
     fun goToMainActivity(ctx: Context) {
         (ctx as Activity).startActivity(Intent(ctx, MainActivity::class.java))
     }
 
     fun goToServicesActivityWithFinish(ctx: Context) {
-        (ctx as Activity).startActivity(Intent(ctx,ServicesChosenActivity::class.java))
+        (ctx as Activity).startActivity(Intent(ctx, ServicesChosenActivity::class.java))
         ctx.finish()
     }
+
     fun goToLoginActivityWithFinish(ctx: Context) {
         val intent = Intent(ctx, LoginActivity::class.java)
+        ctx.startActivity(intent)
+        (ctx as Activity).finish()
+    }
+
+    fun goToLoginActivityWithClearFlags(ctx: Context) {
+        val intent = Intent(ctx, LoginActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or  Intent.FLAG_ACTIVITY_NEW_TASK)
         ctx.startActivity(intent)
         (ctx as Activity).finish()
     }

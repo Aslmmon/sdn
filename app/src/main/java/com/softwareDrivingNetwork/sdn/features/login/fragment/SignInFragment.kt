@@ -1,6 +1,5 @@
 package com.softwareDrivingNetwork.sdn.features.login.fragment
 
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -20,7 +19,6 @@ import com.softwareDrivingNetwork.sdn.common.*
 import com.softwareDrivingNetwork.sdn.models.User
 import com.softwareDrivingNetwork.sdn.models.login.SignInBody
 import kotlinx.android.synthetic.main.fragment_sign_in.*
-import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
@@ -53,18 +51,10 @@ class SignInFragment : BaseFragment(), Validator.ValidationListener {
 
         tv_forget_password.setOnClickListener { findNavController().navigate(R.id.goToForgetPassword) }
 
-        signInViewModel.signInResponse.observe(viewLifecycleOwner, {
+        signInViewModel.signInResponse.observe(viewLifecycleOwner, Observer {
             dismissProgressDialog()
-            when (it.type) {
-                "result" -> {
-                    tokenUser = it.data.token
-                    userId = it.data.userid
-                    val signInBody = SignInBody(token = it.data.token, _userid = it.data.userid)
-                    val data = stringify(signInBody)
-                    signInViewModel.getUserData(data!!)
-                }
-                "error" -> Toast.makeText(activity, it.text, Toast.LENGTH_SHORT).show()
-            }
+            if(it == "result") activity?.let { it1 -> Navigation.goToServicesActivityWithFinish(it1) }
+            else Toast.makeText(activity, it, Toast.LENGTH_SHORT).show()
         })
         signInViewModel.errorResponse.observe(viewLifecycleOwner, Observer {
             dismissProgressDialog()
@@ -72,14 +62,6 @@ class SignInFragment : BaseFragment(), Validator.ValidationListener {
             Toast.makeText(activity, it.message, Toast.LENGTH_SHORT).show()
         })
 
-        signInViewModel.userData.observe(viewLifecycleOwner, Observer {
-            dismissProgressDialog()
-            val data = it.data[0]
-            val user =
-                User(name = data.fullname, email = data.email, token = tokenUser, _userId = userId)
-            saveUserData(user)
-            activity?.let { it1 -> Navigation.goToServicesActivityWithFinish(it1) }
-        })
     }
 
     override fun onValidationSucceeded() {
