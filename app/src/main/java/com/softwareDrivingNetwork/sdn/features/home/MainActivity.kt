@@ -16,6 +16,7 @@ import com.softwareDrivingNetwork.sdn.common.Navigation.goToCamerasActivity
 import com.softwareDrivingNetwork.sdn.common.Navigation.goToDriversActivity
 import com.softwareDrivingNetwork.sdn.common.Navigation.goToHistoryActivityWithFinish
 import com.softwareDrivingNetwork.sdn.common.Navigation.goToLoginActivityWithClearFlags
+import com.softwareDrivingNetwork.sdn.common.Navigation.goToNotificationActivity
 import com.softwareDrivingNetwork.sdn.common.Navigation.goToVehiclesActivity
 import com.softwareDrivingNetwork.sdn.common.showCustomAlertDialog
 import kotlinx.android.synthetic.main.activity_main.*
@@ -105,6 +106,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             R.id.vehicles -> goToVehiclesActivity(this)
             R.id.cameras -> goToCamerasActivity(this)
             R.id.drivers -> goToDriversActivity(this)
+            R.id.nav_notification -> goToNotificationActivity(this)
         }
         closeDrawer()
         return true

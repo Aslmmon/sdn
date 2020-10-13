@@ -13,7 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".features.services_chosen.ServicesChosenActivity"></activity>
+        <activity android:name=".features.notification.NotificationActivity"></activity>
+        <activity android:name=".features.services_chosen.ServicesChosenActivity" />
         <activity android:name=".features.drawer_tabs.drivers.DriversActivity" /> <!-- <meta-data -->
         <!-- android:name="com.google.android.gms.version" -->
         <!-- android:value="@integer/google_play_services_version" /> -->

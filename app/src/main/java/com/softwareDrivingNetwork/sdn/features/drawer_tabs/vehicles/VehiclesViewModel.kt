@@ -9,6 +9,7 @@ import com.softwareDrivingNetwork.sdn.core.repo.GeneralRepo
 import com.softwareDrivingNetwork.sdn.core.repo.LoginRepo
 import com.softwareDrivingNetwork.sdn.models.general.cameras.CameraListResponse
 import com.softwareDrivingNetwork.sdn.models.general.drivers.DriversListReponse
+import com.softwareDrivingNetwork.sdn.models.general.notification.NotificationResponse
 import com.softwareDrivingNetwork.sdn.models.general.vehicles.VehiclesListResponse
 import com.softwareDrivingNetwork.sdn.models.login.SignInBody
 import com.softwareDrivingNetwork.sdn.models.login.SignInResponseDay
@@ -29,6 +30,9 @@ class VehiclesViewModel(var generalRepo: GeneralRepo) : ViewModel() {
     private val _driversResponse = MutableLiveData<DriversListReponse>()
     val driversResponse: LiveData<DriversListReponse> = _driversResponse
 
+
+    private val _notificationResponse = MutableLiveData<NotificationResponse>()
+    val notificationResponse: LiveData<NotificationResponse> = _notificationResponse
 
     fun getVehiclersList(user: String) {
         launchDataLoad(execution = {
@@ -55,6 +59,17 @@ class VehiclesViewModel(var generalRepo: GeneralRepo) : ViewModel() {
             val result = generalRepo.getDrivers(user)
             if (result.type != "error") {
                 _driversResponse.value = result
+            } else _errorResponse.value = result.value
+        }, errorReturned = {
+            _errorResponse.value = it.message
+        })
+    }
+
+    fun getNotification(user: String) {
+        launchDataLoad(execution = {
+            val result = generalRepo.getNotification(user)
+            if (result.type != "error") {
+                _notificationResponse.value = result
             } else _errorResponse.value = result.value
         }, errorReturned = {
             _errorResponse.value = it.message

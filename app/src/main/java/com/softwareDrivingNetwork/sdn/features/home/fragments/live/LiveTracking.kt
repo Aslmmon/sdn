@@ -21,7 +21,7 @@ class LiveTracking : BaseFragment(), OnMapReadyCallback {
 
     private val model: SharedViewModel by activityViewModels()
     lateinit var mMap: GoogleMap
-    lateinit var positionNeeded:LatLng
+     var positionNeeded:LatLng= LatLng(25.0,25.0)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         removeToolbar()

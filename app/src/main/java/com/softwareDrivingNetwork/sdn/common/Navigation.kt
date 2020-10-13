@@ -1,6 +1,7 @@
 package com.softwareDrivingNetwork.sdn.common
 
 import android.app.Activity
+import android.app.Notification
 import android.content.Context
 import android.content.Intent
 import com.softwareDrivingNetwork.sdn.features.drawer_tabs.cameras.CamerasActivity
@@ -9,6 +10,7 @@ import com.softwareDrivingNetwork.sdn.features.drawer_tabs.vehicles.VehiclesActi
 import com.softwareDrivingNetwork.sdn.features.home.MainActivity
 import com.softwareDrivingNetwork.sdn.features.drawer_tabs.history.HistoryTracks
 import com.softwareDrivingNetwork.sdn.features.login.LoginActivity
+import com.softwareDrivingNetwork.sdn.features.notification.NotificationActivity
 import com.softwareDrivingNetwork.sdn.features.services_chosen.ServicesChosenActivity
 
 object Navigation {
@@ -58,6 +60,11 @@ object Navigation {
 
     fun goToDriversActivity(ctx: Context) {
         val intent = Intent(ctx, DriversActivity::class.java)
+        ctx.startActivity(intent)
+    }
+
+    fun goToNotificationActivity(ctx: Context) {
+        val intent = Intent(ctx, NotificationActivity::class.java)
         ctx.startActivity(intent)
     }
 }

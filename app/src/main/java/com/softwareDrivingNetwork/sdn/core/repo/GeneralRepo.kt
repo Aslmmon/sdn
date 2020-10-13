@@ -12,5 +12,8 @@ class GeneralRepo(var generalApis:GeneralApis) {
 
     suspend fun getDrivers(signInBody: String) = generalApis.getDriversList(signInBody)
 
+    suspend fun getNotification(signInBody: String) = generalApis.getNotification(signInBody)
+
+
 }
 

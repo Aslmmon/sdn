@@ -37,6 +37,8 @@
     <string name="notification_title">Notification</string>
     <string name="captured_events_title">Captured Events</string>
     <string name="account_title">Account</string>
+    <string name="notfication_title">Notifications</string>
+
     <string name="yes_title">Yes</string>
     <string name="no_title">No</string>
     <string name="are_you_sure_title">Are you Sure ?</string>

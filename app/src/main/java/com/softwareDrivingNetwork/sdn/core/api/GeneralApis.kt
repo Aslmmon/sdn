@@ -3,6 +3,7 @@ package com.softwareDrivingNetwork.sdn.core.api
 import android.graphics.Camera
 import com.softwareDrivingNetwork.sdn.models.general.cameras.CameraListResponse
 import com.softwareDrivingNetwork.sdn.models.general.drivers.DriversListReponse
+import com.softwareDrivingNetwork.sdn.models.general.notification.NotificationResponse
 import com.softwareDrivingNetwork.sdn.models.general.vehicles.VehiclesListResponse
 import retrofit2.http.Body
 import retrofit2.http.Field
@@ -22,5 +23,9 @@ interface GeneralApis {
     @POST("api/driver.getdriverlist")
     @FormUrlEncoded
     suspend fun getDriversList(@Field("data") signInBody: String): DriversListReponse
+
+    @POST("api/notifications.list")
+    @FormUrlEncoded
+    suspend fun getNotification(@Field("data") signInBody: String): NotificationResponse
 
 }
