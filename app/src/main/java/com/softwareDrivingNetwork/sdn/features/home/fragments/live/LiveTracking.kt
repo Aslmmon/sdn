@@ -13,9 +13,6 @@ class LiveTracking : MapFragment() {
         super.onViewCreated(view, savedInstanceState)
         activity?.toolbar?.visibility = View.GONE
 
-
-
-
     }
 
 
