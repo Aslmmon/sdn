@@ -63,65 +63,65 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        ArrayList<LatLng> listay = new ArrayList<>();
-        listay.add(new LatLng( 61.52269494598361, 72.7734375));
-        listay.add(new LatLng( 61.52269494598361, 72.7734375));
-        listay.add(new LatLng( 61.52269494598361, 72.7734375));
-        listay.add(new LatLng( 61.52269494598361, 72.7734375));
-
-        listay.add(new LatLng(52.802761415419674, 16.34765625));
-        listay.add(new LatLng(50.28933925329178, 18.80859375));
-        listay.add(new LatLng( 47.989921667414194, 20.0390625));
-        listay.add(new LatLng(20.0390625,66.796875));
-        listay.add(new LatLng(60.84491057364912,72.421875));
-
-        LatLngBounds.Builder builder = LatLngBounds.builder();
-        for (int i = 0; i < listay.size(); i++) {
-            builder.include(listay.get(i));
-        }
-        LatLngBounds bounds = builder.build();
-        mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 6));
-
-
-        greyPolyLine = mMap.addPolyline(new PolylineOptions()
-                .clickable(true)
-                .width(5)
-                .color(Color.GRAY)
-                .addAll(listay));
-
-        blackPolyline = mMap.addPolyline(new PolylineOptions()
-                .clickable(true)
-                .width(5)
-                .color(Color.BLACK)
-                .addAll(listay));
-
-        originMarker = addOriginDestinationMarkerAndGet(new LatLng(listay.get(0).latitude, listay.get(0).longitude));
-        originMarker.setAnchor(0.5f, 0.5f);
-        destinationMarker = addOriginDestinationMarkerAndGet(new LatLng((listay.get(listay.size() - 1)).latitude, listay.get(listay.size() - 1).longitude));
-        destinationMarker.setAnchor(0.5f, 0.5f);
-
-
-        ValueAnimator polylineAnimator = AiviAnimation.polyLineAnimator();
-        polylineAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                int percentage = (int) animation.getAnimatedValue();
-                int index = (int) (greyPolyLine.getPoints().size() * (percentage / 100.0f));
-                blackPolyline.setPoints(greyPolyLine.getPoints().subList(0, index));
-            }
-        });
-        polylineAnimator.start();
-
-        for (int i = 0; i < listay.size(); i++) {
-
-            updateCarLocation(new LatLng(listay.get(i).latitude, listay.get(i).longitude));
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        mMap.setOnPolylineClickListener(this);
+//        ArrayList<LatLng> listay = new ArrayList<>();
+//        listay.add(new LatLng( 61.52269494598361, 72.7734375));
+//        listay.add(new LatLng( 61.52269494598361, 72.7734375));
+//        listay.add(new LatLng( 61.52269494598361, 72.7734375));
+//        listay.add(new LatLng( 61.52269494598361, 72.7734375));
+//
+//        listay.add(new LatLng(52.802761415419674, 16.34765625));
+//        listay.add(new LatLng(50.28933925329178, 18.80859375));
+//        listay.add(new LatLng( 47.989921667414194, 20.0390625));
+//        listay.add(new LatLng(20.0390625,66.796875));
+//        listay.add(new LatLng(60.84491057364912,72.421875));
+//
+//        LatLngBounds.Builder builder = LatLngBounds.builder();
+//        for (int i = 0; i < listay.size(); i++) {
+//            builder.include(listay.get(i));
+//        }
+//        LatLngBounds bounds = builder.build();
+//        mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 6));
+//
+//
+//        greyPolyLine = mMap.addPolyline(new PolylineOptions()
+//                .clickable(true)
+//                .width(5)
+//                .color(Color.GRAY)
+//                .addAll(listay));
+//
+//        blackPolyline = mMap.addPolyline(new PolylineOptions()
+//                .clickable(true)
+//                .width(5)
+//                .color(Color.BLACK)
+//                .addAll(listay));
+//
+//        originMarker = addOriginDestinationMarkerAndGet(new LatLng(listay.get(0).latitude, listay.get(0).longitude));
+//        originMarker.setAnchor(0.5f, 0.5f);
+//        destinationMarker = addOriginDestinationMarkerAndGet(new LatLng((listay.get(listay.size() - 1)).latitude, listay.get(listay.size() - 1).longitude));
+//        destinationMarker.setAnchor(0.5f, 0.5f);
+//
+//
+//        ValueAnimator polylineAnimator = AiviAnimation.polyLineAnimator();
+//        polylineAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+//            @Override
+//            public void onAnimationUpdate(ValueAnimator animation) {
+//                int percentage = (int) animation.getAnimatedValue();
+//                int index = (int) (greyPolyLine.getPoints().size() * (percentage / 100.0f));
+//                blackPolyline.setPoints(greyPolyLine.getPoints().subList(0, index));
+//            }
+//        });
+//        polylineAnimator.start();
+//
+//        for (int i = 0; i < listay.size(); i++) {
+//
+//            updateCarLocation(new LatLng(listay.get(i).latitude, listay.get(i).longitude));
+//            try {
+//                Thread.sleep(1000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        mMap.setOnPolylineClickListener(this);
 
     }
 

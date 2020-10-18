@@ -6,7 +6,8 @@ data class SignInBody(
     var password: String? = null,
     var raw: Boolean = true,
     var userid: String = "-200",
-    var token: String ?=null,
+    var token: String? = null,
     var app_version: Int = 49,
-    var _userid: String ?=null
+    var _userid: String? = null,
+    var job_name:String?="active_location_job"
 )
