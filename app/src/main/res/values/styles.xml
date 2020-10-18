@@ -37,6 +37,9 @@
     </style>
     <style name="noActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:windowFullscreen">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowDisablePreview">true</item>
     </style>
 
     <style name="noActionBarThem" parent="Theme.MaterialComponents.DayNight.NoActionBar">

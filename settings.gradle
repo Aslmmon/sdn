@@ -1,3 +1,4 @@
+include ':AiviMapAndroid'
 include ':gnbshared'
 include ':gnbsharedui'
 include ':app'

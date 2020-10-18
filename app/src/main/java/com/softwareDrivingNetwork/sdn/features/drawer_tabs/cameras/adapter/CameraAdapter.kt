@@ -11,8 +11,9 @@ import com.softwareDrivingNetwork.sdn.models.general.cameras.CameraModel
 import kotlinx.android.synthetic.main.camera_item_chooser_layout.view.*
 import kotlinx.android.synthetic.main.camera_item_layout.view.*
 
-class CameraAdapter(val flag: Int?=null, private val interaction: Interaction? = null) :
+class CameraAdapter(val flag: Int? = null, private val interaction: Interaction? = null) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
 
     val DIFF_CALLBACK = object : DiffUtil.ItemCallback<CameraModel>() {
 
@@ -98,10 +99,12 @@ class CameraAdapter(val flag: Int?=null, private val interaction: Interaction? =
         private val interaction: Interaction?
     ) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(item: CameraModel) = with(itemView) {
+        fun bind(
+            item: CameraModel
+        ) = with(itemView) {
 
             itemView.checkbox_camera.setOnCheckedChangeListener { buttonView, isChecked ->
-                interaction?.onItemSelected(position = adapterPosition,item = item)
+                interaction?.onItemSelected(position = adapterPosition, item = item)
             }
             itemView.checkbox_camera.text = item.sensorName
 
