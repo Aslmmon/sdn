@@ -25,8 +25,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     val END_SCALE = 0.7f
-
-
     lateinit var appBarConfiguration: AppBarConfiguration
     override fun provideLayout() = R.layout.activity_main
     override fun passNameToActivity(): String? = null
@@ -44,13 +42,13 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         val navController = findNavController(this, R.id.nav_host_fragment)
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.cameraVehicleChooser ,R.id.nav_live_track
+                R.id.cameraVehicleChooser, R.id.nav_live_track
             )
         )
-       // NavigationUI.setupActionBarWithNavController(this, navController)
+        // NavigationUI.setupActionBarWithNavController(this, navController)
 
         toolbar.setupWithNavController(navController, appBarConfiguration)
-         setSupportActionBar(toolbar)//needs to be after binding
+        setSupportActionBar(toolbar)//needs to be after binding
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
         supportActionBar?.setHomeButtonEnabled(false)
         toolbar?.navigationIcon = null
@@ -101,7 +99,11 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_history_track -> goToHistoryActivityWithFinish(this)
-            R.id.log_out -> showCustomAlertDialog(onYesClicked = { if (clearAllSavedLocalData()) goToLoginActivityWithClearFlags(this) })
+            R.id.log_out -> showCustomAlertDialog(onYesClicked = {
+                if (clearAllSavedLocalData()) goToLoginActivityWithClearFlags(
+                    this
+                )
+            })
 
             R.id.vehicles -> goToVehiclesActivity(this)
             R.id.cameras -> goToCamerasActivity(this)

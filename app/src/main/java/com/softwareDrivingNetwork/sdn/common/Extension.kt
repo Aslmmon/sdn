@@ -8,6 +8,7 @@ import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
+import android.util.Log
 import android.view.View
 import android.view.Window
 import android.widget.FrameLayout
@@ -56,6 +57,12 @@ fun saveUserData(user: User) {
             email = user.email
         )
     )
+    Log.i("user","User to be Saved" +User(
+        name = user.name,
+        token = user.token,
+        _userId = user._userId,
+        email = user.email
+    ).toString())
     sharedPrefsEditor.putString(Constants.USER_DATA, json).apply()
 }
 

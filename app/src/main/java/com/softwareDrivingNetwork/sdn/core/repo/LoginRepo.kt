@@ -17,6 +17,9 @@ class LoginRepo(var loginApi: LoginApi) {
         when (result.type) {
             "result" -> {
                 val signInBody = SignInBody(token = result.data.token, _userid = result.data.userid)
+                Log.i("user","new token "+result.data.token)
+                Log.i("user","new userid"+result.data.userid)
+
                 val data = stringify(signInBody)
                 val result2 = getUserById(data!!)
                 val userData = result2.data[0]
