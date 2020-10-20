@@ -41,20 +41,10 @@ public class AiviUtils {
             rotation = (float) Math.toDegrees(atan(lngDifference / latDifference));
         } else if (start.latitude >= end.latitude && start.longitude < end.longitude) {
             rotation = (float) (90 - Math.toDegrees(atan(lngDifference / latDifference)) + 90);
-
-//
-//            rotation = (float) (Math.toDegrees(atan(lngDifference / latDifference)) + 180);
-//
-//
-//            rotation = (float) (90 - Math.toDegrees(atan(lngDifference / latDifference)) + 270);
         } else if (start.latitude >= end.latitude && start.longitude >= end.longitude) {
             rotation = (float) (Math.toDegrees(atan(lngDifference / latDifference)) + 180);
-
-//            rotation =
-//                    (float) (90 - Math.toDegrees(atan(lngDifference / latDifference)) + 270);
         } else if (start.latitude < end.latitude && start.longitude >= end.longitude) {
-            rotation =
-                    (float) (90 - Math.toDegrees(atan(lngDifference / latDifference)) + 270);
+            rotation = (float) (90 - Math.toDegrees(atan(lngDifference / latDifference)) + 270);
         }
         return rotation;
     }

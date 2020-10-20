@@ -1,32 +1,33 @@
 package com.softwareDrivingNetwork.sdn.features.home.fragments.live
 
 import android.content.SharedPreferences
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import com.github.nkzawa.emitter.Emitter
 import com.github.nkzawa.socketio.client.Socket
 import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.sdn.aivimapandroid.map.MapFragment
+import com.sdn.aivimapandroid.map.AiviMapFragment
 import com.softwareDrivingNetwork.sdn.SDNApp
 import com.softwareDrivingNetwork.sdn.common.Constants
 import com.softwareDrivingNetwork.sdn.models.User
 import com.softwareDrivingNetwork.sdn.models.login.SignInBody
-import com.softwareDrivingNetwork.sdn.models.socket.SocketActiveModel
 import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONArray
 import org.json.JSONObject
 import org.koin.android.ext.android.inject
 
 
-class LiveTracking : MapFragment() {
+class LiveTracking : AiviMapFragment() {
     lateinit var mSocket: Socket
+
     lateinit var jobId: JSONObject
     val TAG = "socket"
     lateinit var userObject: JSONObject
+    var listOfLatlngs = mutableListOf<LatLng>()
 
     // var socketTracker = SocketTracker()
     private val sharedPreferences: SharedPreferences by inject()
@@ -34,6 +35,9 @@ class LiveTracking : MapFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         userObject = createUserObject()
+
+//        var avii = AiviMapFragment.AiviMapBuilder().
+
         initializeSocket()
     }
 
@@ -115,24 +119,32 @@ class LiveTracking : MapFragment() {
     }
 
     private val onActive = Emitter.Listener {
-        jobId = it.get(0) as JSONObject
-        userObject.put("job_id", jobId.get("text"))
-        val unitArray = JSONArray()
-        unitArray.put(0, "4120105841")
-        userObject.put("unitList", unitArray)
-        mSocket.emit(Constants.SOCKET_UPDATE, userObject)
+        Log.i(
+            TAG,
+            " onAactive ${it.get(0)}"
+        )
+        if (it.isNotEmpty()) {
+            jobId = it.get(0) as JSONObject
+            userObject.put("job_id", jobId.get("text"))
+            val unitArray = JSONArray()
+            unitArray.put(0, "4100914721")
+            userObject.put("unitList", unitArray)
+            mSocket.emit(Constants.SOCKET_UPDATE, userObject)
+        }
+
 
     }
 
     private val onJobLocation = Emitter.Listener {
-        val data = (it.get(0) as JSONObject).get("data") as JSONObject
-        val latitude = data.getString("lat")
-        val longtitude = data.getString("lng")
-        var LatLng = LatLng(latitude.toDouble(), longtitude.toDouble())
-        Log.i(
-            TAG,
-            " OnJobLocation ${(it.get(0) as JSONObject).get("data")}"
-        )
+        Log.i(TAG, " OnJobLocation ${(it.get(0))}")
+        if (it.isNotEmpty()) {
+            val data = (it[0] as JSONObject).get("data") as JSONObject
+            val latitude = data.getString("lat")
+            val longtitude = data.getString("lng")
+            val LatLng = LatLng(latitude.toDouble(), longtitude.toDouble())
+            listOfLatlngs.add(LatLng)
+            showPathOfLocations(listOfLatlngs)
+        }
     }
 
 }

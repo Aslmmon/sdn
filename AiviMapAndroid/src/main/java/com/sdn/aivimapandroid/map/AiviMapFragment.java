@@ -1,18 +1,14 @@
 package com.sdn.aivimapandroid.map;
 
 import android.animation.ValueAnimator;
-import android.graphics.Camera;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 
-import com.google.android.gms.common.util.MapUtils;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -27,102 +23,130 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.sdn.aivimapandroid.R;
-import com.sdn.aivimapandroid.map.model.Coordinates;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnPolylineClickListener {
+/**
+ * created by Aslm on 18/10/2020 ..
+ */
 
 
-    GoogleMap mMap;
-    LatLng positionNeeded = new LatLng(25.0, 25.0);
+/**
+ *
+ */
+
+
+public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
+
+    /**
+     * here we have made the needed variables
+     * to be used in the google map platform ..
+     * for example  : Markers , polylines, and latlng ..
+     */
+
+    private GoogleMap mMap;
     private Marker originMarker;
-    private Marker destinationMarker;
     private Marker movingCabMarker;
     private LatLng previousLatLngFromServer;
     private LatLng currentLatLngFromServer;
-    private Polyline greyPolyLine;
-    private Polyline blackPolyline;
+    private Polyline startPolyline;
+    private Polyline endPolyline;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_map, null, false);
 
-        SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager()
-                .findFragmentById(R.id.map);
+        SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.map);
         if (mapFragment != null) {
             mapFragment.getMapAsync(this);
         }
         return view;
     }
 
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-//        ArrayList<LatLng> listay = new ArrayList<>();
-//        listay.add(new LatLng( 61.52269494598361, 72.7734375));
-//        listay.add(new LatLng( 61.52269494598361, 72.7734375));
-//        listay.add(new LatLng( 61.52269494598361, 72.7734375));
-//        listay.add(new LatLng( 61.52269494598361, 72.7734375));
-//
-//        listay.add(new LatLng(52.802761415419674, 16.34765625));
-//        listay.add(new LatLng(50.28933925329178, 18.80859375));
-//        listay.add(new LatLng( 47.989921667414194, 20.0390625));
-//        listay.add(new LatLng(20.0390625,66.796875));
-//        listay.add(new LatLng(60.84491057364912,72.421875));
-//
-//        LatLngBounds.Builder builder = LatLngBounds.builder();
-//        for (int i = 0; i < listay.size(); i++) {
-//            builder.include(listay.get(i));
-//        }
-//        LatLngBounds bounds = builder.build();
-//        mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 6));
-//
-//
-//        greyPolyLine = mMap.addPolyline(new PolylineOptions()
-//                .clickable(true)
-//                .width(5)
-//                .color(Color.GRAY)
-//                .addAll(listay));
-//
-//        blackPolyline = mMap.addPolyline(new PolylineOptions()
-//                .clickable(true)
-//                .width(5)
-//                .color(Color.BLACK)
-//                .addAll(listay));
-//
-//        originMarker = addOriginDestinationMarkerAndGet(new LatLng(listay.get(0).latitude, listay.get(0).longitude));
-//        originMarker.setAnchor(0.5f, 0.5f);
-//        destinationMarker = addOriginDestinationMarkerAndGet(new LatLng((listay.get(listay.size() - 1)).latitude, listay.get(listay.size() - 1).longitude));
-//        destinationMarker.setAnchor(0.5f, 0.5f);
-//
-//
-//        ValueAnimator polylineAnimator = AiviAnimation.polyLineAnimator();
-//        polylineAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-//            @Override
-//            public void onAnimationUpdate(ValueAnimator animation) {
-//                int percentage = (int) animation.getAnimatedValue();
-//                int index = (int) (greyPolyLine.getPoints().size() * (percentage / 100.0f));
-//                blackPolyline.setPoints(greyPolyLine.getPoints().subList(0, index));
-//            }
-//        });
-//        polylineAnimator.start();
-//
-//        for (int i = 0; i < listay.size(); i++) {
-//
-//            updateCarLocation(new LatLng(listay.get(i).latitude, listay.get(i).longitude));
-//            try {
-//                Thread.sleep(1000);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        mMap.setOnPolylineClickListener(this);
+        this.mMap = googleMap;
+    }
 
+
+    /**
+     * This function is the core of the module in which
+     * list of latlngs are passed ,, and then processing
+     * of animating camera , adding marker to start , and update the location from websocket ..
+     * need to be run on UI thread ..
+     */
+    public void showPathOfLocations(final List<LatLng> list) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                animateCameraToSpecificLatLngBounds(list);
+                drawPolylinePoints(list);
+
+                originMarker = addOriginDestinationMarkerAndGet(new LatLng(list.get(0).latitude, list.get(0).longitude));
+                originMarker.setAnchor(0.5f, 0.5f);
+                showPolylineAnimation();
+
+                for (int i = 0; i < list.size(); i++)
+                    updateCarLocation(new LatLng(list.get(i).latitude, list.get(i).longitude));
+            }
+        });
+
+
+    }
+
+    private void showPolylineAnimation() {
+        /**
+         * This function provides the Animation of polylines
+         * and updates the start and end polyline together
+         */
+        ValueAnimator polylineAnimator = AiviAnimation.polyLineAnimator();
+        polylineAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                int percentage = (int) animation.getAnimatedValue();
+                int index = (int) (startPolyline.getPoints().size() * (percentage / 100.0f));
+                endPolyline.setPoints(startPolyline.getPoints().subList(0, index));
+            }
+        });
+        polylineAnimator.start();
+    }
+
+    private void drawPolylinePoints(List<LatLng> list) {
+        /**
+         * This function draw polyline  from the start destination of
+         * Moving car , and also draw another polyline after ending Specific route with
+         * another color
+         *
+         */
+        startPolyline = mMap.addPolyline(new PolylineOptions()
+                .clickable(true)
+                .width(5)
+                .color(Color.RED)
+                .addAll(list));
+
+        endPolyline = mMap.addPolyline(new PolylineOptions()
+                .clickable(true)
+                .width(5)
+                .color(Color.GREEN)
+                .addAll(list));
+    }
+
+    private void animateCameraToSpecificLatLngBounds(List<LatLng> list) {
+        /**
+         * this function is used to animate the camera to Specifically to LOCATION
+         *
+         * of the moving car begining from it's first location location ..
+         *
+         */
+        LatLngBounds.Builder builder = LatLngBounds.builder();
+        for (int i = 0; i < list.size(); i++) {
+            builder.include(list.get(i));
+        }
+        LatLngBounds bounds = builder.build();
+        mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 2));
     }
 
     private Marker addOriginDestinationMarkerAndGet(LatLng latlng) {
@@ -134,12 +158,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     }
 
 
-    @Override
-    public void onPolylineClick(Polyline polyline) {
-
-    }
-
     public void updateCarLocation(LatLng latlng) {
+        /**
+         * This function is used to update car location
+         * and swap  the latlngs of previous and current ..
+         * with animating the camera to the car location
+         *
+         */
+
         if (movingCabMarker == null) {
             movingCabMarker = addCarMarkerAndGet(latlng);
         }
@@ -178,6 +204,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     }
 
     private void animateCamera(LatLng currentLatLngFromServer) {
+        /**
+         * used to animate camera to specific Latlng location
+         */
         CameraPosition.Builder camera = CameraPosition.builder();
         CameraPosition cameraPosition = camera.target(currentLatLngFromServer).zoom(15.5f).build();
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
@@ -185,12 +214,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
 
 
     private Marker addCarMarkerAndGet(LatLng latlng) {
+        /**
+         * used to getCar Marker  ..
+         */
         BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory.fromBitmap(AiviUtils.getCarBitmap(this.getActivity()));
         MarkerOptions markerOptions = new MarkerOptions();
-
-        return mMap.addMarker(
-                markerOptions.position(latlng).flat(true).icon(bitmapDescriptor)
-        );
+        return mMap.addMarker(markerOptions.position(latlng).flat(true).icon(bitmapDescriptor));
     }
+
 
 }

@@ -58,7 +58,7 @@ class SDNApp : Application() {
             options.reconnectionAttempts = 5
             options.sslContext = sslContext
             options.forceNew = true
-            options.timeout = 50000
+            options.timeout = 5000
             options.reconnectionDelay = 1000
             options.reconnectionAttempts = 1000
             options.transports = arrayOf(WebSocket.NAME)
