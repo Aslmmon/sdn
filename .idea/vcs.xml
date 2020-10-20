@@ -2,6 +2,7 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/AiviMapAndroid/aivimap-sdk-android" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/gnbshared" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/gnbsharedui" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/sdnmanageoneapp" vcs="Git" />

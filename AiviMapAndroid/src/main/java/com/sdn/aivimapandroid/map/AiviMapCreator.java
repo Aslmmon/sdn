@@ -1,3 +1,4 @@
+
 package com.sdn.aivimapandroid.map;
 
 import com.google.android.gms.maps.model.LatLng;
