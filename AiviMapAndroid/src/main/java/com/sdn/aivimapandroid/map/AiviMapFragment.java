@@ -3,6 +3,7 @@ package com.sdn.aivimapandroid.map;
 import android.animation.ValueAnimator;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.sdn.aivimapandroid.R;
+import com.sdn.aivimapandroid.map.custom.CustomWindowMarker;
 
 import java.util.List;
 
@@ -69,6 +71,7 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.mMap = googleMap;
+        this.mMap.setInfoWindowAdapter(new CustomWindowMarker(requireActivity()));
     }
 
 
@@ -78,7 +81,9 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
      * of animating camera , adding marker to start , and update the location from websocket ..
      * need to be run on UI thread ..
      */
-    public void showPathOfLocations(final List<LatLng> list) {
+    public void showPathOfLocations(final AiviMapCreator aiviMapCreator) {
+        final List<LatLng> list = aiviMapCreator.getListLocation();
+        Log.i("car", aiviMapCreator.toString());
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -87,7 +92,11 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
 
                 originMarker = addOriginDestinationMarkerAndGet(new LatLng(list.get(0).latitude, list.get(0).longitude));
                 originMarker.setAnchor(0.5f, 0.5f);
-                showPolylineAnimation();
+                originMarker.setTitle(aiviMapCreator.getId());
+
+
+
+                //  showPolylineAnimation();
 
                 for (int i = 0; i < list.size(); i++)
                     updateCarLocation(new LatLng(list.get(i).latitude, list.get(i).longitude));
@@ -121,11 +130,11 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
          * another color
          *
          */
-        startPolyline = mMap.addPolyline(new PolylineOptions()
-                .clickable(true)
-                .width(5)
-                .color(Color.RED)
-                .addAll(list));
+//        startPolyline = mMap.addPolyline(new PolylineOptions()
+//                .clickable(true)
+//                .width(5)
+//                .color(Color.RED)
+//                .addAll(list));
 
         endPolyline = mMap.addPolyline(new PolylineOptions()
                 .clickable(true)
@@ -158,7 +167,7 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
     }
 
 
-    public void updateCarLocation(LatLng latlng) {
+    private void updateCarLocation(LatLng latlng) {
         /**
          * This function is used to update car location
          * and swap  the latlngs of previous and current ..
@@ -172,8 +181,7 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
         if (previousLatLngFromServer == null) {
             currentLatLngFromServer = latlng;
             previousLatLngFromServer = currentLatLngFromServer;
-            movingCabMarker.setPosition(currentLatLngFromServer);
-            movingCabMarker.setAnchor(0.5f, 0.5f);
+            positionCar(currentLatLngFromServer);
             animateCamera(currentLatLngFromServer);
         } else {
             previousLatLngFromServer = currentLatLngFromServer;
@@ -188,8 +196,7 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
                                 multiplier * currentLatLngFromServer.latitude + (1 - multiplier) * previousLatLngFromServer.latitude,
                                 multiplier * currentLatLngFromServer.longitude + (1 - multiplier) * previousLatLngFromServer.longitude
                         );
-                        movingCabMarker.setPosition(nextLocation);
-                        movingCabMarker.setAnchor(0.5f, 0.5f);
+                        positionCar(nextLocation);
                         float rotation = AiviUtils.getRotation(previousLatLngFromServer, nextLocation);
                         if (!Double.isNaN(rotation)) {
                             movingCabMarker.setRotation(rotation);
@@ -203,6 +210,11 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
+    private void positionCar(LatLng currentLatLngFromServer) {
+        movingCabMarker.setPosition(currentLatLngFromServer);
+        movingCabMarker.setAnchor(0.5f, 0.5f);
+    }
+
     private void animateCamera(LatLng currentLatLngFromServer) {
         /**
          * used to animate camera to specific Latlng location
@@ -210,6 +222,24 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
         CameraPosition.Builder camera = CameraPosition.builder();
         CameraPosition cameraPosition = camera.target(currentLatLngFromServer).zoom(15.5f).build();
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+    }
+
+    public void animateCameraFirstTime(final LatLng currentLatLngFromServer) {
+        /**
+         * used to animate camera to specific Latlng location
+         */
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                CameraPosition.Builder camera = CameraPosition.builder();
+                CameraPosition cameraPosition = camera.target(currentLatLngFromServer).zoom(15.5f).build();
+                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                movingCabMarker = addCarMarkerAndGet(currentLatLngFromServer);
+                positionCar(currentLatLngFromServer);
+
+            }
+        });
+
     }
 
 
@@ -221,8 +251,6 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
         MarkerOptions markerOptions = new MarkerOptions();
         return mMap.addMarker(markerOptions.position(latlng).flat(true).icon(bitmapDescriptor));
     }
-
-
 
 
 }

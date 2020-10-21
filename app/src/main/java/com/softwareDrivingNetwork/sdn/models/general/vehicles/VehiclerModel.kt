@@ -39,9 +39,9 @@ data class VehiclerModel(
     @SerializedName("license_start")
     val licenseStart: String,
     @SerializedName("location_lat")
-    val locationLat: Any,
+    val locationLat: Double,
     @SerializedName("location_lng")
-    val locationLng: Any,
+    val locationLng: Double,
     @SerializedName("max_speed")
     val maxSpeed: Any,
     @SerializedName("plate_no")

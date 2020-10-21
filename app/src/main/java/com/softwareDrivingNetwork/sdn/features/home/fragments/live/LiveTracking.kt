@@ -5,14 +5,20 @@ import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import com.github.nkzawa.emitter.Emitter
 import com.github.nkzawa.socketio.client.Socket
 import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.sdn.aivimapandroid.map.AiviMapCreator
 import com.sdn.aivimapandroid.map.AiviMapFragment
+import com.sdn.aivimapandroid.map.TrackerData
 import com.softwareDrivingNetwork.sdn.SDNApp
 import com.softwareDrivingNetwork.sdn.common.Constants
+import com.softwareDrivingNetwork.sdn.features.home.fragments.SharedViewModel
 import com.softwareDrivingNetwork.sdn.models.User
 import com.softwareDrivingNetwork.sdn.models.login.SignInBody
 import kotlinx.android.synthetic.main.activity_main.*
@@ -23,26 +29,29 @@ import org.koin.android.ext.android.inject
 
 class LiveTracking : AiviMapFragment() {
     lateinit var mSocket: Socket
-
     lateinit var jobId: JSONObject
     val TAG = "socket"
     lateinit var userObject: JSONObject
+    lateinit var initialLatlng: LatLng
+    lateinit var unitId: String
     var listOfLatlngs = mutableListOf<LatLng>()
-
-    // var socketTracker = SocketTracker()
     private val sharedPreferences: SharedPreferences by inject()
     var gson = Gson()
+    private val model: SharedViewModel by activityViewModels()
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         userObject = createUserObject()
-
-//        var avii = AiviMapFragment.AiviMapBuilder().
-
         initializeSocket()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        model.selected.observe(viewLifecycleOwner, Observer {
+            unitId = it.id
+            initialLatlng = LatLng(it.lat, it.long)
+        })
         activity?.toolbar?.visibility = View.GONE
 
 
@@ -124,12 +133,14 @@ class LiveTracking : AiviMapFragment() {
             " onAactive ${it.get(0)}"
         )
         if (it.isNotEmpty()) {
-            jobId = it.get(0) as JSONObject
+            jobId = it[0] as JSONObject
             userObject.put("job_id", jobId.get("text"))
             val unitArray = JSONArray()
-            unitArray.put(0, "4100914721")
+            unitArray.put(0, unitId)
             userObject.put("unitList", unitArray)
             mSocket.emit(Constants.SOCKET_UPDATE, userObject)
+            animateCameraFirstTime(initialLatlng)
+
         }
 
 
@@ -141,10 +152,20 @@ class LiveTracking : AiviMapFragment() {
             val data = (it[0] as JSONObject).get("data") as JSONObject
             val latitude = data.getString("lat")
             val longtitude = data.getString("lng")
-            val LatLng = LatLng(latitude.toDouble(), longtitude.toDouble())
-            listOfLatlngs.add(LatLng)
-            showPathOfLocations(listOfLatlngs)
+            val objectId = data.getString("objectId")
+            val speed = data.getString("speed")
+            val sdnMileage = data.getString("sdn_mileage")
+            val device_mileage = data.getString("dev_mileage")
+            val date = data.getString("locTime")
+            listOfLatlngs.add(LatLng(latitude.toDouble(), longtitude.toDouble()))
+            val aiviMapCreator = AiviMapCreator.AiviMapBuilder(activity).setLatLngs(listOfLatlngs)
+                .setSpeed(speed).setDevice_mileage(device_mileage).setSDN_mileage(sdnMileage)
+                .setId(objectId)
+                .setDate(date).build()
+
+            showPathOfLocations(aiviMapCreator)
         }
     }
 
 }
+

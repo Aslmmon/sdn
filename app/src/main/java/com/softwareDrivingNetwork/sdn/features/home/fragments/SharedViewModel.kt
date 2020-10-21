@@ -10,4 +10,5 @@ class SharedViewModel : ViewModel() {
         selected.value = item
     }
 }
-data class CameraLocation(var lat:Double,var long:Double)
+
+data class CameraLocation(var lat: Double, var long: Double,var id:String)
