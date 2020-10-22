@@ -150,7 +150,7 @@ class LiveTracking : AiviMapFragment() {
             userObject.put("unitList", unitArray)
             mSocket.emit(Constants.SOCKET_UPDATE, userObject)
             val aiviMapCreator = AiviMapCreator.AiviMapBuilder(activity).setSpeed("2").build();
-            animateCameraFirstTime(initialLatlng,aiviMapCreator)
+            //animateCameraFirstTime(initialLatlng,aiviMapCreator)
 
         }
 

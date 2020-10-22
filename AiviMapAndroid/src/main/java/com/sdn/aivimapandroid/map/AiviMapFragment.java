@@ -230,7 +230,6 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
         movingCabMarker.setPosition(currentLatLngFromServer);
         movingCabMarker.setSnippet(markerInfoString);
         movingCabMarker.setAnchor(0.5f, 0.5f);
-        //markerIsClicked = true;
     }
 
     private void animateCamera(LatLng currentLatLngFromServer) {

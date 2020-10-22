@@ -6,9 +6,15 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.location.Address;
+import android.location.Geocoder;
+import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.sdn.aivimapandroid.R;
+
+import java.util.List;
+import java.util.Locale;
 
 import static java.lang.Math.abs;
 import static java.lang.Math.atan;
@@ -47,5 +53,32 @@ public class AiviUtils {
             rotation = (float) (90 - Math.toDegrees(atan(lngDifference / latDifference)) + 270);
         }
         return rotation;
+    }
+
+    public static String splitDate(String word, String character) {
+        String[] words = word.split(character);
+        String[] word2 = words[1].split("\\.");
+        return words[0] + " " + word2[0];
+    }
+
+    public static String getCompleteAddressString(Context context, double LATITUDE, double LONGITUDE) {
+        String strAdd = "";
+        Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+        try {
+            List<Address> addresses = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1);
+            if (addresses != null) {
+                Address returnedAddress = addresses.get(0);
+                StringBuilder strReturnedAddress = new StringBuilder("");
+                for (int i = 0; i <= returnedAddress.getMaxAddressLineIndex(); i++) {
+                    strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
+                }
+                strAdd = strReturnedAddress.toString();
+            } else {
+                Log.i("address","address not found");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return strAdd;
     }
 }

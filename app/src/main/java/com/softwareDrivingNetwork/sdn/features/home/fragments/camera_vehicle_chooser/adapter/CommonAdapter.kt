@@ -43,13 +43,16 @@ class CommonAdapter(private val interaction: Interaction) :
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is VehiclesViewModel -> {
-                holder.bind(differ.currentList[position],lastCheckedPosition)
-                holder.itemView.checkbox_camera.setOnClickListener {
-                    val copyOfLastCheckedPosition = lastCheckedPosition
-                    lastCheckedPosition = position
-                    notifyItemChanged(copyOfLastCheckedPosition)
+                holder.itemView.isSelected = lastCheckedPosition == position
+
+                holder.itemView.setOnClickListener {
                     notifyItemChanged(lastCheckedPosition)
+                    lastCheckedPosition = holder.layoutPosition
+                    notifyItemChanged(lastCheckedPosition)
+                    lastCheckedPosition = position
                 }
+                holder.bind(differ.currentList[position], lastCheckedPosition)
+
 
             }
         }
@@ -82,14 +85,11 @@ class CommonAdapter(private val interaction: Interaction) :
             item: CommonModel,
             lastCheckedPosition: Int
         ) = with(itemView) {
-            itemView.setOnClickListener {
-                interaction?.onItemSelected(adapterPosition, item)
-            }
 
             itemView.checkbox_camera.isChecked = position == lastCheckedPosition;
 
             itemView.checkbox_camera.setOnCheckedChangeListener { buttonView, isChecked ->
-                interaction?.onItemSelected(position = adapterPosition, item = item)
+                if (isChecked) interaction?.onItemSelected(position = adapterPosition, item = item)
             }
             itemView.checkbox_camera.text = item.name
 
