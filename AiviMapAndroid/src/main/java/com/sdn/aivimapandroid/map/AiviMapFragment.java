@@ -23,6 +23,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.gson.Gson;
 import com.sdn.aivimapandroid.R;
 import com.sdn.aivimapandroid.map.custom.CustomWindowMarker;
 
@@ -70,8 +71,20 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        this.mMap = googleMap;
+        if (mMap == null) {
+            this.mMap = googleMap;
+        }
         this.mMap.setInfoWindowAdapter(new CustomWindowMarker(requireActivity()));
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                if (marker.isInfoWindowShown()){
+                    marker.hideInfoWindow();
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
 
@@ -83,23 +96,25 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
      */
     public void showPathOfLocations(final AiviMapCreator aiviMapCreator) {
         final List<LatLng> list = aiviMapCreator.getListLocation();
-        Log.i("car", aiviMapCreator.toString());
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
+
                 animateCameraToSpecificLatLngBounds(list);
                 drawPolylinePoints(list);
 
                 originMarker = addOriginDestinationMarkerAndGet(new LatLng(list.get(0).latitude, list.get(0).longitude));
                 originMarker.setAnchor(0.5f, 0.5f);
-                originMarker.setTitle(aiviMapCreator.getId());
 
+                Gson gson = new Gson();
+                String markerInfoString = gson.toJson(aiviMapCreator);
+                Log.i("avii", markerInfoString);
 
 
                 //  showPolylineAnimation();
 
                 for (int i = 0; i < list.size(); i++)
-                    updateCarLocation(new LatLng(list.get(i).latitude, list.get(i).longitude));
+                    updateCarLocation(new LatLng(list.get(i).latitude, list.get(i).longitude), markerInfoString);
             }
         });
 
@@ -163,11 +178,12 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
         MarkerOptions markerOptions = new MarkerOptions();
         return mMap.addMarker(
                 markerOptions.position(latlng).flat(true).icon(bitmapDescriptor)
+
         );
     }
 
 
-    private void updateCarLocation(LatLng latlng) {
+    private void updateCarLocation(LatLng latlng, final String markerInfoString) {
         /**
          * This function is used to update car location
          * and swap  the latlngs of previous and current ..
@@ -181,7 +197,7 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
         if (previousLatLngFromServer == null) {
             currentLatLngFromServer = latlng;
             previousLatLngFromServer = currentLatLngFromServer;
-            positionCar(currentLatLngFromServer);
+            positionCar(currentLatLngFromServer, markerInfoString);
             animateCamera(currentLatLngFromServer);
         } else {
             previousLatLngFromServer = currentLatLngFromServer;
@@ -196,7 +212,7 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
                                 multiplier * currentLatLngFromServer.latitude + (1 - multiplier) * previousLatLngFromServer.latitude,
                                 multiplier * currentLatLngFromServer.longitude + (1 - multiplier) * previousLatLngFromServer.longitude
                         );
-                        positionCar(nextLocation);
+                        positionCar(nextLocation, markerInfoString);
                         float rotation = AiviUtils.getRotation(previousLatLngFromServer, nextLocation);
                         if (!Double.isNaN(rotation)) {
                             movingCabMarker.setRotation(rotation);
@@ -210,9 +226,11 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
-    private void positionCar(LatLng currentLatLngFromServer) {
+    private void positionCar(LatLng currentLatLngFromServer, String markerInfoString) {
         movingCabMarker.setPosition(currentLatLngFromServer);
+        movingCabMarker.setSnippet(markerInfoString);
         movingCabMarker.setAnchor(0.5f, 0.5f);
+        //markerIsClicked = true;
     }
 
     private void animateCamera(LatLng currentLatLngFromServer) {
@@ -222,9 +240,10 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
         CameraPosition.Builder camera = CameraPosition.builder();
         CameraPosition cameraPosition = camera.target(currentLatLngFromServer).zoom(15.5f).build();
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
     }
 
-    public void animateCameraFirstTime(final LatLng currentLatLngFromServer) {
+    public void animateCameraFirstTime(final LatLng currentLatLngFromServer, final AiviMapCreator aiviMapCreator) {
         /**
          * used to animate camera to specific Latlng location
          */
@@ -235,7 +254,9 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
                 CameraPosition cameraPosition = camera.target(currentLatLngFromServer).zoom(15.5f).build();
                 mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                 movingCabMarker = addCarMarkerAndGet(currentLatLngFromServer);
-                positionCar(currentLatLngFromServer);
+                Gson gson = new Gson();
+                String markerInfoString = gson.toJson(aiviMapCreator);
+                positionCar(currentLatLngFromServer,markerInfoString);
 
             }
         });

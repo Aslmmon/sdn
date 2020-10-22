@@ -9,14 +9,22 @@ import java.util.List;
 
 public class AiviMapCreator {
     private final List<LatLng> listLocation;
-    private String speed;
-    private String snd_mileage;
-    private String device_mileage;
-    private String id;
-    private String date;
+    private final String speed;
+    private final String snd_mileage;
+    private final String device_mileage;
+    private String id = "124";
+    private final String date;
+    private final LatLng specificLatLng;
 
     private AiviMapCreator(AiviMapBuilder builder) {
         this.listLocation = builder.listneeded;
+        this.speed = builder.speed;
+        this.snd_mileage = builder.snd_mileage;
+        this.device_mileage = builder.device_mileage;
+        this.id = builder.id;
+        this.date = builder.date;
+        this.specificLatLng = builder.specificLatLng;
+
 
     }
 
@@ -44,13 +52,17 @@ public class AiviMapCreator {
         return device_mileage;
     }
 
-    public static class AiviMapBuilder {
-        private String speed;
-        private String snd_mileage;
-        private String device_mileage;
-        private String id;
-        private String date;
+    public LatLng getSpecificLatLng() {
+        return specificLatLng;
+    }
 
+    public static class AiviMapBuilder {
+        private String snd_mileage="0";
+        private String device_mileage ="";
+        private String id ="0";
+        private String date="";
+        private String speed="0";
+        private LatLng specificLatLng= new LatLng(0.2,0.0);
 
         private Context context;
         private List<LatLng> listneeded;
@@ -60,13 +72,44 @@ public class AiviMapCreator {
             this.context = context;
         }
 
-        public AiviMapBuilder(int colorRoute, List<LatLng> listneeded) {
-            this.listneeded = listneeded;
+
+        public AiviMapBuilder setLatLngs(List<LatLng> lists) {
+
+            this.listneeded = lists;
+            return this;
+        }
+
+        public AiviMapBuilder setSpecificLatLng(LatLng specificLatLng) {
+            this.specificLatLng = specificLatLng;
+            return this;
+        }
+
+        public AiviMapBuilder setSpeed(String speed) {
+            if(speed != null) this.speed = speed;
+            return this;
         }
 
 
-        public AiviMapBuilder setLatLngs(List<LatLng> lists) {
-            this.listneeded = lists;
+        public AiviMapBuilder setSDN_mileage(String snd_mileage) {
+            this.snd_mileage = snd_mileage;
+            return this;
+        }
+
+
+        public AiviMapBuilder setDevice_mileage(String device_mileage) {
+            this.device_mileage = device_mileage;
+            return this;
+        }
+
+
+        public AiviMapBuilder setId(String id) {
+            this.id = id;
+            return this;
+        }
+
+
+        public AiviMapBuilder setDate(String date) {
+            this.date = date;
             return this;
         }
 
@@ -80,49 +123,6 @@ public class AiviMapCreator {
         private void validateUserObject(AiviMapCreator aiviMapCreator) {
         }
 
-        public String getSpeed() {
-            return speed;
-        }
 
-        public AiviMapBuilder setSpeed(String speed) {
-            this.speed = speed;
-            return this;
-        }
-
-        public String getSDNd_mileage() {
-            return snd_mileage;
-        }
-
-        public AiviMapBuilder setSDN_mileage(String snd_mileage) {
-            this.snd_mileage = snd_mileage;
-            return this;
-        }
-
-        public String getDevice_mileage() {
-            return device_mileage;
-        }
-
-        public AiviMapBuilder setDevice_mileage(String device_mileage) {
-            this.device_mileage = device_mileage;
-            return this;
-        }
-
-        public String getId() {
-            return id;
-        }
-
-        public AiviMapBuilder setId(String id) {
-            this.id = id;
-            return this;
-        }
-
-        public String getDate() {
-            return date;
-        }
-
-        public AiviMapBuilder setDate(String date) {
-            this.date = date;
-            return this;
-        }
     }
 }

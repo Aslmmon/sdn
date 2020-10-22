@@ -1,11 +1,11 @@
 package com.softwareDrivingNetwork.sdn.features.home.fragments.live
 
 import android.content.SharedPreferences
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.Toast
+import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.github.nkzawa.emitter.Emitter
@@ -15,7 +15,6 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.sdn.aivimapandroid.map.AiviMapCreator
 import com.sdn.aivimapandroid.map.AiviMapFragment
-import com.sdn.aivimapandroid.map.TrackerData
 import com.softwareDrivingNetwork.sdn.SDNApp
 import com.softwareDrivingNetwork.sdn.common.Constants
 import com.softwareDrivingNetwork.sdn.features.home.fragments.SharedViewModel
@@ -32,8 +31,8 @@ class LiveTracking : AiviMapFragment() {
     lateinit var jobId: JSONObject
     val TAG = "socket"
     lateinit var userObject: JSONObject
-    lateinit var initialLatlng: LatLng
-    lateinit var unitId: String
+    var initialLatlng: LatLng? = null
+    var unitId: String? = null
     var listOfLatlngs = mutableListOf<LatLng>()
     private val sharedPreferences: SharedPreferences by inject()
     var gson = Gson()
@@ -43,16 +42,27 @@ class LiveTracking : AiviMapFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         userObject = createUserObject()
-        initializeSocket()
+
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        model.selected.observe(viewLifecycleOwner, Observer {
+            unitId = it.id
+            Log.i("data", unitId!!)
+            initialLatlng = LatLng(it.lat, it.long)
+        })
+
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        model.selected.observe(viewLifecycleOwner, Observer {
-            unitId = it.id
-            initialLatlng = LatLng(it.lat, it.long)
-        })
         activity?.toolbar?.visibility = View.GONE
+        initializeSocket()
 
 
     }
@@ -136,10 +146,11 @@ class LiveTracking : AiviMapFragment() {
             jobId = it[0] as JSONObject
             userObject.put("job_id", jobId.get("text"))
             val unitArray = JSONArray()
-            unitArray.put(0, unitId)
+            unitArray.put(0, "2091023479")
             userObject.put("unitList", unitArray)
             mSocket.emit(Constants.SOCKET_UPDATE, userObject)
-            animateCameraFirstTime(initialLatlng)
+            val aiviMapCreator = AiviMapCreator.AiviMapBuilder(activity).setSpeed("2").build();
+            animateCameraFirstTime(initialLatlng,aiviMapCreator)
 
         }
 
@@ -153,15 +164,21 @@ class LiveTracking : AiviMapFragment() {
             val latitude = data.getString("lat")
             val longtitude = data.getString("lng")
             val objectId = data.getString("objectId")
-            val speed = data.getString("speed")
+            val speedData = data.getString("speed")
             val sdnMileage = data.getString("sdn_mileage")
             val device_mileage = data.getString("dev_mileage")
             val date = data.getString("locTime")
             listOfLatlngs.add(LatLng(latitude.toDouble(), longtitude.toDouble()))
+
             val aiviMapCreator = AiviMapCreator.AiviMapBuilder(activity).setLatLngs(listOfLatlngs)
-                .setSpeed(speed).setDevice_mileage(device_mileage).setSDN_mileage(sdnMileage)
+                .setSpecificLatLng(LatLng(latitude.toDouble(), longtitude.toDouble()))
+                .setSpeed(speedData).setDevice_mileage(device_mileage).setSDN_mileage(sdnMileage)
                 .setId(objectId)
                 .setDate(date).build()
+
+            Log.i("car", aiviMapCreator.speed.toString())
+
+
 
             showPathOfLocations(aiviMapCreator)
         }
