@@ -10,6 +10,8 @@ class GeneralRepo(var generalApis:GeneralApis) {
 
     suspend fun getCameraList(signInBody: String) = generalApis.getCameraList(signInBody)
 
+    suspend fun getGroups(signInBody: String) = generalApis.getGroups(signInBody)
+
 
     suspend fun getDrivers(signInBody: String) = generalApis.getDriversList(signInBody)
 

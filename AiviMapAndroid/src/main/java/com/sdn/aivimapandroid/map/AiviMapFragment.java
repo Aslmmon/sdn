@@ -56,19 +56,19 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
     private LatLng currentLatLngFromServer;
     private Polyline startPolyline;
     private Polyline endPolyline;
-    private TextView title;
-    private TextView speed;
-    private TextView date;
-    private TextView location;
+//    private TextView title;
+//    private TextView speed;
+//    private TextView date;
+//    private TextView location;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, null, false);
-        title = view.findViewById(R.id.tv_name);
-        speed = view.findViewById(R.id.tv_speed);
-        date = view.findViewById(R.id.tv_date);
-        location = view.findViewById(R.id.tv_location);
+//        title = view.findViewById(R.id.tv_name);
+//        speed = view.findViewById(R.id.tv_speed);
+//        date = view.findViewById(R.id.tv_date);
+//        location = view.findViewById(R.id.tv_location);
 
         SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.map);
         if (mapFragment != null) {
@@ -119,11 +119,6 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
                 Gson gson = new Gson();
                 String markerInfoString = gson.toJson(aiviMapCreator);
                 Log.i("avii", markerInfoString);
-//                title.setText("Name : " + aiviMapCreator.getId());
-//                speed.setText("Speed: " + aiviMapCreator.getSpeed() + " Km/h");
-//                date.setText("Date : " +  AiviUtils.splitDate(aiviMapCreator.getDate().toString(), "T"));
-//                location.setText("Location : " + AiviUtils.getCompleteAddressString(getActivity(), aiviMapCreator.getSpecificLatLng().latitude, aiviMapCreator.getSpecificLatLng().longitude));
-
                 //  showPolylineAnimation();
 
                 for (int i = 0; i < list.size(); i++)

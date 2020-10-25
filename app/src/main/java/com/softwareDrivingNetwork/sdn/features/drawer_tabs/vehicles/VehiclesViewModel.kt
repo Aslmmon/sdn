@@ -9,6 +9,7 @@ import com.softwareDrivingNetwork.sdn.core.repo.GeneralRepo
 import com.softwareDrivingNetwork.sdn.core.repo.LoginRepo
 import com.softwareDrivingNetwork.sdn.models.general.cameras.CameraListResponse
 import com.softwareDrivingNetwork.sdn.models.general.drivers.DriversListReponse
+import com.softwareDrivingNetwork.sdn.models.general.groups.GroupsResponse
 import com.softwareDrivingNetwork.sdn.models.general.notification.NotificationResponse
 import com.softwareDrivingNetwork.sdn.models.general.vehicles.VehiclesListResponse
 import com.softwareDrivingNetwork.sdn.models.login.SignInBody
@@ -26,6 +27,10 @@ class VehiclesViewModel(var generalRepo: GeneralRepo) : ViewModel() {
 
     private val _camerasResponse = MutableLiveData<CameraListResponse>()
     val camerasResponse: LiveData<CameraListResponse> = _camerasResponse
+
+    private val _groupsResponse = MutableLiveData<GroupsResponse>()
+    val groupsResponse: LiveData<GroupsResponse> = _groupsResponse
+
 
     private val _driversResponse = MutableLiveData<DriversListReponse>()
     val driversResponse: LiveData<DriversListReponse> = _driversResponse
@@ -51,6 +56,17 @@ class VehiclesViewModel(var generalRepo: GeneralRepo) : ViewModel() {
             val result = generalRepo.getCameraList(user)
             if (result.type != "error") {
                 _camerasResponse.value = result
+            } else _errorResponse.value = result.text
+        }, errorReturned = {
+            _errorResponse.value = it.message
+        })
+    }
+
+    fun getGroups(user: String) {
+        launchDataLoad(execution = {
+            val result = generalRepo.getGroups(user)
+            if (result.type != "error") {
+                _groupsResponse.value = result
             } else _errorResponse.value = result.text
         }, errorReturned = {
             _errorResponse.value = it.message

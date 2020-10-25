@@ -2,9 +2,7 @@ package com.softwareDrivingNetwork.sdn.features.home.fragments.camera_vehicle_ch
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
@@ -17,8 +15,10 @@ import com.softwareDrivingNetwork.sdn.features.drawer_tabs.vehicles.VehiclesView
 import com.softwareDrivingNetwork.sdn.features.home.fragments.CameraLocation
 import com.softwareDrivingNetwork.sdn.features.home.fragments.SharedViewModel
 import com.softwareDrivingNetwork.sdn.features.home.fragments.camera_vehicle_chooser.adapter.CommonAdapter
+import com.softwareDrivingNetwork.sdn.features.home.fragments.camera_vehicle_chooser.adapter.GroupsSpinnerAdapter
 import com.softwareDrivingNetwork.sdn.models.general.common.CommonModel
 import com.softwareDrivingNetwork.sdn.models.general.common.VehiclesData
+import com.softwareDrivingNetwork.sdn.models.general.groups.GroupsData
 import kotlinx.android.synthetic.main.fragment_camera_vehicle_chooser.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -27,6 +27,8 @@ class CameraVehicleChooser : BaseFragment(),
 
     lateinit var commonAdapter: CommonAdapter
     lateinit var cameraLocation: CameraLocation
+    lateinit var groupsSpinnerAdapter: GroupsSpinnerAdapter
+    var CommonList = mutableListOf<CommonModel>()
     private val vehiclesViewModel: VehiclesViewModel by viewModel()
     private val model: SharedViewModel by activityViewModels()
 
@@ -36,6 +38,14 @@ class CameraVehicleChooser : BaseFragment(),
         showToolbar()
         initializeAdapter()
         initializeSpinner()
+        vehiclesViewModel.getGroups(getStringifiedData()!!)
+        vehiclesViewModel.groupsResponse.observe(viewLifecycleOwner, Observer {
+            groupsSpinnerAdapter = GroupsSpinnerAdapter(requireActivity(), it.data)
+            spinner_groups.adapter = groupsSpinnerAdapter
+
+        })
+
+
         vehiclesViewModel.camerasResponse.observe(viewLifecycleOwner, Observer {
             val newData = it.data.map { data ->
                 CommonModel(
@@ -46,8 +56,9 @@ class CameraVehicleChooser : BaseFragment(),
             submitListData(newData)
         })
         vehiclesViewModel.errorResponse.observe(viewLifecycleOwner, Observer {
+            if (it == "no data found") submitListData(mutableListOf())
             dismissProgressDialog()
-            Toast.makeText(activity, it, Toast.LENGTH_SHORT).show()
+            //  Toast.makeText(activity, it, Toast.LENGTH_SHORT).show()
         })
         vehiclesViewModel.vehiclesResponse.observe(viewLifecycleOwner, Observer {
             val newData = it.data.map { data ->
@@ -76,6 +87,19 @@ class CameraVehicleChooser : BaseFragment(),
         }
 
 
+        spinner_groups.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, p3: Long) {
+                val itemClicked = parent?.getItemAtPosition(position) as GroupsData
+                //CommonList.filter { it -> it.vehicleData == itemClicked.group_name }
+            }
+
+        }
+
+
     }
 
     override fun onResume() {
@@ -84,9 +108,24 @@ class CameraVehicleChooser : BaseFragment(),
     }
 
     private fun submitListData(it: List<CommonModel>) {
-        dismissProgressDialog()
+        CommonList.addAll(it)
+        if (it.isEmpty()) showEmptyLayout()
+        else {
+            dismissEmptyLayout()
+            dismissProgressDialog()
+            commonAdapter.submitList(CommonList)
+        }
         commonAdapter.notifyDataSetChanged()
-        commonAdapter.submitList(it)
+    }
+
+    private fun dismissEmptyLayout() {
+        group_empty.visibility = View.GONE
+        rv_cameras_list.visibility = View.VISIBLE
+    }
+
+    private fun showEmptyLayout() {
+        group_empty.visibility = View.VISIBLE
+        rv_cameras_list.visibility = View.GONE
     }
 
 
@@ -104,20 +143,6 @@ class CameraVehicleChooser : BaseFragment(),
         spinner_cameras.onItemSelectedListener = this
 
 
-        activity?.let {
-            ArrayAdapter.createFromResource(
-                it,
-                R.array.groups_array,
-                android.R.layout.simple_spinner_item
-            ).also { adapter ->
-                // Specify the layout to use when the list of choices appears
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                // Apply the adapter to the spinner
-                spinner_groups.adapter = adapter
-            }
-        }
-
-
     }
 
     private fun getCameraLists() {
@@ -127,9 +152,7 @@ class CameraVehicleChooser : BaseFragment(),
     }
 
     private fun getVehicles() {
-        //showProgress()
         Log.i("data", "vehicle")
-
         vehiclesViewModel.getVehiclersList(getStringifiedData()!!)
     }
 

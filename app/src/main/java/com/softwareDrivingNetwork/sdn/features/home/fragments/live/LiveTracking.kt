@@ -60,7 +60,6 @@ class LiveTracking : AiviMapFragment() {
     }
 
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity?.toolbar?.visibility = View.GONE
@@ -151,8 +150,9 @@ class LiveTracking : AiviMapFragment() {
             unitArray.put(0, unitId)
             userObject.put("unitList", unitArray)
             mSocket.emit(Constants.SOCKET_UPDATE, userObject)
-            val aiviMapCreator = AiviMapCreator.AiviMapBuilder(activity).setSpecificLatLng(initialLatlng).build();
-            animateCameraFirstTime(initialLatlng,aiviMapCreator)
+            val aiviMapCreator =
+                AiviMapCreator.AiviMapBuilder(activity).setSpecificLatLng(initialLatlng).build();
+            animateCameraFirstTime(initialLatlng, aiviMapCreator)
 
         }
 
@@ -172,15 +172,13 @@ class LiveTracking : AiviMapFragment() {
             val date = data.getString("locTime")
             listOfLatlngs.add(LatLng(latitude.toDouble(), longtitude.toDouble()))
 
-            val aiviMapCreator = AiviMapCreator.AiviMapBuilder(activity).setLatLngs(listOfLatlngs.distinct())
-                .setSpecificLatLng(LatLng(latitude.toDouble(), longtitude.toDouble()))
-                .setSpeed(speedData).setDevice_mileage(device_mileage).setSDN_mileage(sdnMileage)
-                .setId(objectId)
-                .setDate(date).build()
-
-            Log.i("car", aiviMapCreator.speed.toString())
-
-
+            val aiviMapCreator =
+                AiviMapCreator.AiviMapBuilder(activity).setLatLngs(listOfLatlngs.distinct())
+                    .setSpecificLatLng(LatLng(latitude.toDouble(), longtitude.toDouble()))
+                    .setSpeed(speedData).setDevice_mileage(device_mileage)
+                    .setSDN_mileage(sdnMileage)
+                    .setId(objectId)
+                    .setDate(date).build()
 
             showPathOfLocations(aiviMapCreator)
         }
