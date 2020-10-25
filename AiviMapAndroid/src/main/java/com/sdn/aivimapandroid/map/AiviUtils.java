@@ -66,8 +66,9 @@ public class AiviUtils {
         Geocoder geocoder = new Geocoder(context, Locale.getDefault());
         try {
             List<Address> addresses = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1);
-            if (addresses != null) {
+            if (addresses != null && addresses.size() > 0) {
                 Address returnedAddress = addresses.get(0);
+
                 StringBuilder strReturnedAddress = new StringBuilder("");
                 for (int i = 0; i <= returnedAddress.getMaxAddressLineIndex(); i++) {
                     strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");

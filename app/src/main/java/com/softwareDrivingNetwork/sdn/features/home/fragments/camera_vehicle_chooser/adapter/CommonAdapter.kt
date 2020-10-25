@@ -10,7 +10,9 @@ import com.softwareDrivingNetwork.sdn.R
 import com.softwareDrivingNetwork.sdn.models.general.common.CommonModel
 import kotlinx.android.synthetic.main.camera_item_chooser_layout.view.*
 
-class CommonAdapter(private val interaction: Interaction) :
+class CommonAdapter(
+    private val interaction: Interaction?=null, val clickListener: (CommonModel) -> Unit
+) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var lastCheckedPosition = -1
@@ -43,15 +45,16 @@ class CommonAdapter(private val interaction: Interaction) :
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is VehiclesViewModel -> {
-                holder.itemView.isSelected = lastCheckedPosition == position
 
-                holder.itemView.setOnClickListener {
+                holder.itemView.checkbox_camera.setOnClickListener {
+                    clickListener(differ.currentList[position])
                     notifyItemChanged(lastCheckedPosition)
                     lastCheckedPosition = holder.layoutPosition
                     notifyItemChanged(lastCheckedPosition)
-                    lastCheckedPosition = position
                 }
-                holder.bind(differ.currentList[position], lastCheckedPosition)
+
+
+                holder.bind(differ.currentList[position], lastCheckedPosition, position)
 
 
             }
@@ -67,13 +70,6 @@ class CommonAdapter(private val interaction: Interaction) :
         differ.submitList(list)
     }
 
-    fun addItems(list: List<CommonModel>) {
-
-        val newList = mutableListOf<CommonModel>()
-        newList.addAll(differ.currentList)
-        newList.addAll(list)
-        differ.submitList(newList)
-    }
 
     class VehiclesViewModel
     constructor(
@@ -83,14 +79,17 @@ class CommonAdapter(private val interaction: Interaction) :
 
         fun bind(
             item: CommonModel,
-            lastCheckedPosition: Int
+            lastCheckedPosition: Int,
+            position: Int
         ) = with(itemView) {
 
-            itemView.checkbox_camera.isChecked = position == lastCheckedPosition;
+            itemView.isSelected = lastCheckedPosition == position
 
-            itemView.checkbox_camera.setOnCheckedChangeListener { buttonView, isChecked ->
-                if (isChecked) interaction?.onItemSelected(position = adapterPosition, item = item)
-            }
+            itemView.checkbox_camera.isChecked = lastCheckedPosition == position
+
+//            itemView.checkbox_camera.setOnCheckedChangeListener { buttonView, isChecked ->
+//                if (isChecked) interaction?.onItemSelected(position = adapterPosition, item = item)
+//            }
             itemView.checkbox_camera.text = item.name
 
 

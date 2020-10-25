@@ -53,11 +53,13 @@ class LiveTracking : AiviMapFragment() {
         model.selected.observe(viewLifecycleOwner, Observer {
             unitId = it.id
             Log.i("data", unitId!!)
-            initialLatlng = LatLng(it.lat, it.long)
+            initialLatlng = LatLng(it.lat!!, it.long!!)
         })
 
         return super.onCreateView(inflater, container, savedInstanceState)
     }
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -146,11 +148,11 @@ class LiveTracking : AiviMapFragment() {
             jobId = it[0] as JSONObject
             userObject.put("job_id", jobId.get("text"))
             val unitArray = JSONArray()
-            unitArray.put(0, "2091023479")
+            unitArray.put(0, unitId)
             userObject.put("unitList", unitArray)
             mSocket.emit(Constants.SOCKET_UPDATE, userObject)
-            val aiviMapCreator = AiviMapCreator.AiviMapBuilder(activity).setSpeed("2").build();
-            //animateCameraFirstTime(initialLatlng,aiviMapCreator)
+            val aiviMapCreator = AiviMapCreator.AiviMapBuilder(activity).setSpecificLatLng(initialLatlng).build();
+            animateCameraFirstTime(initialLatlng,aiviMapCreator)
 
         }
 
@@ -170,7 +172,7 @@ class LiveTracking : AiviMapFragment() {
             val date = data.getString("locTime")
             listOfLatlngs.add(LatLng(latitude.toDouble(), longtitude.toDouble()))
 
-            val aiviMapCreator = AiviMapCreator.AiviMapBuilder(activity).setLatLngs(listOfLatlngs)
+            val aiviMapCreator = AiviMapCreator.AiviMapBuilder(activity).setLatLngs(listOfLatlngs.distinct())
                 .setSpecificLatLng(LatLng(latitude.toDouble(), longtitude.toDouble()))
                 .setSpeed(speedData).setDevice_mileage(device_mileage).setSDN_mileage(sdnMileage)
                 .setId(objectId)

@@ -1,12 +1,14 @@
 package com.sdn.aivimapandroid.map;
 
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
@@ -54,12 +56,19 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
     private LatLng currentLatLngFromServer;
     private Polyline startPolyline;
     private Polyline endPolyline;
-
+    private TextView title;
+    private TextView speed;
+    private TextView date;
+    private TextView location;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, null, false);
+        title = view.findViewById(R.id.tv_name);
+        speed = view.findViewById(R.id.tv_speed);
+        date = view.findViewById(R.id.tv_date);
+        location = view.findViewById(R.id.tv_location);
 
         SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.map);
         if (mapFragment != null) {
@@ -78,7 +87,7 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                if (marker.isInfoWindowShown()){
+                if (marker.isInfoWindowShown()) {
                     marker.hideInfoWindow();
                     return true;
                 }
@@ -97,6 +106,7 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
     public void showPathOfLocations(final AiviMapCreator aiviMapCreator) {
         final List<LatLng> list = aiviMapCreator.getListLocation();
         getActivity().runOnUiThread(new Runnable() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void run() {
 
@@ -109,7 +119,10 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
                 Gson gson = new Gson();
                 String markerInfoString = gson.toJson(aiviMapCreator);
                 Log.i("avii", markerInfoString);
-
+//                title.setText("Name : " + aiviMapCreator.getId());
+//                speed.setText("Speed: " + aiviMapCreator.getSpeed() + " Km/h");
+//                date.setText("Date : " +  AiviUtils.splitDate(aiviMapCreator.getDate().toString(), "T"));
+//                location.setText("Location : " + AiviUtils.getCompleteAddressString(getActivity(), aiviMapCreator.getSpecificLatLng().latitude, aiviMapCreator.getSpecificLatLng().longitude));
 
                 //  showPolylineAnimation();
 
@@ -255,7 +268,7 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
                 movingCabMarker = addCarMarkerAndGet(currentLatLngFromServer);
                 Gson gson = new Gson();
                 String markerInfoString = gson.toJson(aiviMapCreator);
-                positionCar(currentLatLngFromServer,markerInfoString);
+                positionCar(currentLatLngFromServer, markerInfoString);
 
             }
         });

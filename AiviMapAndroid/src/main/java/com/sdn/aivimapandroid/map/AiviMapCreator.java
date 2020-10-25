@@ -57,11 +57,11 @@ public class AiviMapCreator {
     }
 
     public static class AiviMapBuilder {
-        private String snd_mileage="0";
+        private String snd_mileage="";
         private String device_mileage ="";
-        private String id ="0";
+        private String id ="";
         private String date="";
-        private String speed="0";
+        private String speed="";
         private LatLng specificLatLng= new LatLng(0.2,0.0);
 
         private Context context;

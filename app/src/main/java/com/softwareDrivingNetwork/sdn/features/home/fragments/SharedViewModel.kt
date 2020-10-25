@@ -11,4 +11,4 @@ class SharedViewModel : ViewModel() {
     }
 }
 
-data class CameraLocation(var lat: Double, var long: Double,var id:String)
+data class CameraLocation(var lat: Double?=null, var long: Double?=null,var id:String?=null)

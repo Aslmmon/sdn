@@ -42,19 +42,20 @@ public class CustomWindowMarker implements GoogleMap.InfoWindowAdapter {
         TextView date = view.findViewById(R.id.tv_date);
         TextView location = view.findViewById(R.id.tv_location);
         Gson gson = new Gson();
-        AiviMapCreator aiviMapCreator = gson.fromJson(marker.getSnippet(), AiviMapCreator.class);
-
-
-
-        if (!aiviMapCreator.getSpeed().isEmpty())
-        speed.setText("Speed : " + aiviMapCreator.getSpeed());
-        if (!aiviMapCreator.getId().toString().equals(""))
-            name.setText( "Name : " + aiviMapCreator.getId().toString());
-        if (!aiviMapCreator.getDate().isEmpty())
-            date.setText("Date :" + AiviUtils.splitDate(aiviMapCreator.getDate().toString(), "T"));
-        if (!String.valueOf(aiviMapCreator.getSpecificLatLng()).isEmpty()) {
-            String address = "Location:" + AiviUtils.getCompleteAddressString(context, aiviMapCreator.getSpecificLatLng().latitude, aiviMapCreator.getSpecificLatLng().longitude);
-            location.setText(address.toString());
+        if (marker != null) {
+            if (marker.getSnippet() != null) {
+                AiviMapCreator aiviMapCreator = gson.fromJson(marker.getSnippet(), AiviMapCreator.class);
+                if (!aiviMapCreator.getSpeed().isEmpty())
+                    speed.setText("Speed : " + aiviMapCreator.getSpeed()  + " Km/hr ");
+                if (!aiviMapCreator.getId().toString().equals(""))
+                    name.setText("Name : " + aiviMapCreator.getId().toString());
+                if (!aiviMapCreator.getDate().isEmpty())
+                    date.setText("Date :" + AiviUtils.splitDate(aiviMapCreator.getDate().toString(), "T"));
+                if (!String.valueOf(aiviMapCreator.getSpecificLatLng()).isEmpty()) {
+                    String address = "Location:" + AiviUtils.getCompleteAddressString(context, aiviMapCreator.getSpecificLatLng().latitude, aiviMapCreator.getSpecificLatLng().longitude);
+                    location.setText(address.toString());
+                }
+            }
         }
     }
 

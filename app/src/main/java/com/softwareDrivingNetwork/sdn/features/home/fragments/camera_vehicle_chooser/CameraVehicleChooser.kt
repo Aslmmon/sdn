@@ -22,12 +22,11 @@ import com.softwareDrivingNetwork.sdn.models.general.common.VehiclesData
 import kotlinx.android.synthetic.main.fragment_camera_vehicle_chooser.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
-
-class CameraVehicleChooser : BaseFragment(), CommonAdapter.Interaction,
+class CameraVehicleChooser : BaseFragment(),
     AdapterView.OnItemSelectedListener {
 
     lateinit var commonAdapter: CommonAdapter
-
+    lateinit var cameraLocation: CameraLocation
     private val vehiclesViewModel: VehiclesViewModel by viewModel()
     private val model: SharedViewModel by activityViewModels()
 
@@ -67,21 +66,27 @@ class CameraVehicleChooser : BaseFragment(), CommonAdapter.Interaction,
                 )
             }
             submitListData(newData)
-
         })
 
 
         btn_submit.setOnClickListener {
-            findNavController().navigate(R.id.goToLiveTrack)
+            if (cameraLocation.lat != null) findNavController().navigate(R.id.goToLiveTrack)
+            else Toast.makeText(activity, "choose Camera or Vehicle Please", Toast.LENGTH_SHORT)
+                .show()
         }
 
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        cameraLocation = CameraLocation()
+    }
+
     private fun submitListData(it: List<CommonModel>) {
         dismissProgressDialog()
-        commonAdapter.submitList(it)
         commonAdapter.notifyDataSetChanged()
+        commonAdapter.submitList(it)
     }
 
 
@@ -116,15 +121,24 @@ class CameraVehicleChooser : BaseFragment(), CommonAdapter.Interaction,
     }
 
     private fun getCameraLists() {
+        showProgress()
+        Log.i("data", "camera")
         vehiclesViewModel.getCameraList(getStringifiedData()!!)
     }
 
     private fun getVehicles() {
+        //showProgress()
+        Log.i("data", "vehicle")
+
         vehiclesViewModel.getVehiclersList(getStringifiedData()!!)
     }
 
     private fun initializeAdapter() {
-        commonAdapter = CommonAdapter(this)
+        commonAdapter = CommonAdapter(clickListener = { item ->
+            cameraLocation = CameraLocation(long = item.long, lat = item.lat, id = item.id)
+            Toast.makeText(activity, cameraLocation.lat.toString(), Toast.LENGTH_SHORT).show()
+            model.select(cameraLocation)
+        })
         rv_cameras_list.apply {
             adapter = commonAdapter
         }
@@ -135,7 +149,6 @@ class CameraVehicleChooser : BaseFragment(), CommonAdapter.Interaction,
 
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
-        dismissProgressDialog()
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
@@ -143,13 +156,7 @@ class CameraVehicleChooser : BaseFragment(), CommonAdapter.Interaction,
             0 -> getCameraLists()
             1 -> getVehicles()
         }
-        showProgress()
     }
 
-    override fun onItemSelected(position: Int, item: CommonModel) {
-        val cameraLocation = CameraLocation(long = item.lat, lat = item.long, id = item.id)
-        Toast.makeText(activity, cameraLocation.lat.toString(), Toast.LENGTH_SHORT).show()
-        model.select(cameraLocation)
-    }
 
 }
