@@ -56,6 +56,12 @@ class CameraVehicleChooser : BaseFragment(),
             )
         }
 
+        model.searchString.observe(viewLifecycleOwner, Observer { searchItem ->
+            val searchedList = CommonList.filter { it.name.contains(searchItem) }
+            commonAdapter.submitList(searchedList)
+            commonAdapter.notifyDataSetChanged()
+        })
+
 
         vehiclesViewModel.camerasResponse.observe(viewLifecycleOwner, Observer {
             val newData = it.data.map { data ->

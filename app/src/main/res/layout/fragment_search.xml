@@ -6,27 +6,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="0dp"
-        android:id="@+id/til_search"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_5sdp"
-        android:layout_marginEnd="@dimen/_5sdp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:hint="Search"
 
-        >
-
-        <com.google.android.material.textfield.TextInputEditText
+        <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/white"
+            android:textColorHint="@color/colorPrimary"
+            android:hint="@string/search_title"
+            android:layout_margin="@dimen/_20sdp"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             android:id="@+id/ed_search"
         />
 
-    </com.google.android.material.textfield.TextInputLayout>
 
 
 
@@ -35,9 +28,10 @@
         android:layout_height="wrap_content"
         style="@style/buttonStyle"
         android:text="@string/search_title"
+        android:id="@+id/tv_search_done"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@id/til_search"
-        app:layout_constraintTop_toBottomOf="@id/til_search"
-        app:layout_constraintEnd_toEndOf="@id/til_search"
+        app:layout_constraintStart_toStartOf="@id/ed_search"
+        app:layout_constraintTop_toBottomOf="@id/ed_search"
+        app:layout_constraintEnd_toEndOf="@id/ed_search"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>

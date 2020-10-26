@@ -6,7 +6,15 @@
         <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowContentTransitions">true</item>
+        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
 
+
+    </style>
+
+    <style name="AppBottomSheetDialogTheme"
+        parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="android:windowSoftInputMode">adjustResize</item>
+        <item name="android:windowIsFloating">false</item>
     </style>
 
 
@@ -28,11 +36,6 @@
     <style name="SpinnerItem.DropDownItem" parent="Widget.AppCompat.Spinner.DropDown">
         <item name="android:textColor">@color/colorAccent</item>
     </style>
-
-    <style name="DialogStyle" parent="Theme.Design.Light.BottomSheetDialog">
-        <item name="android:windowSoftInputMode">adjustResize</item>
-    </style>
-
 
     <style name="Theme.MyAwesomeApp.Pink" parent="AppTheme">
         <item name="colorPrimary">@color/pink</item>
@@ -63,6 +66,8 @@
     </style>
 
     <style name="noActionBarThem" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
+
     </style>
 
     <style name="inputEditTextStyle">

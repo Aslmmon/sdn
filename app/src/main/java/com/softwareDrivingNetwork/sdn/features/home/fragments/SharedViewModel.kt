@@ -6,8 +6,15 @@ import androidx.lifecycle.ViewModel
 class SharedViewModel : ViewModel() {
     val selected = MutableLiveData<CameraLocation>()
 
+    val searchString = MutableLiveData<String>()
+
+
     fun select(item: CameraLocation) {
         selected.value = item
+    }
+
+    fun search(item:String) {
+        searchString.value = item
     }
 }
 

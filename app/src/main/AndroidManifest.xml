@@ -16,7 +16,6 @@
         <activity android:name=".features.notification.NotificationActivity" />
         <activity
             android:name=".features.services_chosen.ServicesChosenActivity"
-            android:windowSoftInputMode="adjustResize"
 
             />
         <activity android:name=".features.drawer_tabs.drivers.DriversActivity" /> <!-- <meta-data -->
@@ -40,7 +39,10 @@
         </activity>
         <activity
             android:name=".features.home.MainActivity"
-            android:theme="@style/noActionBarThem" />
+            android:theme="@style/noActionBarThem"
+            android:windowSoftInputMode="adjustResize"
+
+            />
         <activity android:name=".features.drawer_tabs.history.HistoryTracks" />
     </application>
 
