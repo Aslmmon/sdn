@@ -7,10 +7,10 @@ import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 /**
- * Created by Aslm on 1/1/2020
+ * Created by Aslm on 1/10/2020
  */
 
 val viewModelModule = module {
     viewModel { LoginViewModel(get()) }
-    viewModel { VehiclesViewModel(get()) }
+    viewModel { VehiclesViewModel(get(),get()) }
 }

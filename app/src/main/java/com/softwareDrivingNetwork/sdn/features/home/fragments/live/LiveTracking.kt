@@ -170,6 +170,9 @@ class LiveTracking : AiviMapFragment() {
             val sdnMileage = data.getString("sdn_mileage")
             val device_mileage = data.getString("dev_mileage")
             val date = data.getString("locTime")
+//            listOfLatlngs.forEach {
+//                if (it.latitude != latitude.toDouble())
+//            }
             listOfLatlngs.add(LatLng(latitude.toDouble(), longtitude.toDouble()))
 
             val aiviMapCreator =

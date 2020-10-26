@@ -1,5 +1,6 @@
 package com.softwareDrivingNetwork.sdn.features.drawer_tabs.vehicles
 
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -15,7 +16,7 @@ import com.softwareDrivingNetwork.sdn.models.general.vehicles.VehiclesListRespon
 import com.softwareDrivingNetwork.sdn.models.login.SignInBody
 import com.softwareDrivingNetwork.sdn.models.login.SignInResponseDay
 
-class VehiclesViewModel(var generalRepo: GeneralRepo) : ViewModel() {
+class VehiclesViewModel(var generalRepo: GeneralRepo, var loginRepo: LoginRepo) : ViewModel() {
 
 
     private val _errorResponse = MutableLiveData<String>()

@@ -11,11 +11,13 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.softwareDrivingNetwork.sdn.R
 import com.softwareDrivingNetwork.sdn.common.BaseFragment
+import com.softwareDrivingNetwork.sdn.common.setSafeOnClickListener
 import com.softwareDrivingNetwork.sdn.features.drawer_tabs.vehicles.VehiclesViewModel
 import com.softwareDrivingNetwork.sdn.features.home.fragments.CameraLocation
 import com.softwareDrivingNetwork.sdn.features.home.fragments.SharedViewModel
 import com.softwareDrivingNetwork.sdn.features.home.fragments.camera_vehicle_chooser.adapter.CommonAdapter
 import com.softwareDrivingNetwork.sdn.features.home.fragments.camera_vehicle_chooser.adapter.GroupsSpinnerAdapter
+import com.softwareDrivingNetwork.sdn.features.home.fragments.camera_vehicle_chooser.bottom_sheet.SearchDialogFragment
 import com.softwareDrivingNetwork.sdn.models.general.common.CommonModel
 import com.softwareDrivingNetwork.sdn.models.general.common.VehiclesData
 import com.softwareDrivingNetwork.sdn.models.general.groups.GroupsData
@@ -41,16 +43,25 @@ class CameraVehicleChooser : BaseFragment(),
         vehiclesViewModel.getGroups(getStringifiedData()!!)
         vehiclesViewModel.groupsResponse.observe(viewLifecycleOwner, Observer {
             groupsSpinnerAdapter = GroupsSpinnerAdapter(requireActivity(), it.data)
+            Log.i("data", it.data.toString())
             spinner_groups.adapter = groupsSpinnerAdapter
 
         })
+
+        tv_search.setSafeOnClickListener {
+            val bottomSheetFragment = SearchDialogFragment()
+            bottomSheetFragment.show(
+                requireActivity().supportFragmentManager,
+                bottomSheetFragment.tag
+            )
+        }
 
 
         vehiclesViewModel.camerasResponse.observe(viewLifecycleOwner, Observer {
             val newData = it.data.map { data ->
                 CommonModel(
                     data.registerid, data.sensorName, lat = data.lastLocation.lat,
-                    long = data.lastLocation.lng
+                    long = data.lastLocation.lng, groupName = data.groups[0].groupName
                 )
             }
             submitListData(newData)
@@ -67,6 +78,7 @@ class CameraVehicleChooser : BaseFragment(),
                     data.vehicleName,
                     data.locationLat,
                     data.locationLng,
+                    data.groups[0].groupName,
                     VehiclesData(
                         data.currentMileage,
                         data.maxSpeed,
@@ -92,9 +104,17 @@ class CameraVehicleChooser : BaseFragment(),
 
             }
 
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, p3: Long) {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                p3: Long
+            ) {
                 val itemClicked = parent?.getItemAtPosition(position) as GroupsData
-                //CommonList.filter { it -> it.vehicleData == itemClicked.group_name }
+                val newList = CommonList.filter { it -> it.groupName == itemClicked.group_name }
+                commonAdapter.submitList(newList)
+                commonAdapter.notifyDataSetChanged()
+
             }
 
         }

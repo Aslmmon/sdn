@@ -29,6 +29,10 @@
         <item name="android:textColor">@color/colorAccent</item>
     </style>
 
+    <style name="DialogStyle" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="android:windowSoftInputMode">adjustResize</item>
+    </style>
+
 
     <style name="Theme.MyAwesomeApp.Pink" parent="AppTheme">
         <item name="colorPrimary">@color/pink</item>

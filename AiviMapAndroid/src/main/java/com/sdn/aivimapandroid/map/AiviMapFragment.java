@@ -109,20 +109,22 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
             @SuppressLint("SetTextI18n")
             @Override
             public void run() {
+                if (list.size() > 0) {
 
-                animateCameraToSpecificLatLngBounds(list);
-                drawPolylinePoints(list);
+                    animateCameraToSpecificLatLngBounds(list);
+                    drawPolylinePoints(list);
 
-                originMarker = addOriginDestinationMarkerAndGet(new LatLng(list.get(0).latitude, list.get(0).longitude));
-                originMarker.setAnchor(0.5f, 0.5f);
+                    originMarker = addOriginDestinationMarkerAndGet(new LatLng(list.get(0).latitude, list.get(0).longitude));
+                    originMarker.setAnchor(0.5f, 0.5f);
 
-                Gson gson = new Gson();
-                String markerInfoString = gson.toJson(aiviMapCreator);
-                Log.i("avii", markerInfoString);
-                //  showPolylineAnimation();
+                    Gson gson = new Gson();
+                    String markerInfoString = gson.toJson(aiviMapCreator);
+                    Log.i("avii", markerInfoString);
+                    //  showPolylineAnimation();
 
-                for (int i = 0; i < list.size(); i++)
-                    updateCarLocation(new LatLng(list.get(i).latitude, list.get(i).longitude), markerInfoString);
+                    for (int i = 0; i < list.size(); i++)
+                        updateCarLocation(new LatLng(list.get(i).latitude, list.get(i).longitude), markerInfoString);
+                }
             }
         });
 
@@ -177,8 +179,11 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
         for (int i = 0; i < list.size(); i++) {
             builder.include(list.get(i));
         }
-        LatLngBounds bounds = builder.build();
-        mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 2));
+        if(!builder.build().equals(null)){
+            LatLngBounds bounds = builder.build();
+            mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 2));
+        }
+
     }
 
     private Marker addOriginDestinationMarkerAndGet(LatLng latlng) {

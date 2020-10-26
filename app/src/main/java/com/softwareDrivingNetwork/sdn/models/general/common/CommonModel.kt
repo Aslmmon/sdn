@@ -5,6 +5,7 @@ data class CommonModel(
     var name: String,
     var lat: Double,
     var long: Double,
+    var groupName:String,
     var vehicleData: VehiclesData?=null
 )
 

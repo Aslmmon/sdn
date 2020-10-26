@@ -2,6 +2,7 @@ package com.softwareDrivingNetwork.sdn.models.general.cameras
 
 
 import com.google.gson.annotations.SerializedName
+import com.softwareDrivingNetwork.sdn.models.general.vehicles.Group
 
 data class CameraModel(
     @SerializedName("accountid")
@@ -13,7 +14,7 @@ data class CameraModel(
     @SerializedName("driver")
     val driver: Driver,
     @SerializedName("groups")
-    val groups: List<Any>,
+    val groups: List<Group>,
     @SerializedName("install_date")
     val installDate: String,
     @SerializedName("last_command_date")
