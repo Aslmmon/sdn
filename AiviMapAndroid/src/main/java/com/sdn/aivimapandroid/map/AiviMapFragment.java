@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
@@ -112,7 +111,7 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
                 if (list.size() > 0) {
 
                     animateCameraToSpecificLatLngBounds(list);
-                    drawPolylinePoints(list);
+                    setDrawToLinePolygon(list);
 
                     originMarker = addOriginDestinationMarkerAndGet(new LatLng(list.get(0).latitude, list.get(0).longitude));
                     originMarker.setAnchor(0.5f, 0.5f);
@@ -131,24 +130,8 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
-    private void showPolylineAnimation() {
-        /**
-         * This function provides the Animation of polylines
-         * and updates the start and end polyline together
-         */
-        ValueAnimator polylineAnimator = AiviAnimation.polyLineAnimator();
-        polylineAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                int percentage = (int) animation.getAnimatedValue();
-                int index = (int) (startPolyline.getPoints().size() * (percentage / 100.0f));
-                endPolyline.setPoints(startPolyline.getPoints().subList(0, index));
-            }
-        });
-        polylineAnimator.start();
-    }
 
-    private void drawPolylinePoints(List<LatLng> list) {
+    private void setDrawToLinePolygon(List<LatLng> list) {
         /**
          * This function draw polyline  from the start destination of
          * Moving car , and also draw another polyline after ending Specific route with
@@ -179,7 +162,7 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
         for (int i = 0; i < list.size(); i++) {
             builder.include(list.get(i));
         }
-        if(!builder.build().equals(null)){
+        if (!builder.build().equals(null)) {
             LatLngBounds bounds = builder.build();
             mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 2));
         }
@@ -255,7 +238,7 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
-    public void animateCameraFirstTime(final LatLng currentLatLngFromServer, final AiviMapCreator aiviMapCreator) {
+    public void showCurrentLocationOnMap(final LatLng currentLatLngFromServer, final AiviMapCreator aiviMapCreator) {
         /**
          * used to animate camera to specific Latlng location
          */

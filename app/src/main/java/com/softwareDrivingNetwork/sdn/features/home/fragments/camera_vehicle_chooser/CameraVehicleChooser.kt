@@ -57,7 +57,7 @@ class CameraVehicleChooser : BaseFragment(),
         }
 
         model.searchString.observe(viewLifecycleOwner, Observer { searchItem ->
-            val searchedList = CommonList.filter { it.name.contains(searchItem) }
+            val searchedList = CommonList.filter { it.name.contains(searchItem) }.distinct()
             commonAdapter.submitList(searchedList)
             commonAdapter.notifyDataSetChanged()
         })
@@ -72,11 +72,15 @@ class CameraVehicleChooser : BaseFragment(),
             }
             submitListData(newData)
         })
+
+
         vehiclesViewModel.errorResponse.observe(viewLifecycleOwner, Observer {
             if (it == "no data found") submitListData(mutableListOf())
             dismissProgressDialog()
             //  Toast.makeText(activity, it, Toast.LENGTH_SHORT).show()
         })
+
+
         vehiclesViewModel.vehiclesResponse.observe(viewLifecycleOwner, Observer {
             val newData = it.data.map { data ->
                 CommonModel(
@@ -122,7 +126,6 @@ class CameraVehicleChooser : BaseFragment(),
                 commonAdapter.notifyDataSetChanged()
 
             }
-
         }
 
 

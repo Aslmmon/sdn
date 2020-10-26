@@ -152,7 +152,7 @@ class LiveTracking : AiviMapFragment() {
             mSocket.emit(Constants.SOCKET_UPDATE, userObject)
             val aiviMapCreator =
                 AiviMapCreator.AiviMapBuilder(activity).setSpecificLatLng(initialLatlng).build();
-            animateCameraFirstTime(initialLatlng, aiviMapCreator)
+            showCurrentLocationOnMap(initialLatlng, aiviMapCreator)
 
         }
 
