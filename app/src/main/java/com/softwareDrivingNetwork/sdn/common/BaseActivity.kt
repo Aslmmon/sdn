@@ -6,7 +6,6 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.softwareDrivingNetwork.sdn.R
 import com.softwareDrivingNetwork.sdn.models.User
 import com.softwareDrivingNetwork.sdn.models.login.SignInBody
 import org.koin.android.ext.android.inject
@@ -21,15 +20,14 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(provideLayout())
-        if(passNameToActivity() != null){
+        if (passNameToActivity() != null) {
             supportActionBar?.title = passNameToActivity()
             showBackButton()
         }
-     //   setTheme(R.style.Theme_MyAwesomeApp_Blue)
+        //   setTheme(R.style.Theme_MyAwesomeApp_Blue)
         loadingDialog = CustomProgress()
 
     }
-
 
 
     abstract fun provideLayout(): Int
@@ -74,6 +72,21 @@ abstract class BaseActivity : AppCompatActivity() {
 
     fun getStringifiedData(): String? {
         val signInBody = SignInBody(token = getUserData()?.token, _userid = getUserData()?._userId)
+        return stringify(signInBody)
+    }
+
+    fun getStringifiedDataForHistoryTracking(): String? {
+        val signInBody = SignInBody(
+            token = getUserData()?.token,
+            _userid = getUserData()?._userId,
+            start_time = "2020-10-27T09:36:31.000Z",
+            end_time = "2020-10-27T10:36:31.000Z",
+            playmode = true,
+            objectids = mutableListOf("4120105841"),
+            start = 0,
+            limit = 500,
+            min_speed = 0
+        )
         return stringify(signInBody)
     }
 

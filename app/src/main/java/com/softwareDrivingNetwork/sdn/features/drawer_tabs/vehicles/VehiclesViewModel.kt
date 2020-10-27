@@ -11,6 +11,7 @@ import com.softwareDrivingNetwork.sdn.core.repo.LoginRepo
 import com.softwareDrivingNetwork.sdn.models.general.cameras.CameraListResponse
 import com.softwareDrivingNetwork.sdn.models.general.drivers.DriversListReponse
 import com.softwareDrivingNetwork.sdn.models.general.groups.GroupsResponse
+import com.softwareDrivingNetwork.sdn.models.general.hsitory.HistoryTrackingResponse
 import com.softwareDrivingNetwork.sdn.models.general.notification.NotificationResponse
 import com.softwareDrivingNetwork.sdn.models.general.vehicles.VehiclesListResponse
 import com.softwareDrivingNetwork.sdn.models.login.SignInBody
@@ -39,6 +40,9 @@ class VehiclesViewModel(var generalRepo: GeneralRepo, var loginRepo: LoginRepo) 
 
     private val _notificationResponse = MutableLiveData<NotificationResponse>()
     val notificationResponse: LiveData<NotificationResponse> = _notificationResponse
+
+    private val _historyResponse = MutableLiveData<HistoryTrackingResponse>()
+    val historyResponse: LiveData<HistoryTrackingResponse> = _historyResponse
 
     fun getVehiclersList(user: String) {
         launchDataLoad(execution = {
@@ -90,6 +94,17 @@ class VehiclesViewModel(var generalRepo: GeneralRepo, var loginRepo: LoginRepo) 
             val result = generalRepo.getNotification(user)
             if (result.type != "error") {
                 _notificationResponse.value = result
+            } else _errorResponse.value = result.value
+        }, errorReturned = {
+            _errorResponse.value = it.message
+        })
+    }
+
+    fun getHistoryLocation(user: String) {
+        launchDataLoad(execution = {
+            val result = generalRepo.getHistoryLocations(user)
+            if (result.type != "error") {
+                _historyResponse.value = result
             } else _errorResponse.value = result.value
         }, errorReturned = {
             _errorResponse.value = it.message

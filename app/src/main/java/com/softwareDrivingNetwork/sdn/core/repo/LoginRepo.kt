@@ -1,13 +1,11 @@
 package com.softwareDrivingNetwork.sdn.core.repo
 
 import android.util.Log
-import android.widget.Toast
 import com.softwareDrivingNetwork.sdn.common.saveUserData
 import com.softwareDrivingNetwork.sdn.common.stringify
 import com.softwareDrivingNetwork.sdn.core.api.LoginApi
 import com.softwareDrivingNetwork.sdn.models.User
 import com.softwareDrivingNetwork.sdn.models.login.SignInBody
-import com.softwareDrivingNetwork.sdn.models.login.SignInResponseDay
 
 class LoginRepo(var loginApi: LoginApi) {
 

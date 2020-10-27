@@ -1,10 +1,7 @@
 package com.softwareDrivingNetwork.sdn.features.login.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -15,11 +12,9 @@ import com.mobsandgeeks.saripaar.Validator
 import com.mobsandgeeks.saripaar.annotation.Email
 import com.softwareDrivingNetwork.sdn.R
 import com.softwareDrivingNetwork.sdn.common.BaseFragment
-import com.softwareDrivingNetwork.sdn.common.disablePasswordToggle
 import com.softwareDrivingNetwork.sdn.common.setSafeOnClickListener
 import com.softwareDrivingNetwork.sdn.models.login.SignInBody
 import kotlinx.android.synthetic.main.fragment_forget_password.*
-import kotlinx.android.synthetic.main.fragment_sign_in.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class ForgetPasswordFragment : BaseFragment(), Validator.ValidationListener {

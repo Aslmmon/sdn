@@ -1,12 +1,11 @@
 package com.softwareDrivingNetwork.sdn.core.api
 
-import android.graphics.Camera
 import com.softwareDrivingNetwork.sdn.models.general.cameras.CameraListResponse
 import com.softwareDrivingNetwork.sdn.models.general.drivers.DriversListReponse
 import com.softwareDrivingNetwork.sdn.models.general.groups.GroupsResponse
+import com.softwareDrivingNetwork.sdn.models.general.hsitory.HistoryTrackingResponse
 import com.softwareDrivingNetwork.sdn.models.general.notification.NotificationResponse
 import com.softwareDrivingNetwork.sdn.models.general.vehicles.VehiclesListResponse
-import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
@@ -34,5 +33,9 @@ interface GeneralApis {
     @POST("api/notifications.list")
     @FormUrlEncoded
     suspend fun getNotification(@Field("data") signInBody: String): NotificationResponse
+
+    @POST("api/location.getlocation")
+    @FormUrlEncoded
+    suspend fun getLocation(@Field("data") signInBody: String): HistoryTrackingResponse
 
 }

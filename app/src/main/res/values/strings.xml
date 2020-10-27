@@ -65,6 +65,9 @@
     <string name="school_vision_title">School Vision</string>
     <string name="empty_data_title">Empty Data</string>
     <string name="search_title">Search</string>
+    <string name="from_title">From</string>
+    <string name="to_title">To</string>
+    <string name="start_title">Start</string>
 
     <string-array name="cameras_array">
         <item>Camera</item>

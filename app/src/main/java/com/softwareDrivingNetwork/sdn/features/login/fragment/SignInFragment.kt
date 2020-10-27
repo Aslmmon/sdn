@@ -16,7 +16,6 @@ import com.mobsandgeeks.saripaar.annotation.Email
 import com.mobsandgeeks.saripaar.annotation.Password
 import com.softwareDrivingNetwork.sdn.R
 import com.softwareDrivingNetwork.sdn.common.*
-import com.softwareDrivingNetwork.sdn.models.User
 import com.softwareDrivingNetwork.sdn.models.login.SignInBody
 import kotlinx.android.synthetic.main.fragment_sign_in.*
 import org.koin.android.viewmodel.ext.android.viewModel

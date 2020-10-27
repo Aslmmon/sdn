@@ -17,6 +17,7 @@ class GeneralRepo(var generalApis:GeneralApis) {
 
     suspend fun getNotification(signInBody: String) = generalApis.getNotification(signInBody)
 
+    suspend fun getHistoryLocations(signInBody: String) = generalApis.getLocation(signInBody)
 
 }
 
