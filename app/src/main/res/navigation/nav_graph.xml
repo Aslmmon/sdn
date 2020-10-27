@@ -35,5 +35,8 @@
             app:destination="@id/cameraVehicleChooser"
             app:popUpTo="@id/cameraVehicleChooser"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/goToLiveTracking"
+            app:destination="@id/liveTracking" />
     </fragment>
 </navigation>

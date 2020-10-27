@@ -51,6 +51,21 @@ abstract class BaseFragment : Fragment() {
         return gson.toJson(data)
     }
 
+    fun getStringifiedDataForHistoryTracking(): String? {
+        val signInBody = SignInBody(
+            token = getUserData()?.token,
+            _userid = getUserData()?._userId,
+            start_time = "2020-10-27T09:36:31.000Z",
+            end_time = "2020-10-27T10:36:31.000Z",
+            playmode = true,
+            objectids = mutableListOf("4120105841"),
+            start = 0,
+            limit = 500,
+            min_speed = 0
+        )
+        return stringify(signInBody)
+    }
+
     fun dismissProgressDialog() {
         loadingDialog.dismissDialog()
     }
