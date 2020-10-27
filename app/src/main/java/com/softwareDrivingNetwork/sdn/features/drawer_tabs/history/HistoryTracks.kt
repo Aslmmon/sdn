@@ -4,9 +4,12 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.softwareDrivingNetwork.sdn.R
 import com.softwareDrivingNetwork.sdn.common.BaseActivity
+import com.softwareDrivingNetwork.sdn.common.Navigation
 import com.softwareDrivingNetwork.sdn.features.drawer_tabs.vehicles.VehiclesViewModel
+import kotlinx.android.synthetic.main.history_tracks.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
@@ -29,7 +32,11 @@ class HistoryTracks : BaseActivity() {
         vehiclesViewModel.errorResponse.observe(this, Observer {
             Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
         })
+      //  findNavController().navigate(R.id.goToLiveTrack)
 
+        tv_start.setOnClickListener {
+            Navigation.goToMainActivityFromHistroy(this)
+        }
 
     }
 }

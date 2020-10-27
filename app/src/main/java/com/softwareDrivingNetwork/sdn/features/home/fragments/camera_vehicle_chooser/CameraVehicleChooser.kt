@@ -175,7 +175,7 @@ class CameraVehicleChooser : BaseFragment(),
     }
 
     private fun getCameraLists() {
-        showProgress()
+        //  showProgress()
         Log.i("data", "camera")
         vehiclesViewModel.getCameraList(getStringifiedData()!!)
     }

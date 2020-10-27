@@ -8,10 +8,12 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout.SimpleDrawerListener
 import androidx.navigation.Navigation.*
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.*
 import com.google.android.material.navigation.NavigationView
 import com.softwareDrivingNetwork.sdn.R
 import com.softwareDrivingNetwork.sdn.common.BaseActivity
+import com.softwareDrivingNetwork.sdn.common.Constants
 import com.softwareDrivingNetwork.sdn.common.Navigation.goToCamerasActivity
 import com.softwareDrivingNetwork.sdn.common.Navigation.goToDriversActivity
 import com.softwareDrivingNetwork.sdn.common.Navigation.goToHistoryActivityWithFinish
@@ -35,6 +37,12 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         init()
         naviagtionDrawer()
+        val intent = intent.extras
+        intent?.let {
+            val fromHistory = it.getBoolean(Constants.HISTORY_MAIN_NAVIGATION)
+            if (fromHistory) findNavController(R.id.nav_host_fragment).navigate(R.id.goToLiveTrack)
+
+        }
     }
 
     private fun init() {
@@ -97,18 +105,25 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.nav_history_track -> goToHistoryActivityWithFinish(this)
-            R.id.log_out -> showCustomAlertDialog(onYesClicked = {
-                if (clearAllSavedLocalData()) goToLoginActivityWithClearFlags(
-                    this
-                )
-            })
+        if (!item.isChecked) {
+            when (item.itemId) {
 
-            R.id.vehicles -> goToVehiclesActivity(this)
-            R.id.cameras -> goToCamerasActivity(this)
-            R.id.drivers -> goToDriversActivity(this)
-            R.id.nav_notification -> goToNotificationActivity(this)
+                R.id.nav_live_track -> findNavController(R.id.nav_host_fragment).navigate(R.id.goToCameraVehicle)
+
+                R.id.nav_history_track -> {
+                    findNavController(R.id.nav_host_fragment).navigate(R.id.goToHistory)
+                }
+                R.id.log_out -> showCustomAlertDialog(onYesClicked = {
+                    if (clearAllSavedLocalData()) goToLoginActivityWithClearFlags(
+                        this
+                    )
+                })
+
+                R.id.vehicles -> goToVehiclesActivity(this)
+                R.id.cameras -> goToCamerasActivity(this)
+                R.id.drivers -> goToDriversActivity(this)
+                R.id.nav_notification -> goToNotificationActivity(this)
+            }
         }
         closeDrawer()
         return true

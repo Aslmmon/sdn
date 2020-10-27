@@ -10,4 +10,6 @@ object Constants {
 
     const val SOCKET_ACTIVE = "active"
     const val SOCKET_LOCATION = "active_location_job_onlocation"
+    const val HISTORY_MAIN_NAVIGATION = "history"
+
 }

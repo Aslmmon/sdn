@@ -57,6 +57,7 @@
     <Button
         style="@style/buttonStyle"
         android:text="@string/start_title"
+        android:id="@+id/tv_start"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

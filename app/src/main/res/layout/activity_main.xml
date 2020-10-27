@@ -12,8 +12,6 @@
         android:layout_height="match_parent">
 
 
-
-
         <!-- Layout to contain contents of main body of screen (drawer will slide over this) -->
         <fragment
             android:id="@+id/nav_host_fragment"
@@ -30,13 +28,12 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="0dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:background="@color/whitish"
-            android:theme="@style/CustomActionBar"
             android:layout_height="?android:attr/actionBarSize"
+            android:background="@color/white"
+            android:theme="@style/CustomActionBar"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            >
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"

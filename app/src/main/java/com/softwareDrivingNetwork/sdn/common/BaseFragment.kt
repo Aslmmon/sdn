@@ -36,6 +36,11 @@ abstract class BaseFragment : Fragment() {
 
     }
 
+    fun  hideBackbutton(){
+        (activity as AppCompatActivity?)!!.supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        (activity as AppCompatActivity?)!!.supportActionBar?.setHomeButtonEnabled(false);
+    }
+
     abstract fun provideLayout(): Int
 
     fun showProgress() {

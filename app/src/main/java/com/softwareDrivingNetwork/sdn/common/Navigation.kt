@@ -24,6 +24,12 @@ object Navigation {
         (ctx as Activity).startActivity(Intent(ctx, MainActivity::class.java))
     }
 
+    fun goToMainActivityFromHistroy(ctx: Context) {
+        val intent = Intent(ctx,MainActivity::class.java)
+        intent.putExtra(Constants.HISTORY_MAIN_NAVIGATION ,true)
+        (ctx as Activity).startActivity(Intent(ctx, MainActivity::class.java))
+    }
+
     fun goToServicesActivityWithFinish(ctx: Context) {
         (ctx as Activity).startActivity(Intent(ctx, ServicesChosenActivity::class.java))
         ctx.finish()
