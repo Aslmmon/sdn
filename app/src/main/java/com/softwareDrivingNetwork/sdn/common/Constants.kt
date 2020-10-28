@@ -12,4 +12,8 @@ object Constants {
     const val SOCKET_LOCATION = "active_location_job_onlocation"
     const val HISTORY_MAIN_NAVIGATION = "history"
 
+    const val FROM_LIVE_TRACKNG_TAB = "1"
+    const val FROM_HISTORY_TRACKING_TAB = "2"
+    const val NAVIGATION = "0"
+
 }

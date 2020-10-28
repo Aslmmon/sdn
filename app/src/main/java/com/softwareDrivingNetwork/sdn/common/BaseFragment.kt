@@ -51,14 +51,14 @@ abstract class BaseFragment : Fragment() {
         return gson.toJson(data)
     }
 
-    fun getStringifiedDataForHistoryTracking(): String? {
+    fun getStringifiedDataForHistoryTracking(startTime:String,endTime:String,objectId:String): String? {
         val signInBody = SignInBody(
             token = getUserData()?.token,
             _userid = getUserData()?._userId,
-            start_time = "2020-10-27T09:36:31.000Z",
-            end_time = "2020-10-27T10:36:31.000Z",
+            start_time = startTime,
+            end_time = endTime,
             playmode = true,
-            objectids = mutableListOf("4120105841"),
+            objectids = mutableListOf("$objectId"),
             start = 0,
             limit = 500,
             min_speed = 0

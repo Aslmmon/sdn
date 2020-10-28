@@ -12,7 +12,12 @@
         tools:layout="@layout/fragment_camera_vehicle_chooser" >
         <action
             android:id="@+id/goToLiveTrack"
-            app:destination="@id/liveTracking" />
+            app:destination="@id/liveTracking">
+            <argument
+                android:name="destination"
+                app:argType="string" />
+
+        </action>
         <action
             android:id="@+id/goToHistory"
             app:destination="@id/historyFragment"
@@ -37,6 +42,11 @@
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/goToLiveTracking"
-            app:destination="@id/liveTracking" />
+            app:destination="@id/liveTracking">
+
+            <argument
+                android:name="destination"
+                app:argType="string" />
+        </action>
     </fragment>
 </navigation>

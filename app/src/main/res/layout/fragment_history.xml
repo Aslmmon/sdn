@@ -10,16 +10,15 @@
         android:id="@+id/til_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_5sdp"
-        android:layout_marginEnd="@dimen/_5sdp"
+        android:layout_margin="@dimen/_10sdp"
         android:hint="@string/from_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
             android:id="@+id/ed_date"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/white"
             android:cursorVisible="false"
@@ -35,19 +34,19 @@
         android:id="@+id/til_to"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_10sdp"
         android:hint="@string/to_title"
         app:layout_constraintEnd_toEndOf="@id/til_title"
         app:layout_constraintStart_toStartOf="@id/til_title"
         app:layout_constraintTop_toBottomOf="@id/til_title">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/ed_to_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/white"
             android:cursorVisible="false"
             android:focusable="false"
-            android:id="@+id/ed_to_date"
 
             />
 
@@ -55,10 +54,19 @@
     </com.google.android.material.textfield.TextInputLayout>
 
 
+    <FrameLayout
+        android:id="@+id/parent_fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/tv_start"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/til_to" />
+
     <Button
+        android:id="@+id/tv_start"
         style="@style/buttonStyle"
         android:text="@string/start_title"
-        android:id="@+id/tv_start"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

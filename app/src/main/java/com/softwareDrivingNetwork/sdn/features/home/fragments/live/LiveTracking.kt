@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.github.nkzawa.emitter.Emitter
@@ -27,7 +28,7 @@ import org.koin.android.ext.android.inject
 
 
 class LiveTracking : AiviMapFragment() {
-    lateinit var mSocket: Socket
+     var mSocket: Socket?=null
     lateinit var jobId: JSONObject
     val TAG = "socket"
     lateinit var userObject: JSONObject
@@ -56,6 +57,9 @@ class LiveTracking : AiviMapFragment() {
             initialLatlng = LatLng(it.lat!!, it.long!!)
         })
 
+        model.timeListener.observe(viewLifecycleOwner, Observer {
+
+        })
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
@@ -63,7 +67,14 @@ class LiveTracking : AiviMapFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity?.toolbar?.visibility = View.GONE
-        initializeSocket()
+
+        val arguments = arguments?.getString(Constants.NAVIGATION)
+        Log.i("test",arguments.toString())
+        when (arguments) {
+            Constants.FROM_HISTORY_TRACKING_TAB -> Toast.makeText(activity, "from history", Toast.LENGTH_SHORT).show()
+            Constants.FROM_LIVE_TRACKNG_TAB -> initializeSocket()
+
+        }
 
 
     }
@@ -71,14 +82,14 @@ class LiveTracking : AiviMapFragment() {
     private fun initializeSocket() {
         val app: SDNApp = this.requireActivity().application as SDNApp
         mSocket = app.socket!!
-        mSocket.on(Socket.EVENT_CONNECT_ERROR, onConnectError);
-        mSocket.on(Socket.EVENT_CONNECT_TIMEOUT, onConnectError);
-        mSocket.on(Socket.EVENT_CONNECT, onConnect);
-        mSocket.on(Socket.EVENT_DISCONNECT, onDisconnect);
-        mSocket.connect()
-        mSocket.emit(Constants.SOCKET_START, userObject)
-        mSocket.on(Constants.SOCKET_ACTIVE, onActive)
-        mSocket.on(Constants.SOCKET_LOCATION, onJobLocation)
+        mSocket?.on(Socket.EVENT_CONNECT_ERROR, onConnectError);
+        mSocket?.on(Socket.EVENT_CONNECT_TIMEOUT, onConnectError);
+        mSocket?.on(Socket.EVENT_CONNECT, onConnect);
+        mSocket?.on(Socket.EVENT_DISCONNECT, onDisconnect);
+        mSocket?.connect()
+        mSocket?.emit(Constants.SOCKET_START, userObject)
+        mSocket?.on(Constants.SOCKET_ACTIVE, onActive)
+        mSocket?.on(Constants.SOCKET_LOCATION, onJobLocation)
 
 
     }
@@ -120,15 +131,18 @@ class LiveTracking : AiviMapFragment() {
     }
 
     override fun onDetach() {
-        mSocket.disconnect()
-        mSocket.close()
-        listenOffFromSockets()
+        if(mSocket !=null && mSocket!!.connected()){
+            mSocket?.disconnect()
+            mSocket?.close()
+            listenOffFromSockets()
+        }
+
         super.onDetach()
     }
 
     private fun listenOffFromSockets() {
-        mSocket.off(Constants.SOCKET_ACTIVE, onActive)
-        mSocket.off(Constants.SOCKET_LOCATION, onJobLocation)
+        mSocket?.off(Constants.SOCKET_ACTIVE, onActive)
+        mSocket?.off(Constants.SOCKET_LOCATION, onJobLocation)
     }
 
     private val onDisconnect = Emitter.Listener {
@@ -149,7 +163,7 @@ class LiveTracking : AiviMapFragment() {
             val unitArray = JSONArray()
             unitArray.put(0, unitId)
             userObject.put("unitList", unitArray)
-            mSocket.emit(Constants.SOCKET_UPDATE, userObject)
+            mSocket?.emit(Constants.SOCKET_UPDATE, userObject)
             val aiviMapCreator =
                 AiviMapCreator.AiviMapBuilder(activity).setSpecificLatLng(initialLatlng).build();
             showCurrentLocationOnMap(initialLatlng, aiviMapCreator)
@@ -170,9 +184,6 @@ class LiveTracking : AiviMapFragment() {
             val sdnMileage = data.getString("sdn_mileage")
             val device_mileage = data.getString("dev_mileage")
             val date = data.getString("locTime")
-//            listOfLatlngs.forEach {
-//                if (it.latitude != latitude.toDouble())
-//            }
             listOfLatlngs.add(LatLng(latitude.toDouble(), longtitude.toDouble()))
 
             val aiviMapCreator =

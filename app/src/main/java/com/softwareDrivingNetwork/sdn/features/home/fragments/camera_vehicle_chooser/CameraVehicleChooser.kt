@@ -6,11 +6,13 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.softwareDrivingNetwork.sdn.R
 import com.softwareDrivingNetwork.sdn.common.BaseFragment
+import com.softwareDrivingNetwork.sdn.common.Constants
 import com.softwareDrivingNetwork.sdn.common.setSafeOnClickListener
 import com.softwareDrivingNetwork.sdn.features.drawer_tabs.vehicles.VehiclesViewModel
 import com.softwareDrivingNetwork.sdn.features.home.fragments.CameraLocation
@@ -24,7 +26,8 @@ import com.softwareDrivingNetwork.sdn.models.general.groups.GroupsData
 import kotlinx.android.synthetic.main.fragment_camera_vehicle_chooser.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class CameraVehicleChooser : BaseFragment(),
+
+class CameraVehicleChooser() : BaseFragment(),
     AdapterView.OnItemSelectedListener {
 
     lateinit var commonAdapter: CommonAdapter
@@ -34,9 +37,25 @@ class CameraVehicleChooser : BaseFragment(),
     private val vehiclesViewModel: VehiclesViewModel by viewModel()
     private val model: SharedViewModel by activityViewModels()
 
+    companion object {
+        fun newInstance(remove: Int): CameraVehicleChooser {
+            val args = Bundle()
+            args.putInt("remove", remove)
+            val fragment = CameraVehicleChooser()
+            fragment.arguments = args
+            return fragment
+        }
+    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val bundle = this.arguments
+        if (bundle != null) {
+            val myInt = bundle.getInt("remove", 0)
+            if (myInt == 1) btn_submit.visibility = View.GONE
+        }
+
         showToolbar()
         initializeAdapter()
         initializeSpinner()
@@ -103,8 +122,11 @@ class CameraVehicleChooser : BaseFragment(),
 
 
         btn_submit.setOnClickListener {
-            if (cameraLocation.lat != null) findNavController().navigate(R.id.goToLiveTrack)
-            else Toast.makeText(activity, "choose Camera or Vehicle Please", Toast.LENGTH_SHORT)
+
+            if (cameraLocation.lat != null) {
+                val bundle = bundleOf(Constants.NAVIGATION to Constants.FROM_LIVE_TRACKNG_TAB)
+                findNavController().navigate(R.id.goToLiveTrack,bundle)
+            } else Toast.makeText(activity, "choose Camera or Vehicle Please", Toast.LENGTH_SHORT)
                 .show()
         }
 

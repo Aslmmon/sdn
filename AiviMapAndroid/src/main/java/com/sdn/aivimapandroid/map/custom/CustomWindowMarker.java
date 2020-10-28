@@ -57,6 +57,8 @@ public class CustomWindowMarker implements GoogleMap.InfoWindowAdapter {
                 }
             }
         }
+
+
     }
 
     @Override

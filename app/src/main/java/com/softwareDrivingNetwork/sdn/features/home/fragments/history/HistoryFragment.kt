@@ -5,28 +5,58 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
+import androidx.fragment.app.FragmentTransaction
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.material.button.MaterialButton
 import com.softwareDrivingNetwork.sdn.R
 import com.softwareDrivingNetwork.sdn.common.BaseFragment
+import com.softwareDrivingNetwork.sdn.common.Constants
+import com.softwareDrivingNetwork.sdn.common.Navigation
 import com.softwareDrivingNetwork.sdn.features.drawer_tabs.vehicles.VehiclesViewModel
+import com.softwareDrivingNetwork.sdn.features.home.MainActivity
+import com.softwareDrivingNetwork.sdn.features.home.fragments.SharedViewModel
+import com.softwareDrivingNetwork.sdn.features.home.fragments.TimeStart
+import com.softwareDrivingNetwork.sdn.features.home.fragments.camera_vehicle_chooser.CameraVehicleChooser
 import kotlinx.android.synthetic.main.fragment_history.*
 import org.koin.android.viewmodel.ext.android.viewModel
-import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 class HistoryFragment : BaseFragment() {
 
     private val vehiclesViewModel: VehiclesViewModel by viewModel()
     lateinit var startDate:String
     lateinit var endDate:String
+    private val model: SharedViewModel by activityViewModels()
+
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+
+        val ft: FragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
+        ft.replace(R.id.parent_fragment_container, CameraVehicleChooser.newInstance(1))
+        ft.commit()
+
+
+        return super.onCreateView(inflater, container, savedInstanceState)
+
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         hideBackbutton()
 
         ed_date.setOnClickListener {
@@ -38,17 +68,22 @@ class HistoryFragment : BaseFragment() {
 
 
         tv_start.setOnClickListener {
-            val newDate = convertToDate(ed_date.text.toString())
-            Log.i("test", newDate.toString())
-           // findNavController().navigate(R.id.goToLiveTracking)
+            val startTime = ed_date.text.toString()
+            val endTime = ed_to_date.text.toString()
+            val itemStart = TimeStart(startTime,endTime)
+            model.shareTime(itemStart)
+//            vehiclesViewModel.getHistoryLocation(getStringifiedDataForHistoryTracking(startTime,endTime,"test")!!)
+
+          //  Log.i("test", newDate.toString())
+            val bundle = bundleOf(Constants.NAVIGATION to Constants.FROM_HISTORY_TRACKING_TAB)
+            findNavController().navigate(R.id.goToLiveTracking,bundle)
         }
-        vehiclesViewModel.getHistoryLocation(getStringifiedDataForHistoryTracking()!!)
-        vehiclesViewModel.historyResponse.observe(viewLifecycleOwner, Observer {
-            Log.i("history", it.toString())
-        })
-        vehiclesViewModel.errorResponse.observe(viewLifecycleOwner, Observer {
-            Toast.makeText(activity, it, Toast.LENGTH_SHORT).show()
-        })
+//        vehiclesViewModel.historyResponse.observe(viewLifecycleOwner, Observer {
+//            Log.i("history", it.toString())
+//        })
+//        vehiclesViewModel.errorResponse.observe(viewLifecycleOwner, Observer {
+//            Toast.makeText(activity, it, Toast.LENGTH_SHORT).show()
+//        })
 
 
     }
@@ -81,12 +116,16 @@ class HistoryFragment : BaseFragment() {
                 }
                 return@OnDateSetListener
             }
-        DatePickerDialog(
+        val datePicker = DatePickerDialog(
             requireActivity(), dateSetListener,
             cal.get(Calendar.YEAR),
             cal.get(Calendar.MONTH),
             cal.get(Calendar.DAY_OF_MONTH)
-        ).show()
+        )
+        datePicker.datePicker.maxDate = System.currentTimeMillis()
+        datePicker.show()
+
+
     }
 
     @SuppressLint("SimpleDateFormat")
@@ -96,8 +135,8 @@ class HistoryFragment : BaseFragment() {
             cal.set(Calendar.HOUR_OF_DAY, hour)
             cal.set(Calendar.MINUTE, minute)
             when (timer) {
-                "1" -> ed_date.append(" " + SimpleDateFormat("HH:mm").format(cal.time))
-                "2" -> ed_to_date.append(" " + SimpleDateFormat("HH:mm").format(cal.time))
+                "1" -> ed_date.append(" " + SimpleDateFormat("hh:mm a").format(cal.time))
+                "2" -> ed_to_date.append(" " + SimpleDateFormat("hh:mm a").format(cal.time))
             }
 
         }
@@ -114,12 +153,6 @@ class HistoryFragment : BaseFragment() {
 
     private fun convertToDate(dateNew: String) {
 
-//        try {
-//            val date = format.parse(dateNew)
-//            System.out.println(date)
-//        } catch (e: ParseException) {
-//            e.printStackTrace()
-//        }
     }
 }
 
