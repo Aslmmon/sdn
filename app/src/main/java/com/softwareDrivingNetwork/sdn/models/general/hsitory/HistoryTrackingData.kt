@@ -1,6 +1,6 @@
 package com.softwareDrivingNetwork.sdn.models.general.hsitory
 
-data class Data(
+data class HistoryTrackingData(
     val accuracy: Int,
     val dev_mileage: Int,
     val extrajson: Any,

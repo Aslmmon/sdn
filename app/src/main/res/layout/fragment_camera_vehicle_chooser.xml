@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".features.home.fragments.camera_vehicle_chooser.CameraVehicleChooser">
+    tools:context=".features.home.fragments.live_tracking.liveTracking">
 
 
     <TextView

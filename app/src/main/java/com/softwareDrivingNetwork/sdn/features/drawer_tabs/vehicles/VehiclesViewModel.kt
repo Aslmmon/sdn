@@ -101,11 +101,12 @@ class VehiclesViewModel(var generalRepo: GeneralRepo, var loginRepo: LoginRepo) 
     }
 
     fun getHistoryLocation(user: String) {
+        Log.i("user",user)
         launchDataLoad(execution = {
             val result = generalRepo.getHistoryLocations(user)
             if (result.type != "error") {
                 _historyResponse.value = result
-            } else _errorResponse.value = result.value
+            } else _errorResponse.value = result.text
         }, errorReturned = {
             _errorResponse.value = it.message
         })

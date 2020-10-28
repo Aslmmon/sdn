@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/cameraVehicleChooser"
-        android:name="com.softwareDrivingNetwork.sdn.features.home.fragments.camera_vehicle_chooser.CameraVehicleChooser"
+        android:name="com.softwareDrivingNetwork.sdn.features.home.fragments.live_tracking.liveTracking"
         android:label="fragment_camera_vehicle_chooser"
         tools:layout="@layout/fragment_camera_vehicle_chooser" >
         <action
@@ -27,7 +27,7 @@
     </fragment>
     <fragment
         android:id="@+id/liveTracking"
-        android:name="com.softwareDrivingNetwork.sdn.features.home.fragments.live.LiveTracking"
+        android:name="com.softwareDrivingNetwork.sdn.features.home.fragments.map.MapFragment"
         android:label="fragment_live_tracking"
         tools:layout="@layout/fragment_live_tracking" />
     <fragment

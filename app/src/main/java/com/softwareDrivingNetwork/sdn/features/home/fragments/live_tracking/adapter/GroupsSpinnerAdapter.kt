@@ -1,4 +1,4 @@
-package com.softwareDrivingNetwork.sdn.features.home.fragments.camera_vehicle_chooser.adapter
+package com.softwareDrivingNetwork.sdn.features.home.fragments.live_tracking.adapter
 
 import android.content.Context
 import android.view.LayoutInflater

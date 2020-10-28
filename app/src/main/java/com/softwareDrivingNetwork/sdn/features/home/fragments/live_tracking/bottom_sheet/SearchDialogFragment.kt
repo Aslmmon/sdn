@@ -1,14 +1,11 @@
-package com.softwareDrivingNetwork.sdn.features.home.fragments.camera_vehicle_chooser.bottom_sheet
+package com.softwareDrivingNetwork.sdn.features.home.fragments.live_tracking.bottom_sheet
 
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.softwareDrivingNetwork.sdn.R

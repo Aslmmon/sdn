@@ -1,4 +1,4 @@
-package com.softwareDrivingNetwork.sdn.features.home.fragments.camera_vehicle_chooser
+package com.softwareDrivingNetwork.sdn.features.home.fragments.live_tracking
 
 import android.os.Bundle
 import android.util.Log
@@ -17,9 +17,9 @@ import com.softwareDrivingNetwork.sdn.common.setSafeOnClickListener
 import com.softwareDrivingNetwork.sdn.features.drawer_tabs.vehicles.VehiclesViewModel
 import com.softwareDrivingNetwork.sdn.features.home.fragments.CameraLocation
 import com.softwareDrivingNetwork.sdn.features.home.fragments.SharedViewModel
-import com.softwareDrivingNetwork.sdn.features.home.fragments.camera_vehicle_chooser.adapter.CommonAdapter
-import com.softwareDrivingNetwork.sdn.features.home.fragments.camera_vehicle_chooser.adapter.GroupsSpinnerAdapter
-import com.softwareDrivingNetwork.sdn.features.home.fragments.camera_vehicle_chooser.bottom_sheet.SearchDialogFragment
+import com.softwareDrivingNetwork.sdn.features.home.fragments.live_tracking.adapter.CommonAdapter
+import com.softwareDrivingNetwork.sdn.features.home.fragments.live_tracking.adapter.GroupsSpinnerAdapter
+import com.softwareDrivingNetwork.sdn.features.home.fragments.live_tracking.bottom_sheet.SearchDialogFragment
 import com.softwareDrivingNetwork.sdn.models.general.common.CommonModel
 import com.softwareDrivingNetwork.sdn.models.general.common.VehiclesData
 import com.softwareDrivingNetwork.sdn.models.general.groups.GroupsData
@@ -27,7 +27,7 @@ import kotlinx.android.synthetic.main.fragment_camera_vehicle_chooser.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
-class CameraVehicleChooser() : BaseFragment(),
+class liveTracking() : BaseFragment(),
     AdapterView.OnItemSelectedListener {
 
     lateinit var commonAdapter: CommonAdapter
@@ -38,10 +38,10 @@ class CameraVehicleChooser() : BaseFragment(),
     private val model: SharedViewModel by activityViewModels()
 
     companion object {
-        fun newInstance(remove: Int): CameraVehicleChooser {
+        fun newInstance(remove: Int): liveTracking {
             val args = Bundle()
             args.putInt("remove", remove)
-            val fragment = CameraVehicleChooser()
+            val fragment = liveTracking()
             fragment.arguments = args
             return fragment
         }

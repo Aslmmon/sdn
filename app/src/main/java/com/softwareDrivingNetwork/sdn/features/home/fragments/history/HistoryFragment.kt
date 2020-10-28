@@ -8,23 +8,17 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.material.button.MaterialButton
 import com.softwareDrivingNetwork.sdn.R
 import com.softwareDrivingNetwork.sdn.common.BaseFragment
 import com.softwareDrivingNetwork.sdn.common.Constants
-import com.softwareDrivingNetwork.sdn.common.Navigation
 import com.softwareDrivingNetwork.sdn.features.drawer_tabs.vehicles.VehiclesViewModel
-import com.softwareDrivingNetwork.sdn.features.home.MainActivity
 import com.softwareDrivingNetwork.sdn.features.home.fragments.SharedViewModel
 import com.softwareDrivingNetwork.sdn.features.home.fragments.TimeStart
-import com.softwareDrivingNetwork.sdn.features.home.fragments.camera_vehicle_chooser.CameraVehicleChooser
+import com.softwareDrivingNetwork.sdn.features.home.fragments.live_tracking.liveTracking
 import kotlinx.android.synthetic.main.fragment_history.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
@@ -33,7 +27,6 @@ import java.util.*
 
 class HistoryFragment : BaseFragment() {
 
-    private val vehiclesViewModel: VehiclesViewModel by viewModel()
     lateinit var startDate:String
     lateinit var endDate:String
     private val model: SharedViewModel by activityViewModels()
@@ -46,7 +39,7 @@ class HistoryFragment : BaseFragment() {
     ): View? {
 
         val ft: FragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
-        ft.replace(R.id.parent_fragment_container, CameraVehicleChooser.newInstance(1))
+        ft.replace(R.id.parent_fragment_container, liveTracking.newInstance(1))
         ft.commit()
 
 
@@ -68,22 +61,14 @@ class HistoryFragment : BaseFragment() {
 
 
         tv_start.setOnClickListener {
-            val startTime = ed_date.text.toString()
-            val endTime = ed_to_date.text.toString()
-            val itemStart = TimeStart(startTime,endTime)
+//            val startTime = ed_date.text.toString()
+//            val endTime = ed_to_date.text.toString()
+            val itemStart = TimeStart(startDate,endDate)
             model.shareTime(itemStart)
-//            vehiclesViewModel.getHistoryLocation(getStringifiedDataForHistoryTracking(startTime,endTime,"test")!!)
-
-          //  Log.i("test", newDate.toString())
             val bundle = bundleOf(Constants.NAVIGATION to Constants.FROM_HISTORY_TRACKING_TAB)
             findNavController().navigate(R.id.goToLiveTracking,bundle)
         }
-//        vehiclesViewModel.historyResponse.observe(viewLifecycleOwner, Observer {
-//            Log.i("history", it.toString())
-//        })
-//        vehiclesViewModel.errorResponse.observe(viewLifecycleOwner, Observer {
-//            Toast.makeText(activity, it, Toast.LENGTH_SHORT).show()
-//        })
+
 
 
     }
@@ -111,6 +96,7 @@ class HistoryFragment : BaseFragment() {
                     "2" -> {
                         ed_to_date.setText(sdf.format(cal.time))
                         endDate = format.format(cal.time)
+                        Log.i("date",endDate)
                         openTimePicker("2")
                     }
                 }
