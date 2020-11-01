@@ -2,6 +2,8 @@ package com.softwareDrivingNetwork.sdn.features.home.fragments.map
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -24,10 +26,14 @@ import com.softwareDrivingNetwork.sdn.features.home.fragments.TimeStart
 import com.softwareDrivingNetwork.sdn.models.User
 import com.softwareDrivingNetwork.sdn.models.login.SignInBody
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
 import org.json.JSONArray
 import org.json.JSONObject
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
+import java.lang.Runnable
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -47,11 +53,13 @@ class MapFragment : AiviMapFragment() {
     var gson = Gson()
     private val model: SharedViewModel by activityViewModels()
     private val vehiclesViewModel: VehiclesViewModel by viewModel()
+    lateinit var mainHandler: Handler
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         userObject = createUserObject()
+        mainHandler = Handler(Looper.getMainLooper())
 
     }
 
@@ -99,15 +107,19 @@ class MapFragment : AiviMapFragment() {
         argumentsRecieved = arguments?.getString(Constants.NAVIGATION)
 
 
+
         vehiclesViewModel.historyResponse.observe(viewLifecycleOwner, Observer {
             Log.i("history", it.toString())
+
+
             if (it.data.isNotEmpty()) {
                 it.data.forEach {
                     listOfLatlngs.add(LatLng(it.lat, it.lng))
                 }
 
                 val aiviMapCreator =
-                    AiviMapCreator.AiviMapBuilder(activity).setLatLngs(listOfLatlngs.distinct())
+                    AiviMapCreator.AiviMapBuilder(activity)
+                        .setLatLngs(listOfLatlngs.distinct())
                         .setSpecificLatLng(LatLng(2.2, 2.2))
                         .setSpeed("25").setDevice_mileage("25")
                         .setSDN_mileage("sdnMileage")
@@ -116,7 +128,9 @@ class MapFragment : AiviMapFragment() {
 
                 showPathOfLocationsWithDelay(aiviMapCreator)
             }
+
         })
+
 
         vehiclesViewModel.errorResponse.observe(viewLifecycleOwner, Observer {
             Log.i("history", it)

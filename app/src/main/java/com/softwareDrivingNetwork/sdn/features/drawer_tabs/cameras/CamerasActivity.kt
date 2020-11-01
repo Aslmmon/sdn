@@ -29,6 +29,7 @@ class CamerasActivity : BaseActivity() {
         })
 
         vehiclesViewModel.errorResponse.observe(this, Observer {
+            dismissProgressDialog()
             Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
         })
     }

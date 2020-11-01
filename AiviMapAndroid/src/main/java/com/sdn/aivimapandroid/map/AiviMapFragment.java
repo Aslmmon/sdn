@@ -5,6 +5,8 @@ import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +30,10 @@ import com.google.gson.Gson;
 import com.sdn.aivimapandroid.R;
 import com.sdn.aivimapandroid.map.custom.CustomWindowMarker;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * created by Aslm on 18/10/2020 ..
@@ -55,19 +60,14 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
     private LatLng currentLatLngFromServer;
     private Polyline startPolyline;
     private Polyline endPolyline;
-//    private TextView title;
-//    private TextView speed;
-//    private TextView date;
-//    private TextView location;
+    final Handler handler = new Handler();
+    TimerTask timerTask;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, null, false);
-//        title = view.findViewById(R.id.tv_name);
-//        speed = view.findViewById(R.id.tv_speed);
-//        date = view.findViewById(R.id.tv_date);
-//        location = view.findViewById(R.id.tv_location);
 
         SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.map);
         if (mapFragment != null) {
@@ -93,6 +93,57 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
                 return false;
             }
         });
+    }
+
+
+    /**
+     * This is with Delay
+     * This function is the core of the module in which
+     * list of latlngs are passed ,, and then processing
+     * of animating camera , adding marker to start , and update the location from websocket ..
+     * need to be run on UI thread ..
+     */
+    public void showPathOfLocationsWithDelay(final AiviMapCreator aiviMapCreator) {
+
+        final List<LatLng> list = aiviMapCreator.getListLocation();
+        final List<LatLng> neededList = new ArrayList();
+        final Handler handler = new Handler();
+        final Timer t = new Timer();
+
+        t.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                for (int i = 0; i < list.size(); i++) {
+                    try {
+                        //Sleep will suspend your Thread for 500 miliseconds and resumes afterwards
+                        Thread.sleep(2500);
+                    } catch (InterruptedException e) {
+                        Log.e("errror", e.getLocalizedMessage());
+                    }
+                    neededList.add(list.get(i));
+                    System.out.println("Hello World " + neededList.toString());
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (neededList.size() > 0) {
+                                animateCameraToSpecificLatLngBounds(neededList);
+                                setDrawToLinePolygon(neededList);
+                                originMarker = addOriginDestinationMarkerAndGet(new LatLng(neededList.get(0).latitude, neededList.get(0).longitude));
+                                originMarker.setAnchor(0.5f, 0.5f);
+                                Log.i("list", neededList.toString());
+                                Gson gson = new Gson();
+                                final String markerInfoString = gson.toJson(aiviMapCreator);
+                                for (int j = 0; j < neededList.size(); j++) {
+                                    moveUnit(new LatLng(neededList.get(j).latitude, neededList.get(j).longitude), markerInfoString);
+                                }
+                            }
+
+                        }
+                    });
+
+                }
+            }
+        }, 0, 5000);
     }
 
 
@@ -186,6 +237,7 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
          *
          */
 
+
         if (movingCabMarker == null) {
             movingCabMarker = addUnit(latlng);
         }
@@ -194,6 +246,7 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
             previousLatLngFromServer = currentLatLngFromServer;
             postionUnit(currentLatLngFromServer, markerInfoString);
             animateCamera(currentLatLngFromServer);
+
         } else {
             previousLatLngFromServer = currentLatLngFromServer;
             currentLatLngFromServer = latlng;
@@ -238,7 +291,8 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
-    public void showCurrentLocationOnMap(final LatLng currentLatLngFromServer, final AiviMapCreator aiviMapCreator) {
+    public void showCurrentLocationOnMap(final LatLng currentLatLngFromServer,
+                                         final AiviMapCreator aiviMapCreator) {
         /**
          * used to animate camera to specific Latlng location
          */
