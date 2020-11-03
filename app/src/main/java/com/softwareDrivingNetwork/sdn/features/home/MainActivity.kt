@@ -3,6 +3,7 @@ package com.softwareDrivingNetwork.sdn.features.home
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout.SimpleDrawerListener
 import androidx.navigation.Navigation.findNavController
@@ -49,7 +50,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         val navController = findNavController(this, R.id.nav_host_fragment)
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.cameraVehicleChooser, R.id.nav_live_track
+                R.id.cameraVehicleChooser, R.id.nav_live_track,R.id.historyFragment
             )
         )
         // NavigationUI.setupActionBarWithNavController(this, navController)
@@ -107,7 +108,13 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         if (!item.isChecked) {
             when (item.itemId) {
 
-                R.id.nav_live_track -> findNavController(R.id.nav_host_fragment).navigate(R.id.goToCameraVehicle)
+
+                R.id.nav_live_track -> {
+                    if (findNavController(R.id.nav_host_fragment).currentDestination?.id != R.id.nav_live_track) {
+                        findNavController(R.id.nav_host_fragment).navigate(R.id.goToCameraVehicle)
+                    }
+
+                }
 
                 R.id.nav_history_track -> {
                     findNavController(R.id.nav_host_fragment).navigate(R.id.goToHistory)
@@ -127,6 +134,12 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         closeDrawer()
         return true
     }
+
+    override fun onSupportNavigateUp(): Boolean {
+        val navController = this.findNavController(R.id.nav_host_fragment)
+        return navController.navigateUp()
+    }
+
 
     private fun closeDrawer() {
         drawer_layout.closeDrawer(GravityCompat.START)
