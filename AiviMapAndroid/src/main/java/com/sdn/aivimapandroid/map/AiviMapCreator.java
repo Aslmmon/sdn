@@ -15,6 +15,7 @@ public class AiviMapCreator {
     private String id = "124";
     private final String date;
     private final LatLng specificLatLng;
+    private final int playSpeed;
 
     private AiviMapCreator(AiviMapBuilder builder) {
         this.listLocation = builder.listneeded;
@@ -24,6 +25,7 @@ public class AiviMapCreator {
         this.id = builder.id;
         this.date = builder.date;
         this.specificLatLng = builder.specificLatLng;
+        this.playSpeed = builder.playSpeed;
 
 
     }
@@ -56,12 +58,17 @@ public class AiviMapCreator {
         return specificLatLng;
     }
 
+    public int getPlaySpeed() {
+        return playSpeed;
+    }
+
     public static class AiviMapBuilder {
         private String snd_mileage="";
         private String device_mileage ="";
         private String id ="";
         private String date="";
         private String speed="";
+        private int playSpeed = 1;
         private LatLng specificLatLng= new LatLng(0.2,0.0);
 
         private Context context;
@@ -98,6 +105,10 @@ public class AiviMapCreator {
 
         public AiviMapBuilder setDevice_mileage(String device_mileage) {
             this.device_mileage = device_mileage;
+            return this;
+        }
+        public AiviMapBuilder setPlaySpeed(int playSpeed) {
+            this.playSpeed=playSpeed;
             return this;
         }
 

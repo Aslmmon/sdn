@@ -2,7 +2,6 @@ package com.softwareDrivingNetwork.sdn.features.home.fragments
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import java.sql.Time
 
 class SharedViewModel : ViewModel() {
     val selected = MutableLiveData<CameraLocation>()
@@ -25,4 +24,9 @@ class SharedViewModel : ViewModel() {
 }
 
 data class CameraLocation(var lat: Double?=null, var long: Double?=null,var id:String?=null)
-data class TimeStart(var startTime:String?=null, var endTime: String?=null)
+data class TimeStart(
+    var startTime: String? = null,
+    var endTime: String? = null,
+    var playSpeed: Int? = null,
+    val minimumSpeed: Int? =null
+)

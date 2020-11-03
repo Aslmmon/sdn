@@ -55,12 +55,9 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
     private Marker movingCabMarker;
     private LatLng previousLatLngFromServer;
     private LatLng currentLatLngFromServer;
-    private Polyline startPolyline;
     private Polyline endPolyline;
-    private static TimerTask timerTask;
-    private static Timer timer;
-    private static Thread timerThread;
-    private volatile boolean running = true;
+    private  static Handler taskHandler;
+    private int counter2 = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -75,9 +72,6 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
     }
 
 
-    private void terminate() {
-        running = false;
-    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -108,70 +102,48 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
     public void showPathOfLocationsWithDelay(final AiviMapCreator aiviMapCreator) {
 
         final List<LatLng> list = aiviMapCreator.getListLocation();
-        final List<LatLng> neededList = new ArrayList();
+        taskHandler = new Handler();
+        final int playSpeed = aiviMapCreator.getPlaySpeed();
+        final ArrayList<LatLng> neededList = new ArrayList();
 
-        timerThread = new Thread() {
-            @Override
+        Runnable repeatativeTaskRunnable = new Runnable() {
             public void run() {
-                while (running && !isInterrupted()) {
-
-                    for (int i = 0; i < list.size(); i++) {
-                        neededList.add(list.get(i));
-                        Log.i("timer", "hello From timer");
-                        if (getActivity() != null) {
-                            requireActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    if (neededList.size() > 0) {
-                                        animateCameraToSpecificLatLngBounds(neededList);
-                                        setDrawToLinePolygon(neededList);
-                                        originMarker = addOriginDestinationMarkerAndGet(new LatLng(neededList.get(0).latitude, neededList.get(0).longitude));
-                                        originMarker.setAnchor(0.5f, 0.5f);
-                                        Log.i("list", neededList.toString());
-                                        Gson gson = new Gson();
-                                        final String markerInfoString = gson.toJson(aiviMapCreator);
-                                        for (int j = 0; j < neededList.size(); j++) {
-                                            moveUnit(new LatLng(neededList.get(j).latitude, neededList.get(j).longitude), markerInfoString);
-                                        }
-                                    }
-
+                counter2++;
+                neededList.add(list.get(counter2));
+                Log.i("timer", "hello From timer" + String.valueOf(counter2));
+                if (getActivity() != null) {
+                    requireActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (neededList.size() > 0) {
+                                animateCameraToSpecificLatLngBounds(neededList);
+                                setDrawToLinePolygon(neededList);
+                                originMarker = addOriginDestinationMarkerAndGet(new LatLng(neededList.get(0).latitude, neededList.get(0).longitude));
+                                originMarker.setAnchor(0.5f, 0.5f);
+                                Log.i("list", neededList.toString());
+                                Gson gson = new Gson();
+                                final String markerInfoString = gson.toJson(aiviMapCreator);
+                                for (int j = 0; j < neededList.size(); j++) {
+                                    moveUnit(new LatLng(neededList.get(j).latitude, neededList.get(j).longitude), markerInfoString);
                                 }
-                            });
-                        }
-                        sleepForSeconds(this);
+                            }
 
-                    }
+                        }
+                    });
                 }
+                taskHandler.postDelayed(this, 10000 / playSpeed);
+
             }
         };
-        timerThread.start();
+        taskHandler.postDelayed(repeatativeTaskRunnable, 0);
+
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        timerThread.interrupt();
-    }
-
-    private void sleepForSeconds(Thread thread) {
-        try {
-            //Sleep will suspend your Thread for 500 miliseconds and resumes afterwards
-            TimeUnit.MILLISECONDS.sleep(5000);
-        } catch (Exception e) {
-            terminate();
-            Log.i("errror", String.valueOf(e.getMessage()));
-        }
-    }
 
     @Override
     public void onStop() {
         super.onStop();
-        if (timerThread != null) {
-            timerThread.interrupt();
-            terminate();
-            Log.i("timer", "Thread successfully stopped.");
-
-        }
+        taskHandler.removeCallbacksAndMessages(null);
 
     }
 
@@ -240,7 +212,6 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
             LatLngBounds bounds = builder.build();
             mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 2));
         }
-
     }
 
     private Marker addOriginDestinationMarkerAndGet(LatLng latlng) {

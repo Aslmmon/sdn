@@ -68,6 +68,8 @@
     <string name="from_title">From</string>
     <string name="to_title">To</string>
     <string name="start_title">Start</string>
+    <string name="play_speed_title">Play Speed</string>
+    <string name="min_speed_title">Min Speed</string>
 
     <string-array name="cameras_array">
         <item>Camera</item>

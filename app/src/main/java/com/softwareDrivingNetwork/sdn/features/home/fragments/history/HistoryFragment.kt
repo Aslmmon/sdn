@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
@@ -15,20 +16,21 @@ import androidx.navigation.fragment.findNavController
 import com.softwareDrivingNetwork.sdn.R
 import com.softwareDrivingNetwork.sdn.common.BaseFragment
 import com.softwareDrivingNetwork.sdn.common.Constants
-import com.softwareDrivingNetwork.sdn.features.drawer_tabs.vehicles.VehiclesViewModel
 import com.softwareDrivingNetwork.sdn.features.home.fragments.SharedViewModel
 import com.softwareDrivingNetwork.sdn.features.home.fragments.TimeStart
 import com.softwareDrivingNetwork.sdn.features.home.fragments.live_tracking.liveTracking
 import kotlinx.android.synthetic.main.fragment_history.*
-import org.koin.android.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
 
 class HistoryFragment : BaseFragment() {
 
-    lateinit var startDate:String
-    lateinit var endDate:String
+    lateinit var startDate: String
+    lateinit var endDate: String
+    var playSpeed: Int? = null
+    var minimumSpeed: Int? = null
+
     private val model: SharedViewModel by activityViewModels()
 
 
@@ -58,17 +60,21 @@ class HistoryFragment : BaseFragment() {
         ed_to_date.setOnClickListener {
             openDataPicker("2")
         }
-
-
-        tv_start.setOnClickListener {
-//            val startTime = ed_date.text.toString()
-//            val endTime = ed_to_date.text.toString()
-            val itemStart = TimeStart(startDate,endDate)
-            model.shareTime(itemStart)
-            val bundle = bundleOf(Constants.NAVIGATION to Constants.FROM_HISTORY_TRACKING_TAB)
-            findNavController().navigate(R.id.goToLiveTracking,bundle)
+        slider.addOnChangeListener { slider, value, fromUser ->
+            playSpeed = value.toInt()
+            Toast.makeText(activity, playSpeed.toString() , Toast.LENGTH_SHORT).show()
+        }
+        min_speed_slider.addOnChangeListener { slider, value, fromUser ->
+            minimumSpeed = value.toInt()
+            Toast.makeText(activity, minimumSpeed.toString() , Toast.LENGTH_SHORT).show()
         }
 
+        tv_start.setOnClickListener {
+            val itemStart = TimeStart(startDate, endDate, playSpeed,minimumSpeed)
+            model.shareTime(itemStart)
+            val bundle = bundleOf(Constants.NAVIGATION to Constants.FROM_HISTORY_TRACKING_TAB)
+            findNavController().navigate(R.id.goToLiveTracking, bundle)
+        }
 
 
     }
@@ -89,14 +95,14 @@ class HistoryFragment : BaseFragment() {
                     "1" -> {
                         ed_date.setText(sdf.format(cal.time))
                         startDate = format.format(cal.time)
-                        Log.i("date",startDate)
+                        Log.i("date", startDate)
                         openTimePicker("1")
 
                     }
                     "2" -> {
                         ed_to_date.setText(sdf.format(cal.time))
                         endDate = format.format(cal.time)
-                        Log.i("date",endDate)
+                        Log.i("date", endDate)
                         openTimePicker("2")
                     }
                 }
@@ -137,9 +143,6 @@ class HistoryFragment : BaseFragment() {
 
     override fun provideLayout(): Int = R.layout.fragment_history
 
-    private fun convertToDate(dateNew: String) {
-
-    }
 }
 
 

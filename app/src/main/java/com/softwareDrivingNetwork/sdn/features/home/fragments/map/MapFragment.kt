@@ -53,13 +53,11 @@ class MapFragment : AiviMapFragment() {
     var gson = Gson()
     private val model: SharedViewModel by activityViewModels()
     private val vehiclesViewModel: VehiclesViewModel by viewModel()
-    lateinit var mainHandler: Handler
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         userObject = createUserObject()
-        mainHandler = Handler(Looper.getMainLooper())
 
     }
 
@@ -80,7 +78,6 @@ class MapFragment : AiviMapFragment() {
         model.timeListener.observe(viewLifecycleOwner, Observer {
             timeStart = it
 
-
             when (argumentsRecieved) {
                 Constants.FROM_HISTORY_TRACKING_TAB -> {
 
@@ -88,6 +85,7 @@ class MapFragment : AiviMapFragment() {
                         getStringifiedDataForHistoryTracking(
                             timeStart?.startTime.toString(),
                             timeStart?.endTime.toString(),
+                            timeStart?.minimumSpeed!!,
                             unitId!!
                         )!!
                     )
@@ -120,10 +118,7 @@ class MapFragment : AiviMapFragment() {
                 val aiviMapCreator =
                     AiviMapCreator.AiviMapBuilder(activity)
                         .setLatLngs(listOfLatlngs.distinct())
-                        .setSpeed("25").setDevice_mileage("25")
-                        .setSDN_mileage("sdnMileage")
-                        .setId("objectId")
-                        .setDate("date").build()
+                        .setPlaySpeed(timeStart?.playSpeed ?: 1).build()
 
                 showPathOfLocationsWithDelay(aiviMapCreator)
             }
@@ -269,11 +264,10 @@ class MapFragment : AiviMapFragment() {
     fun getStringifiedDataForHistoryTracking(
         startTime: String,
         endTime: String,
+        minimumSpeed:Int,
         objectId: String
     ): String? {
-//        val df1: DateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
-//        val result1: Date = df1.parse(startTime)
-//        val result2: Date = df1.parse(endTime)
+
 
         val signInBody = SignInBody(
             token = getUserData()?.token,
@@ -284,7 +278,7 @@ class MapFragment : AiviMapFragment() {
             objectids = mutableListOf(objectId),
             start = 0,
             limit = 500,
-            min_speed = 0
+            min_speed = minimumSpeed
         )
         return stringify(signInBody)
     }
