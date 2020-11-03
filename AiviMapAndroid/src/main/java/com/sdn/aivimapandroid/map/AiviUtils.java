@@ -57,8 +57,11 @@ public class AiviUtils {
 
     public static String splitDate(String word, String character) {
         String[] words = word.split(character);
-        String[] word2 = words[1].split("\\.");
-        return words[0] + " " + word2[0];
+        if (words.length > 0 && words[0].contains(".")) {
+            String[] word2 = words[1].split("\\.");
+            return words[0] + " " + word2[0];
+        } else
+            return words[0];
     }
 
     public static String getCompleteAddressString(Context context, double LATITUDE, double LONGITUDE) {
@@ -75,7 +78,7 @@ public class AiviUtils {
                 }
                 strAdd = strReturnedAddress.toString();
             } else {
-                Log.i("address","address not found");
+                Log.i("address", "address not found");
             }
         } catch (Exception e) {
             e.printStackTrace();

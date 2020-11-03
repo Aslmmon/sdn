@@ -120,7 +120,6 @@ class MapFragment : AiviMapFragment() {
                 val aiviMapCreator =
                     AiviMapCreator.AiviMapBuilder(activity)
                         .setLatLngs(listOfLatlngs.distinct())
-                        .setSpecificLatLng(LatLng(2.2, 2.2))
                         .setSpeed("25").setDevice_mileage("25")
                         .setSDN_mileage("sdnMileage")
                         .setId("objectId")
