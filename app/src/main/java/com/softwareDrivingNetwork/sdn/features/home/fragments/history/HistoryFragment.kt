@@ -33,7 +33,7 @@ class HistoryFragment : BaseFragment() {
     lateinit var startDate: String
     lateinit var endDate: String
     var playSpeed: Int? = null
-    var minimumSpeed: Int? = null
+    var minimumSpeed: Int = 0
 
     private val model: SharedViewModel by activityViewModels()
 
@@ -74,6 +74,7 @@ class HistoryFragment : BaseFragment() {
         }
 
         tv_start.setOnClickListener {
+            if (!::startDate.isInitialized || !::endDate.isInitialized) return@setOnClickListener
             val itemStart = TimeStart(startDate, endDate, playSpeed, minimumSpeed)
             model.shareTime(itemStart)
             val bundle = bundleOf(Constants.NAVIGATION to Constants.FROM_HISTORY_TRACKING_TAB)
