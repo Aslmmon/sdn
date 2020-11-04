@@ -17,5 +17,7 @@ object Constants {
     const val NAVIGATION = "0"
 
     const val OPEN_HISTORY_FRAGMENT = "remove_send"
+    const val FROM_EDIT_TEXT = "from_edit_text"
+    const val TO_EDIT_TEXT = "to_edit_text"
 
 }

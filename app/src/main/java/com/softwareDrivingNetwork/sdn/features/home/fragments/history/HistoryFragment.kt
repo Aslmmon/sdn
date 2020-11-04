@@ -1,14 +1,16 @@
 package com.softwareDrivingNetwork.sdn.features.home.fragments.history
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
@@ -16,10 +18,11 @@ import androidx.navigation.fragment.findNavController
 import com.softwareDrivingNetwork.sdn.R
 import com.softwareDrivingNetwork.sdn.common.BaseFragment
 import com.softwareDrivingNetwork.sdn.common.Constants
+import com.softwareDrivingNetwork.sdn.common.Constants.FROM_EDIT_TEXT
+import com.softwareDrivingNetwork.sdn.common.Constants.TO_EDIT_TEXT
 import com.softwareDrivingNetwork.sdn.features.home.fragments.SharedViewModel
 import com.softwareDrivingNetwork.sdn.features.home.fragments.TimeStart
 import com.softwareDrivingNetwork.sdn.features.home.fragments.live_tracking.liveTracking
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_history.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -55,23 +58,23 @@ class HistoryFragment : BaseFragment() {
 
         hideBackbutton()
 
-        ed_date.setOnClickListener {
-            openDataPicker("1")
+        ed_from_date.setOnClickListener {
+            openDatePicker(FROM_EDIT_TEXT)
         }
         ed_to_date.setOnClickListener {
-            openDataPicker("2")
+            openDatePicker(TO_EDIT_TEXT)
         }
         slider.addOnChangeListener { slider, value, fromUser ->
             playSpeed = value.toInt()
-            Toast.makeText(activity, playSpeed.toString() , Toast.LENGTH_SHORT).show()
+            Toast.makeText(activity, playSpeed.toString(), Toast.LENGTH_SHORT).show()
         }
         min_speed_slider.addOnChangeListener { slider, value, fromUser ->
             minimumSpeed = value.toInt()
-            Toast.makeText(activity, minimumSpeed.toString() , Toast.LENGTH_SHORT).show()
+            Toast.makeText(activity, minimumSpeed.toString(), Toast.LENGTH_SHORT).show()
         }
 
         tv_start.setOnClickListener {
-            val itemStart = TimeStart(startDate, endDate, playSpeed,minimumSpeed)
+            val itemStart = TimeStart(startDate, endDate, playSpeed, minimumSpeed)
             model.shareTime(itemStart)
             val bundle = bundleOf(Constants.NAVIGATION to Constants.FROM_HISTORY_TRACKING_TAB)
             findNavController().navigate(R.id.goToLiveTracking, bundle)
@@ -80,7 +83,7 @@ class HistoryFragment : BaseFragment() {
 
     }
 
-    private fun openDataPicker(type: String) {
+    private fun openDatePicker(type: String) {
         val cal = Calendar.getInstance()
 
         val dateSetListener =
@@ -92,32 +95,41 @@ class HistoryFragment : BaseFragment() {
                 val myFormat = "dd.MM.yyyy" // mention the format you need
                 val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
-                when (type) {
-                    "1" -> {
-                        ed_date.setText(sdf.format(cal.time))
-                        startDate = format.format(cal.time)
-                        Log.i("date", startDate)
-                        openTimePicker("1")
+                setDataToEditText(sdf, cal, format, type)
 
-                    }
-                    "2" -> {
-                        ed_to_date.setText(sdf.format(cal.time))
-                        endDate = format.format(cal.time)
-                        Log.i("date", endDate)
-                        openTimePicker("2")
-                    }
-                }
                 return@OnDateSetListener
             }
         val datePicker = DatePickerDialog(
-            requireActivity(), dateSetListener,
+            requireActivity(), R.style.datepicker, dateSetListener,
             cal.get(Calendar.YEAR),
             cal.get(Calendar.MONTH),
             cal.get(Calendar.DAY_OF_MONTH)
         )
         datePicker.datePicker.maxDate = System.currentTimeMillis()
+
         datePicker.show()
 
+
+    }
+
+    private fun setDataToEditText(
+        sdf: SimpleDateFormat,
+        cal: Calendar,
+        format: SimpleDateFormat,
+        type: String
+    ) {
+        when (type) {
+            FROM_EDIT_TEXT -> {
+                ed_from_date.setText(sdf.format(cal.time))
+                startDate = format.format(cal.time)
+                openTimePicker(FROM_EDIT_TEXT)
+            }
+            TO_EDIT_TEXT -> {
+                ed_to_date.setText(sdf.format(cal.time))
+                endDate = format.format(cal.time)
+                openTimePicker(TO_EDIT_TEXT)
+            }
+        }
 
     }
 
@@ -128,13 +140,14 @@ class HistoryFragment : BaseFragment() {
             cal.set(Calendar.HOUR_OF_DAY, hour)
             cal.set(Calendar.MINUTE, minute)
             when (timer) {
-                "1" -> ed_date.append(" " + SimpleDateFormat("hh:mm a").format(cal.time))
-                "2" -> ed_to_date.append(" " + SimpleDateFormat("hh:mm a").format(cal.time))
+                FROM_EDIT_TEXT -> ed_from_date.append(" " + SimpleDateFormat("hh:mm a").format(cal.time))
+                TO_EDIT_TEXT -> ed_to_date.append(" " + SimpleDateFormat("hh:mm a").format(cal.time))
             }
 
         }
         TimePickerDialog(
             requireActivity(),
+            R.style.datepicker,
             timeSetListener,
             cal.get(Calendar.HOUR_OF_DAY),
             cal.get(Calendar.MINUTE),

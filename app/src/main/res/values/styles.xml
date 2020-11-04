@@ -7,22 +7,33 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
+
         <item name="android:windowTitleStyle">@style/DialogTheme</item>
 
 
-
     </style>
 
-    <style name="AppBottomSheetDialogTheme"
-        parent="Theme.Design.Light.BottomSheetDialog">
+
+    <style name="datepicker" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="colorControlActivated">@color/colorAccent</item> <!--color of chosen day -->
+        <item name="android:textColorPrimary">@color/colorPrimary</item> <!--days of the month-->
+        <item name="android:textColorSecondary">@color/colorPrimary
+        </item>    <!--days of the week-->
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:buttonBarPositiveButtonStyle">@style/DatePickerButtonStyle</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/DatePickerButtonStyle</item>
+    </style>
+
+    <style name="DatePickerButtonStyle" parent="Base.Widget.AppCompat.Button.Borderless">
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="AppBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="android:windowSoftInputMode">adjustResize</item>
         <item name="android:windowIsFloating">false</item>
-    </style>
-
-    <style name="MaterialCalendarTheme" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
-        <!-- just override the colors used in the default style -->
-        <item name="colorOnPrimary">@color/colorPrimary</item>
-        <item name="colorPrimary">@color/colorPrimary</item>
     </style>
 
 
@@ -52,17 +63,17 @@
     <style name="Theme.MyAwesomeApp.Pink" parent="AppTheme">
         <item name="colorPrimary">@color/pink</item>
     </style>
+
     <style name="Theme.MyAwesomeApp.Blue" parent="AppTheme">
         <item name="colorPrimary">@color/colorPrimary</item>
     </style>
 
 
     <style name="CustomActionBar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-    <item name="android:windowActionBarOverlay">true</item>
-    <!-- Support library compatibility -->
-    <item name="windowActionBarOverlay">true</item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <!-- Support library compatibility -->
+        <item name="windowActionBarOverlay">true</item>
     </style>
-
 
 
     <!-- Other Themes -->
@@ -70,6 +81,7 @@
     <style name="CustomDialogTheme">
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
+
     <style name="noActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:windowFullscreen">true</item>
         <item name="windowActionBar">false</item>
@@ -97,7 +109,7 @@
         <item name="textAllCaps">false</item>
     </style>
 
-    <style name="navigationTheme"/>
+    <style name="navigationTheme" />
 
     <style name="headerStyleText">
         <item name="android:layout_width">wrap_content</item>
