@@ -21,7 +21,11 @@
         <action
             android:id="@+id/goToHistory"
             app:destination="@id/historyFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
             app:launchSingleTop="true"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
             app:popUpTo="@id/historyFragment"
             app:popUpToInclusive="true" />
     </fragment>
@@ -38,6 +42,10 @@
         <action
             android:id="@+id/goToCameraVehicle"
             app:destination="@id/cameraVehicleChooser"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
             app:popUpTo="@id/cameraVehicleChooser"
             app:popUpToInclusive="true" />
         <action

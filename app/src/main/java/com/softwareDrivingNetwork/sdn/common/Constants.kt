@@ -16,4 +16,6 @@ object Constants {
     const val FROM_HISTORY_TRACKING_TAB = "2"
     const val NAVIGATION = "0"
 
+    const val OPEN_HISTORY_FRAGMENT = "remove_send"
+
 }

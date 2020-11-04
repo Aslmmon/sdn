@@ -110,7 +110,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
 
                 R.id.nav_live_track -> {
-                    if (findNavController(R.id.nav_host_fragment).currentDestination?.id != R.id.nav_live_track) {
+                    if (findNavController(R.id.nav_host_fragment).currentDestination?.id == R.id.historyFragment) {
                         findNavController(R.id.nav_host_fragment).navigate(R.id.goToCameraVehicle)
                     }
 

@@ -56,7 +56,7 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
     private LatLng previousLatLngFromServer;
     private LatLng currentLatLngFromServer;
     private Polyline endPolyline;
-    private  static Handler taskHandler;
+    private static Handler taskHandler;
     private int counter2 = 0;
 
     @Override
@@ -70,7 +70,6 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
         }
         return view;
     }
-
 
 
     @Override
@@ -143,7 +142,7 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onStop() {
         super.onStop();
-        taskHandler.removeCallbacksAndMessages(null);
+        if (taskHandler != null) taskHandler.removeCallbacksAndMessages(null);
 
     }
 

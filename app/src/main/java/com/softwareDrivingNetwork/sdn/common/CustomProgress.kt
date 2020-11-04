@@ -47,6 +47,7 @@ class CustomProgress() {
         dialog?.setCancelable(false)
         dialog?.show()
 
+
         return dialog!!
     }
 

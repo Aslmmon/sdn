@@ -1,9 +1,10 @@
 package com.softwareDrivingNetwork.sdn.features.home.fragments.live_tracking
 
-import android.app.Activity
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
@@ -14,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import com.softwareDrivingNetwork.sdn.R
 import com.softwareDrivingNetwork.sdn.common.BaseFragment
 import com.softwareDrivingNetwork.sdn.common.Constants
+import com.softwareDrivingNetwork.sdn.common.Constants.OPEN_HISTORY_FRAGMENT
 import com.softwareDrivingNetwork.sdn.common.setSafeOnClickListener
 import com.softwareDrivingNetwork.sdn.features.drawer_tabs.vehicles.VehiclesViewModel
 import com.softwareDrivingNetwork.sdn.features.home.fragments.CameraLocation
@@ -24,13 +26,11 @@ import com.softwareDrivingNetwork.sdn.features.home.fragments.live_tracking.bott
 import com.softwareDrivingNetwork.sdn.models.general.common.CommonModel
 import com.softwareDrivingNetwork.sdn.models.general.common.VehiclesData
 import com.softwareDrivingNetwork.sdn.models.general.groups.GroupsData
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_camera_vehicle_chooser.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
-class liveTracking() : BaseFragment(),
-    AdapterView.OnItemSelectedListener {
+class liveTracking() : BaseFragment() {
 
     lateinit var commonAdapter: CommonAdapter
     lateinit var cameraLocation: CameraLocation
@@ -38,11 +38,13 @@ class liveTracking() : BaseFragment(),
     var CommonList = mutableListOf<CommonModel>()
     private val vehiclesViewModel: VehiclesViewModel by viewModel()
     private val model: SharedViewModel by activityViewModels()
+    private var isDefaultSelection = false
+
 
     companion object {
         fun newInstance(remove: Int): liveTracking {
             val args = Bundle()
-            args.putInt("remove", remove)
+            args.putInt(OPEN_HISTORY_FRAGMENT, remove)
             val fragment = liveTracking()
             fragment.arguments = args
             return fragment
@@ -53,9 +55,10 @@ class liveTracking() : BaseFragment(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val bundle = this.arguments
+        isDefaultSelection = true
 
         if (bundle != null) {
-            val myInt = bundle.getInt("remove", 0)
+            val myInt = bundle.getInt(OPEN_HISTORY_FRAGMENT, 0)
             if (myInt == 1) btn_submit.visibility = View.GONE
         }
 
@@ -79,8 +82,7 @@ class liveTracking() : BaseFragment(),
 
         model.searchString.observe(viewLifecycleOwner, Observer { searchItem ->
             val searchedList = CommonList.filter { it.name.contains(searchItem) }.distinct()
-            commonAdapter.submitList(searchedList)
-            commonAdapter.notifyDataSetChanged()
+            submitNewFilterdList(searchedList)
         })
 
 
@@ -102,7 +104,8 @@ class liveTracking() : BaseFragment(),
         })
 
 
-        vehiclesViewModel.vehiclesResponse.observe(viewLifecycleOwner, Observer {
+        vehiclesViewModel.vehiclesResponse.observe(viewLifecycleOwner, {
+            dismissProgressDialog()
             val newData = it.data.map { data ->
                 CommonModel(
                     data.gpsUnitid,
@@ -128,7 +131,11 @@ class liveTracking() : BaseFragment(),
             if (cameraLocation.lat != null) {
                 val bundle = bundleOf(Constants.NAVIGATION to Constants.FROM_LIVE_TRACKNG_TAB)
                 findNavController().navigate(R.id.goToLiveTrack, bundle)
-            } else Toast.makeText(activity, "choose Camera or Vehicle Please", Toast.LENGTH_SHORT)
+            } else Toast.makeText(
+                activity,
+                "choose Camera or Vehicle Please",
+                Toast.LENGTH_SHORT
+            )
                 .show()
         }
 
@@ -146,8 +153,34 @@ class liveTracking() : BaseFragment(),
             ) {
                 val itemClicked = parent?.getItemAtPosition(position) as GroupsData
                 val newList = CommonList.filter { it -> it.groupName == itemClicked.group_name }
-                commonAdapter.submitList(newList)
-                commonAdapter.notifyDataSetChanged()
+                submitNewFilterdList(newList)
+
+            }
+        }
+
+
+        spinner_cameras.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+
+            }
+
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                p3: Long
+            ) {
+
+                when (position) {
+                    0 -> {
+                        getCameraLists()
+                        isDefaultSelection = true
+                    }
+                    1 -> if (isDefaultSelection) {
+                        getVehicles()
+                        isDefaultSelection = false
+                    }
+                }
 
             }
         }
@@ -168,6 +201,11 @@ class liveTracking() : BaseFragment(),
             dismissProgressDialog()
             commonAdapter.submitList(CommonList)
         }
+        commonAdapter.notifyDataSetChanged()
+    }
+
+    private fun submitNewFilterdList(it: List<CommonModel>) {
+        commonAdapter.submitList(it)
         commonAdapter.notifyDataSetChanged()
     }
 
@@ -193,17 +231,16 @@ class liveTracking() : BaseFragment(),
                 spinner_cameras.adapter = adapter
             }
         }
-        spinner_cameras.onItemSelectedListener = this
-
 
     }
 
     private fun getCameraLists() {
-        //  showProgress()
+        showProgress()
         vehiclesViewModel.getCameraList(getStringifiedData()!!)
     }
 
     private fun getVehicles() {
+        showProgress()
         Log.i("data", "vehicle")
         vehiclesViewModel.getVehiclersList(getStringifiedData()!!)
     }
@@ -221,18 +258,6 @@ class liveTracking() : BaseFragment(),
     }
 
     override fun provideLayout() = R.layout.fragment_camera_vehicle_chooser
-
-
-    override fun onNothingSelected(parent: AdapterView<*>?) {
-
-    }
-
-    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        when (position) {
-            0 -> getCameraLists()
-            1 -> getVehicles()
-        }
-    }
 
 
 }
