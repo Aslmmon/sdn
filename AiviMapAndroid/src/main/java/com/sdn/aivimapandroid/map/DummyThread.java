@@ -5,7 +5,7 @@ public class DummyThread implements Runnable {
 
     @Override
     public void run() {
-        value = 2;
+        value = 0;
     }
 
     public int getValue() {

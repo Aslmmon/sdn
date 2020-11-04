@@ -264,7 +264,7 @@ class MapFragment : AiviMapFragment() {
     fun getStringifiedDataForHistoryTracking(
         startTime: String,
         endTime: String,
-        minimumSpeed:Int,
+        minimumSpeed: Int,
         objectId: String
     ): String? {
 
