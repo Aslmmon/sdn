@@ -109,6 +109,7 @@ class MapFragment : AiviMapFragment() {
         vehiclesViewModel.historyResponse.observe(viewLifecycleOwner, Observer {
             Log.i("history", it.toString())
 
+            initialLatlng = LatLng(it.data.get(0).lat, it.data.get(0).lng)
 
             if (it.data.isNotEmpty()) {
                 it.data.forEach {
@@ -195,7 +196,6 @@ class MapFragment : AiviMapFragment() {
             mSocket?.close()
             listenOffFromSockets()
         }
-
         super.onDetach()
     }
 

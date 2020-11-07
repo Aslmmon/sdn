@@ -5,7 +5,6 @@ import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.HandlerThread;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,6 +37,11 @@ import java.util.List;
  */
 
 
+/**
+ *
+ */
+
+
 public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
 
     /**
@@ -54,6 +58,7 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
     private Polyline endPolyline;
     private static Handler taskHandler;
     private int counter2 = 0;
+    private Boolean isFinished;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,6 +68,7 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
         SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.map);
         if (mapFragment != null) {
             mapFragment.getMapAsync(this);
+            isFinished = false;
         }
         return view;
     }
@@ -95,50 +101,49 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
      * need to be run on UI thread ..
      */
     public void showPathOfLocationsWithDelay(final AiviMapCreator aiviMapCreator) {
-
         final List<LatLng> list = aiviMapCreator.getListLocation();
+        taskHandler = new Handler();
         final int playSpeed = aiviMapCreator.getPlaySpeed();
         final ArrayList<LatLng> neededList = new ArrayList();
-        try {
-            counter2 = z();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        taskHandler = new Handler();
+        addFirstMarker(list);
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(list.get(0).latitude, list.get(0).longitude), 15.5f), new GoogleMap.CancelableCallback() {
+            @Override
+            public void onFinish() {
+                isFinished = true;
+                Log.i("map", "finished");
 
-
-        requireActivity().runOnUiThread(new Runnable() {
-            public void run() {
-
-                Log.i("test", String.valueOf(counter2));
-                neededList.add(list.get(counter2++));
-                if (neededList.size() > 0) {
-                    animateCameraToSpecificLatLngBounds(neededList);
-                    setDrawToLinePolygon(neededList);
-                    originMarker = addOriginDestinationMarkerAndGet(new LatLng(neededList.get(0).latitude, neededList.get(0).longitude));
-                    originMarker.setAnchor(0.5f, 0.5f);
-                    Log.i("list", neededList.toString());
-                    Gson gson = new Gson();
-                    final String markerInfoString = gson.toJson(aiviMapCreator);
-                    for (int j = 0; j < neededList.size(); j++) {
-                        moveUnit(new LatLng(neededList.get(j).latitude, neededList.get(j).longitude), "test");
+                requireActivity().runOnUiThread(new Runnable() {
+                    public void run() {
+                        neededList.add(list.get(counter2++));
+                        if (neededList.size() > 0) {
+                            setDrawToLinePolygon(neededList);
+                            Gson gson = new Gson();
+                            String markerInfoString = gson.toJson(aiviMapCreator);
+                            for (int j = 0; j < neededList.size(); j++) {
+                                moveUnit(new LatLng(neededList.get(j).latitude, neededList.get(j).longitude), markerInfoString, playSpeed, true);
+                            }
+                        }
+                        taskHandler.postDelayed(this, 1000 / playSpeed);
                     }
-                }
-                taskHandler.postDelayed(this, 10000 / playSpeed);
+                });
+            }
+
+            @Override
+            public void onCancel() {
+                isFinished = false;
+                Log.i("map", "canceld");
+
             }
         });
 
+
     }
 
-    public int z() throws InterruptedException {
-        DummyThread foo = new DummyThread();
-
-        Thread t = new Thread(foo);
-        t.start();
-        t.join();
-        int value = foo.getValue();
-        return value;
+    private void addFirstMarker(List<LatLng> list) {
+        originMarker = addOriginDestinationMarkerAndGet(new LatLng(list.get(0).latitude, list.get(0).longitude));
+        originMarker.setAnchor(0.5f, 0.5f);
     }
+
 
     @Override
     public void onStop() {
@@ -163,16 +168,12 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
 
                     animateCameraToSpecificLatLngBounds(list);
                     setDrawToLinePolygon(list);
-
-                    originMarker = addOriginDestinationMarkerAndGet(new LatLng(list.get(0).latitude, list.get(0).longitude));
-                    originMarker.setAnchor(0.5f, 0.5f);
-
+                    addFirstMarker(list);
                     Gson gson = new Gson();
                     String markerInfoString = gson.toJson(aiviMapCreator);
-                    //  showPolylineAnimation();
 
                     for (int i = 0; i < list.size(); i++)
-                        moveUnit(new LatLng(list.get(i).latitude, list.get(i).longitude), markerInfoString);
+                        moveUnit(new LatLng(list.get(i).latitude, list.get(i).longitude), markerInfoString, 1, false);
                 }
             }
         });
@@ -210,9 +211,10 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
         }
         if (!builder.build().equals(null)) {
             LatLngBounds bounds = builder.build();
-            mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 2));
-
+            mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 2));
         }
+
+
     }
 
     private Marker addOriginDestinationMarkerAndGet(LatLng latlng) {
@@ -225,14 +227,13 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
     }
 
 
-    private void moveUnit(LatLng latlng, final String markerInfoString) {
+    private void moveUnit(LatLng latlng, final String markerInfoString, int playSpeed, final Boolean fromTracking) {
         /**
          * This function is used to update car location
          * and swap  the latlngs of previous and current ..
          * with animating the camera to the car location
          *
          */
-
 
         if (movingCabMarker == null) {
             movingCabMarker = addUnit(latlng);
@@ -241,12 +242,13 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
             currentLatLngFromServer = latlng;
             previousLatLngFromServer = currentLatLngFromServer;
             postionUnit(currentLatLngFromServer, markerInfoString);
-            animateCamera(currentLatLngFromServer);
+            if (fromTracking) moveCamera(currentLatLngFromServer);
+            else animateCamera(currentLatLngFromServer);
 
         } else {
             previousLatLngFromServer = currentLatLngFromServer;
             currentLatLngFromServer = latlng;
-            ValueAnimator valueAnimator = AiviAnimation.cabAnimator();
+            ValueAnimator valueAnimator = AiviAnimation.cabAnimator(playSpeed, fromTracking);
             valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
@@ -261,7 +263,7 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
                         if (!Double.isNaN(rotation)) {
                             movingCabMarker.setRotation(rotation);
                         }
-                        animateCamera(nextLocation);
+                        if (!fromTracking) animateCamera(nextLocation);
                     }
 
                 }
@@ -272,7 +274,7 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
 
     private void postionUnit(LatLng currentLatLngFromServer, String markerInfoString) {
         movingCabMarker.setPosition(currentLatLngFromServer);
-        // movingCabMarker.setSnippet(markerInfoString);
+        movingCabMarker.setSnippet(markerInfoString);
         movingCabMarker.setAnchor(0.5f, 0.5f);
     }
 
