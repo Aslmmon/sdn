@@ -5,19 +5,17 @@ import android.view.animation.LinearInterpolator;
 
 public class AiviAnimation {
 
-    public static ValueAnimator polyLineAnimator()
-    {
+    public static ValueAnimator polyLineAnimator() {
         ValueAnimator valueAnimator = ValueAnimator.ofInt(0, 100);
         valueAnimator.setInterpolator(new LinearInterpolator());
         valueAnimator.setDuration(2000);
         return valueAnimator;
     }
 
-    public  static ValueAnimator cabAnimator()
-
-    {
+    public static ValueAnimator cabAnimator(int playSpeed, Boolean fromTracking) {
         ValueAnimator valueAnimator = ValueAnimator.ofFloat(0f, 1f);
-        valueAnimator.setDuration(3000);
+        if (fromTracking) valueAnimator.setDuration(1000/playSpeed);
+        else valueAnimator.setDuration(3000);
         valueAnimator.setInterpolator(new LinearInterpolator());
         return valueAnimator;
     }

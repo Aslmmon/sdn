@@ -2,6 +2,7 @@ package com.sdn.aivimapandroid.map;
 
 public class DummyThread implements Runnable {
     private volatile int value;
+    private Boolean flag = true;
 
     @Override
     public void run() {
@@ -9,6 +10,6 @@ public class DummyThread implements Runnable {
     }
 
     public int getValue() {
-        return value;
+        return 0;
     }
 }
