@@ -27,7 +27,7 @@ public class AiviUtils {
         Bitmap bitmap = Bitmap.createBitmap((int) width, (int) height, Bitmap.Config.RGB_565);
         Canvas canvas = new Canvas(bitmap);
         Paint paint = new Paint();
-        paint.setColor(Color.BLACK);
+        paint.setColor(Color.BLUE);
         paint.setStyle(Paint.Style.FILL);
         paint.setAntiAlias(true);
         canvas.drawRect(0F, 0F, width, height, paint);

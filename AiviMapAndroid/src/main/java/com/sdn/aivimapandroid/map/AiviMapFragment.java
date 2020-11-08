@@ -58,15 +58,19 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
     private LatLng previousLatLngFromServer;
     private LatLng currentLatLngFromServer;
     private Polyline endPolyline;
-    private  Handler taskHandler;
+    private Handler taskHandler;
     private int counter = 0;
-    private FloatingActionButton floatingActionButton;
+    private Boolean isLiveTracking = false;
+
+    private FloatingActionButton fab_update_camera;
+    private FloatingActionButton fab_track_;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, null, false);
-        floatingActionButton = view.findViewById(R.id.fab_start_live);
+        fab_update_camera = view.findViewById(R.id.fab_update_camera);
+        fab_track_ = view.findViewById(R.id.fab_track_live);
 
         SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.map);
         if (mapFragment != null) {
@@ -146,18 +150,25 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
 
     private void attachClickListeners(final List<LatLng> list) {
         if (counter < list.size()) {
-            floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            fab_update_camera.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    isLiveTracking = false;
                     if (counter >= list.size()) counter = counter - 2;
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(list.get(counter).latitude, list.get(counter).longitude), 13f));
+                }
+            });
+            fab_track_.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    isLiveTracking = true;
                 }
             });
         }
     }
 
     private void addFirstMarker(List<LatLng> list) {
-        originMarker = addOriginDestinationMarkerAndGet(new LatLng(list.get(0).latitude, list.get(0).longitude));
+        originMarker = addOriginDestinationMarkerAndGet(new LatLng(list.get(counter).latitude, list.get(counter).longitude));
         originMarker.setAnchor(0.5f, 0.5f);
     }
 
@@ -182,7 +193,6 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void run() {
                 if (list.size() > 0) {
-
                     animateCameraToSpecificLatLngBounds(list);
                     setDrawToLinePolygon(list);
                     addFirstMarker(list);
@@ -206,7 +216,6 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
          * another color
          *
          */
-
 
         endPolyline = mMap.addPolyline(new PolylineOptions()
                 .clickable(true)
@@ -252,6 +261,8 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
          *
          */
 
+        if (!fromTracking) hideFabIcons();
+
         if (movingCabMarker == null) {
             movingCabMarker = addUnit(latlng);
         }
@@ -259,7 +270,6 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
             currentLatLngFromServer = latlng;
             previousLatLngFromServer = currentLatLngFromServer;
             if (!fromTracking) postionUnit(currentLatLngFromServer, markerInfoString);
-            if (fromTracking) moveCamera(currentLatLngFromServer);
             else animateCamera(currentLatLngFromServer);
 
         } else {
@@ -280,6 +290,7 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
                         if (!Double.isNaN(rotation)) {
                             movingCabMarker.setRotation(rotation);
                         }
+                        if (fromTracking && isLiveTracking) moveCamera(nextLocation);
                         if (!fromTracking) animateCamera(nextLocation);
                     }
                 }
@@ -292,6 +303,16 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
         movingCabMarker.setPosition(currentLatLngFromServer);
         //  movingCabMarker.setSnippet(markerInfoString);
         movingCabMarker.setAnchor(0.5f, 0.5f);
+    }
+
+    private void hideFabIcons() {
+        fab_track_.setVisibility(View.GONE);
+        fab_update_camera.setVisibility(View.GONE);
+    }
+
+    private void showFabIcons() {
+        fab_track_.setVisibility(View.VISIBLE);
+        fab_update_camera.setVisibility(View.VISIBLE);
     }
 
 
@@ -307,7 +328,7 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
 
     private void moveCamera(LatLng currentLatLngFromServer) {
         /**
-         * used to animate camera to specific Latlng location
+         * used to move camera to specific Latlng location
          */
         CameraPosition.Builder camera = CameraPosition.builder();
         CameraPosition cameraPosition = camera.target(currentLatLngFromServer).zoom(15.5f).build();
