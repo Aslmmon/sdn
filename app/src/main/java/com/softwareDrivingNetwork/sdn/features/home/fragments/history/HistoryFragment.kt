@@ -66,15 +66,16 @@ class HistoryFragment : BaseFragment() {
         }
         slider.addOnChangeListener { slider, value, fromUser ->
             playSpeed = value.toInt()
-            Toast.makeText(activity, playSpeed.toString(), Toast.LENGTH_SHORT).show()
         }
         min_speed_slider.addOnChangeListener { slider, value, fromUser ->
             minimumSpeed = value.toInt()
-            Toast.makeText(activity, minimumSpeed.toString(), Toast.LENGTH_SHORT).show()
         }
 
         tv_start.setOnClickListener {
-            if (!::startDate.isInitialized || !::endDate.isInitialized) return@setOnClickListener
+            if (!::startDate.isInitialized || !::endDate.isInitialized){
+                Toast.makeText(activity, "choose Dates Please", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             val itemStart = TimeStart(startDate, endDate, playSpeed, minimumSpeed)
             model.shareTime(itemStart)
             val bundle = bundleOf(Constants.NAVIGATION to Constants.FROM_HISTORY_TRACKING_TAB)

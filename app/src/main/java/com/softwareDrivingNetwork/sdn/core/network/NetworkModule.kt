@@ -45,6 +45,7 @@ private fun okHttpClient(addAuthHeader: Boolean) = OkHttpClient.Builder()
 
     .addInterceptor(getLogInterceptor()).apply { setTimeOutToOkHttpClient(this) }
     .addInterceptor(loggingInterceptor)
+    .retryOnConnectionFailure(true)
 
     .addInterceptor(headersInterceptor(addAuthHeader = addAuthHeader))
     .retryOnConnectionFailure(true)

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
+import com.sdn.aivimapandroid.map.AiviUtils
 import com.softwareDrivingNetwork.sdn.R
 import com.softwareDrivingNetwork.sdn.models.general.vehicles.VehiclerModel
 import kotlinx.android.synthetic.main.vehicle_item_layout.view.*
@@ -62,20 +63,31 @@ class VehiclesAdapter(private val interaction: Interaction? = null) :
 
         @SuppressLint("SetTextI18n")
         fun bind(item: VehiclerModel) = with(itemView) {
-            itemView.setOnClickListener {
-                interaction?.onItemSelected(adapterPosition, item)
+            itemView.switchBtn.setOnCheckedChangeListener { buttonView, isChecked ->
+                interaction?.onItemSelected(adapterPosition, item, isChecked)
+
             }
-            itemView.tv_vehicler.text = item.vehicleName
-            itemView.tv_plate.text = resources.getString(R.string.plate_number) + item.plateNo
-            itemView.tv_license_start.text =
-                resources.getString(R.string.liscense_start) + item.licenseStart
-            itemView.tv_license_end.text =
-                resources.getString(R.string.liscense_end) + item.licenseEnd
+            itemView.tv_location.text = item.locationLng?.let {
+                item.locationLat?.let { it1 ->
+                    AiviUtils.getCompleteAddressString(
+                        itemView.context, it1,
+                        it
+                    )
+                }
+            }
+            itemView.tv_vehicle_name.text = item.vehicleName
+//            itemView.tv_plate.text = resources.getString(R.string.plate_number) + item.plateNo
+//            itemView.tv_license_start.text =
+//                resources.getString(R.string.liscense_start) + item.licenseStart
+//            itemView.tv_license_end.text =
+//                resources.getString(R.string.liscense_end) + item.licenseEnd
 
         }
     }
 
     interface Interaction {
-        fun onItemSelected(position: Int, item: VehiclerModel)
+        fun onItemSelected(position: Int, item: VehiclerModel, isChecked: Boolean)
     }
+
+
 }

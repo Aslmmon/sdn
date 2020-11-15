@@ -1,17 +1,17 @@
 package com.softwareDrivingNetwork.sdn.models.general.common
 
 data class CommonModel(
-    var id: String,
-    var name: String,
-    var lat: Double,
-    var long: Double,
-    var groupName:String,
+    var id: String?=null,
+    var name: String?=null,
+    var lat: Double?=null,
+    var long: Double?=null,
+    var groupName:String?=null,
     var vehicleData: VehiclesData?=null
 )
 
 data class VehiclesData(
     val currentMileage: Int?=null,
-    val maxSpeed: Any?=null,
+    val maxSpeed: Int?=null,
     val plateNo: String?=null,
     val simNumber: Any?=null,
     val vehicleName: String?=null

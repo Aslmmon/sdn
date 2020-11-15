@@ -47,10 +47,13 @@ class VehiclesViewModel(var generalRepo: GeneralRepo, var loginRepo: LoginRepo) 
     fun getVehiclersList(user: String) {
         launchDataLoad(execution = {
             val result = generalRepo.getVehiclesList(user)
+            Log.e("error",result.toString())
+
             if (result.type != "error") {
                 _vehiclesResponse.value = result
             } else _errorResponse.value = result.text
         }, errorReturned = {
+            Log.e("error",it.message.toString())
             _errorResponse.value = it.message
         })
 

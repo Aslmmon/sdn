@@ -108,7 +108,6 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         if (!item.isChecked) {
             when (item.itemId) {
 
-
                 R.id.nav_live_track -> {
                     if (findNavController(R.id.nav_host_fragment).currentDestination?.id == R.id.historyFragment) {
                         findNavController(R.id.nav_host_fragment).navigate(R.id.goToCameraVehicle)
@@ -126,9 +125,9 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 })
 
                 R.id.vehicles -> goToVehiclesActivity(this)
-                R.id.cameras -> goToCamerasActivity(this)
-                R.id.drivers -> goToDriversActivity(this)
-                R.id.nav_notification -> goToNotificationActivity(this)
+//                R.id.cameras -> goToCamerasActivity(this)
+//                R.id.drivers -> goToDriversActivity(this)
+//                R.id.nav_notification -> goToNotificationActivity(this)
             }
         }
         closeDrawer()

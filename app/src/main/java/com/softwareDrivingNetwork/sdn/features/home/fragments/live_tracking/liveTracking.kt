@@ -65,6 +65,7 @@ class liveTracking() : BaseFragment() {
         showToolbar()
         initializeAdapter()
         initializeSpinner()
+
         vehiclesViewModel.getGroups(getStringifiedData()!!)
         vehiclesViewModel.groupsResponse.observe(viewLifecycleOwner, Observer {
             groupsSpinnerAdapter = GroupsSpinnerAdapter(requireActivity(), it.data)
@@ -81,7 +82,7 @@ class liveTracking() : BaseFragment() {
         }
 
         model.searchString.observe(viewLifecycleOwner, Observer { searchItem ->
-            val searchedList = CommonList.filter { it.name.contains(searchItem) }.distinct()
+            val searchedList = CommonList.filter { it.name?.contains(searchItem)!! }.distinct()
             submitNewFilterdList(searchedList)
         })
 
@@ -90,7 +91,8 @@ class liveTracking() : BaseFragment() {
             val newData = it.data.map { data ->
                 CommonModel(
                     data.registerid, data.sensorName, lat = data.lastLocation.lat,
-                    long = data.lastLocation.lng, groupName = data.groups[0].groupName
+                    long = data.lastLocation.lng
+
                 )
             }
             submitListData(newData)
@@ -100,7 +102,7 @@ class liveTracking() : BaseFragment() {
         vehiclesViewModel.errorResponse.observe(viewLifecycleOwner, Observer {
             if (it == "no data found") submitListData(mutableListOf())
             dismissProgressDialog()
-            //  Toast.makeText(activity, it, Toast.LENGTH_SHORT).show()
+            Log.e("data", it)
         })
 
 
@@ -112,13 +114,12 @@ class liveTracking() : BaseFragment() {
                     data.vehicleName,
                     data.locationLat,
                     data.locationLng,
-                    data.groups[0].groupName,
+                    null,
                     VehiclesData(
-                        data.currentMileage,
-                        data.maxSpeed,
-                        data.plateNo,
-                        data.simNumber,
-                        data.vehicleName
+                        data.currentMileage ?: 0,
+                        data.maxSpeed ?: 0,
+                        data.plateNo ?: "124",
+                        data.simNumber ?: "test"
                     )
                 )
             }
@@ -194,12 +195,14 @@ class liveTracking() : BaseFragment() {
     }
 
     private fun submitListData(it: List<CommonModel>) {
+        CommonList.clear()
         CommonList.addAll(it)
         if (it.isEmpty()) showEmptyLayout()
         else {
             dismissEmptyLayout()
             dismissProgressDialog()
             commonAdapter.submitList(CommonList)
+
         }
         commonAdapter.notifyDataSetChanged()
     }
@@ -241,14 +244,13 @@ class liveTracking() : BaseFragment() {
 
     private fun getVehicles() {
         showProgress()
-        Log.i("data", "vehicle")
         vehiclesViewModel.getVehiclersList(getStringifiedData()!!)
     }
 
     private fun initializeAdapter() {
         commonAdapter = CommonAdapter(clickListener = { item ->
             cameraLocation = CameraLocation(long = item.long, lat = item.lat, id = item.id)
-            Toast.makeText(activity, cameraLocation.lat.toString(), Toast.LENGTH_SHORT).show()
+            Toast.makeText(activity, item.long.toString(), Toast.LENGTH_SHORT).show()
             model.select(cameraLocation)
         })
         rv_cameras_list.apply {

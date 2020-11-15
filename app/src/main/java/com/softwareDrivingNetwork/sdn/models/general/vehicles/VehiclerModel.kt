@@ -5,29 +5,29 @@ import com.google.gson.annotations.SerializedName
 
 data class VehiclerModel(
     @SerializedName("accountid")
-    val accountid: String,
+    val accountid: String?,
     @SerializedName("current_driverid")
-    val currentDriverid: Any,
+    val currentDriverid: Any?,
     @SerializedName("current_mileage")
-    val currentMileage: Int,
+    val currentMileage: Int?,
     @SerializedName("driver_name")
-    val driverName: String,
+    val driverName: String?,
     @SerializedName("driverid")
-    val driverid: String,
+    val driverid: String?,
     @SerializedName("driving_score")
-    val drivingScore: Int,
+    val drivingScore: Int?,
     @SerializedName("gps_unitid")
-    val gpsUnitid: String,
+    val gpsUnitid: String?,
     @SerializedName("groups")
-    val groups: List<Group>,
+    val groups: List<Group>?=null,
     @SerializedName("id_info")
     val idInfo: Any,
     @SerializedName("last_loc_update")
-    val lastLocUpdate: Any,
+    val lastLocUpdate: Any?,
     @SerializedName("last_location")
-    val lastLocation: Any,
+    val lastLocation: Any?,
     @SerializedName("last_update")
-    val lastUpdate: Any,
+    val lastUpdate: Any?,
     @SerializedName("last_update_date")
     val lastUpdateDate: Any,
     @SerializedName("license_end")
@@ -39,17 +39,17 @@ data class VehiclerModel(
     @SerializedName("license_start")
     val licenseStart: String,
     @SerializedName("location_lat")
-    val locationLat: Double,
+    val locationLat: Double?,
     @SerializedName("location_lng")
-    val locationLng: Double,
+    val locationLng: Double?,
     @SerializedName("max_speed")
-    val maxSpeed: Any,
+    val maxSpeed: Int?,
     @SerializedName("plate_no")
-    val plateNo: String,
+    val plateNo: String?,
     @SerializedName("sim_number")
-    val simNumber: Any,
+    val simNumber: String?,
     @SerializedName("vehicle_name")
-    val vehicleName: String,
+    val vehicleName: String?,
     @SerializedName("vehicleid")
-    val vehicleid: String
+    val vehicleid: String?
 )

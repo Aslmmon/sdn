@@ -90,7 +90,7 @@ class CommonAdapter(
 //            itemView.checkbox_camera.setOnCheckedChangeListener { buttonView, isChecked ->
 //                if (isChecked) interaction?.onItemSelected(position = adapterPosition, item = item)
 //            }
-            itemView.checkbox_camera.text = item.name
+             itemView.checkbox_camera.text = item.name
 
 
         }

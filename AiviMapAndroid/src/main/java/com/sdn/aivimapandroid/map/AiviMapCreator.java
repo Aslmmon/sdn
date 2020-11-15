@@ -63,11 +63,11 @@ public class AiviMapCreator {
     }
 
     public static class AiviMapBuilder {
-        private String snd_mileage="";
-        private String device_mileage ="";
-        private String id ="";
+        private String snd_mileage="0";
+        private String device_mileage ="0";
+        private String id ="0";
         private String date="";
-        private String speed="";
+        private String speed="0";
         private int playSpeed = 1;
         private LatLng specificLatLng= new LatLng(0.2,0.0);
 

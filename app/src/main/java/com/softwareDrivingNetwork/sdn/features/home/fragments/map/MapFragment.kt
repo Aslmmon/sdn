@@ -109,7 +109,7 @@ class MapFragment : AiviMapFragment() {
         vehiclesViewModel.historyResponse.observe(viewLifecycleOwner, Observer {
             Log.i("history", it.toString())
 
-            initialLatlng = LatLng(it.data.get(0).lat, it.data.get(0).lng)
+            initialLatlng = LatLng(it.data[0].lat, it.data[0].lng)
 
             if (it.data.isNotEmpty()) {
                 it.data.forEach {
@@ -117,9 +117,11 @@ class MapFragment : AiviMapFragment() {
                 }
 
                 val aiviMapCreator =
-                    AiviMapCreator.AiviMapBuilder(activity)
-                        .setLatLngs(listOfLatlngs.distinct())
-                        .setPlaySpeed(timeStart?.playSpeed ?: 1).build()
+                    timeStart?.playSpeed?.let { it1 ->
+                        AiviMapCreator.AiviMapBuilder(activity)
+                            .setLatLngs(listOfLatlngs.distinct())
+                            .setPlaySpeed(it1).build()
+                    }
 
                 showPathOfLocationsWithDelay(aiviMapCreator)
             }

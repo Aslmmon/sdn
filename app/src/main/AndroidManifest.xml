@@ -3,6 +3,7 @@
     package="com.softwareDrivingNetwork.sdn">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
 
     <application
         android:name=".SDNApp"
@@ -14,8 +15,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity android:name=".features.notification.NotificationActivity" />
-        <activity
-            android:name=".features.services_chosen.ServicesChosenActivity"
+        <activity android:name=".features.services_chosen.ServicesChosenActivity"
 
             />
         <activity android:name=".features.drawer_tabs.drivers.DriversActivity" /> <!-- <meta-data -->

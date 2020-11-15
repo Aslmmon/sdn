@@ -108,12 +108,13 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
      */
     public void showPathOfLocationsWithDelay(final AiviMapCreator aiviMapCreator) {
         final List<LatLng> list = aiviMapCreator.getListLocation();
+        showFabIcons();
         HandlerThread readThread = new HandlerThread("");
         readThread.start();
         taskHandler = new Handler(readThread.getLooper());
         final int playSpeed = aiviMapCreator.getPlaySpeed();
         final ArrayList<LatLng> neededList = new ArrayList();
-        addFirstMarker(list);
+        //addFirstMarker(list);
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(list.get(counter).latitude, list.get(counter).longitude), 15.5f), new GoogleMap.CancelableCallback() {
             @Override
             public void onFinish() {
@@ -127,8 +128,10 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
                             requireActivity().runOnUiThread(new Runnable() {
                                 public void run() {
                                     setDrawToLinePolygon(neededList);
+                                    Gson gson = new Gson();
+                                    String markerInfoString = gson.toJson(aiviMapCreator);
                                     for (int j = 0; j < neededList.size(); j++)
-                                        moveUnit(new LatLng(neededList.get(j).latitude, neededList.get(j).longitude), "markerInfoString", playSpeed, true);
+                                        moveUnit(new LatLng(neededList.get(j).latitude, neededList.get(j).longitude), markerInfoString, playSpeed, true);
                                 }
                             });
                             taskHandler.postDelayed(this, 1500 / playSpeed);
@@ -155,7 +158,7 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
                 public void onClick(View v) {
                     isLiveTracking = false;
                     if (counter >= list.size()) counter = counter - 2;
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(list.get(counter).latitude, list.get(counter).longitude), 13f));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(list.get(counter).latitude, list.get(counter).longitude), 15.5f));
                 }
             });
             fab_track_.setOnClickListener(new View.OnClickListener() {
@@ -261,7 +264,6 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
          *
          */
 
-        if (!fromTracking) hideFabIcons();
 
         if (movingCabMarker == null) {
             movingCabMarker = addUnit(latlng);
@@ -301,7 +303,7 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
 
     private void postionUnit(LatLng currentLatLngFromServer, String markerInfoString) {
         movingCabMarker.setPosition(currentLatLngFromServer);
-        //  movingCabMarker.setSnippet(markerInfoString);
+        movingCabMarker.setSnippet(markerInfoString);
         movingCabMarker.setAnchor(0.5f, 0.5f);
     }
 

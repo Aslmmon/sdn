@@ -26,6 +26,7 @@ import com.softwareDrivingNetwork.sdn.SDNApp
 import com.softwareDrivingNetwork.sdn.core.di.getSharedPrefrences
 import com.softwareDrivingNetwork.sdn.models.User
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.MainCoroutineDispatcher
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
@@ -38,7 +39,6 @@ fun ViewModel.launchDataLoad(
 
     this.viewModelScope.launch {
         try {
-
             execution()
         } catch (e: Throwable) {
             errorReturned(e)
@@ -73,12 +73,14 @@ fun saveUserData(user: User) {
             email = user.email
         )
     )
-    Log.i("user","User to be Saved" +User(
-        name = user.name,
-        token = user.token,
-        _userId = user._userId,
-        email = user.email
-    ).toString())
+    Log.i(
+        "user", "User to be Saved" + User(
+            name = user.name,
+            token = user.token,
+            _userId = user._userId,
+            email = user.email
+        ).toString()
+    )
     sharedPrefsEditor.putString(Constants.USER_DATA, json).apply()
 }
 

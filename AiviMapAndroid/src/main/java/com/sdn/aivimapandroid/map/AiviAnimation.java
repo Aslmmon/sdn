@@ -14,7 +14,7 @@ public class AiviAnimation {
 
     public static ValueAnimator cabAnimator(int playSpeed, Boolean fromTracking) {
         ValueAnimator valueAnimator = ValueAnimator.ofFloat(0f, 1f);
-        if (fromTracking) valueAnimator.setDuration(1000/playSpeed);
+        if (fromTracking) valueAnimator.setDuration(1500/playSpeed);
         else valueAnimator.setDuration(3000);
         valueAnimator.setInterpolator(new LinearInterpolator());
         return valueAnimator;
