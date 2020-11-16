@@ -269,7 +269,7 @@ class liveTracking() : BaseFragment() {
     private fun initializeAdapter() {
         commonAdapter = CommonAdapter(clickListener = { item ->
             cameraLocation = CameraLocation(long = item.long, lat = item.lat, id = item.id)
-            Toast.makeText(activity, item.long.toString(), Toast.LENGTH_SHORT).show()
+         //   Toast.makeText(activity, item.long.toString(), Toast.LENGTH_SHORT).show()
             model.select(cameraLocation)
         })
         rv_cameras_list.apply {
