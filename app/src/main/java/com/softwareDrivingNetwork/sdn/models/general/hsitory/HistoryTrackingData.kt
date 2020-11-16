@@ -1,11 +1,11 @@
 package com.softwareDrivingNetwork.sdn.models.general.hsitory
 
 data class HistoryTrackingData(
-    val accuracy: Int,
-    val dev_mileage: Int,
+    val accuracy: Double,
+    val dev_mileage: Double,
     val extrajson: Any,
-    val heading: Int,
-    val idle_time: Int,
+    val heading: Double,
+    val idle_time:Double,
     val lat: Double,
     val lng: Double,
     val loc_day: String,

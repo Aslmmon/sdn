@@ -2,9 +2,7 @@ package com.softwareDrivingNetwork.sdn.features.home.fragments.live_tracking
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
@@ -17,7 +15,7 @@ import com.softwareDrivingNetwork.sdn.common.BaseFragment
 import com.softwareDrivingNetwork.sdn.common.Constants
 import com.softwareDrivingNetwork.sdn.common.Constants.OPEN_HISTORY_FRAGMENT
 import com.softwareDrivingNetwork.sdn.common.setSafeOnClickListener
-import com.softwareDrivingNetwork.sdn.features.drawer_tabs.vehicles.VehiclesViewModel
+import com.softwareDrivingNetwork.sdn.features.drawer_tabs.cut_of_engine_vehicles.VehiclesViewModel
 import com.softwareDrivingNetwork.sdn.features.home.fragments.CameraLocation
 import com.softwareDrivingNetwork.sdn.features.home.fragments.SharedViewModel
 import com.softwareDrivingNetwork.sdn.features.home.fragments.live_tracking.adapter.CommonAdapter
@@ -33,7 +31,6 @@ import org.koin.android.viewmodel.ext.android.viewModel
 class liveTracking() : BaseFragment() {
 
     lateinit var commonAdapter: CommonAdapter
-    lateinit var cameraLocation: CameraLocation
     lateinit var groupsSpinnerAdapter: GroupsSpinnerAdapter
     var CommonList = mutableListOf<CommonModel>()
     private val vehiclesViewModel: VehiclesViewModel by viewModel()
@@ -49,6 +46,9 @@ class liveTracking() : BaseFragment() {
             fragment.arguments = args
             return fragment
         }
+
+        var cameraLocation = CameraLocation()
+
     }
 
 
@@ -67,7 +67,7 @@ class liveTracking() : BaseFragment() {
         initializeSpinner()
 
         vehiclesViewModel.getGroups(getStringifiedData()!!)
-        vehiclesViewModel.groupsResponse.observe(viewLifecycleOwner, Observer {
+        vehiclesViewModel.groupsResponse.observe(viewLifecycleOwner, {
             groupsSpinnerAdapter = GroupsSpinnerAdapter(requireActivity(), it.data)
             spinner_groups.adapter = groupsSpinnerAdapter
 
@@ -81,13 +81,14 @@ class liveTracking() : BaseFragment() {
             )
         }
 
-        model.searchString.observe(viewLifecycleOwner, Observer { searchItem ->
+        model.searchString.observe(viewLifecycleOwner, { searchItem ->
             val searchedList = CommonList.filter { it.name?.contains(searchItem)!! }.distinct()
             submitNewFilterdList(searchedList)
         })
 
 
         vehiclesViewModel.camerasResponse.observe(viewLifecycleOwner, Observer {
+            CommonList.clear()
             val newData = it.data.map { data ->
                 CommonModel(
                     data.registerid, data.sensorName, lat = data.lastLocation.lat,
@@ -107,6 +108,7 @@ class liveTracking() : BaseFragment() {
 
 
         vehiclesViewModel.vehiclesResponse.observe(viewLifecycleOwner, {
+            CommonList.clear()
             dismissProgressDialog()
             val newData = it.data.map { data ->
                 CommonModel(
@@ -174,10 +176,14 @@ class liveTracking() : BaseFragment() {
 
                 when (position) {
                     0 -> {
+                        showEmptyLayout()
+                        return
+                    }
+                    1 -> {
                         getCameraLists()
                         isDefaultSelection = true
                     }
-                    1 -> if (isDefaultSelection) {
+                    2 -> if (isDefaultSelection) {
                         getVehicles()
                         isDefaultSelection = false
                     }
@@ -192,10 +198,13 @@ class liveTracking() : BaseFragment() {
     override fun onResume() {
         super.onResume()
         cameraLocation = CameraLocation()
+
+        spinner_cameras.post {
+            spinner_cameras.setSelection(0)
+        }
     }
 
     private fun submitListData(it: List<CommonModel>) {
-        CommonList.clear()
         CommonList.addAll(it)
         if (it.isEmpty()) showEmptyLayout()
         else {

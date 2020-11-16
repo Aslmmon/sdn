@@ -15,8 +15,8 @@
 
         <ImageView
             android:id="@+id/iv_driver"
-            android:layout_width="@dimen/_100sdp"
-            android:layout_height="@dimen/_100sdp"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
             android:src="@drawable/ic_driver"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -29,7 +29,7 @@
             android:layout_marginTop="@dimen/_20sdp"
             android:id="@+id/tv_driver_name"
             android:textColor="@color/colorAccent"
-            android:textSize="@dimen/_18sdp"
+            android:textSize="@dimen/_14sdp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

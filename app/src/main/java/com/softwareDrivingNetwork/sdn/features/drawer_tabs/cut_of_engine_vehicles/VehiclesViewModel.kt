@@ -1,7 +1,6 @@
-package com.softwareDrivingNetwork.sdn.features.drawer_tabs.vehicles
+package com.softwareDrivingNetwork.sdn.features.drawer_tabs.cut_of_engine_vehicles
 
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -14,8 +13,6 @@ import com.softwareDrivingNetwork.sdn.models.general.groups.GroupsResponse
 import com.softwareDrivingNetwork.sdn.models.general.hsitory.HistoryTrackingResponse
 import com.softwareDrivingNetwork.sdn.models.general.notification.NotificationResponse
 import com.softwareDrivingNetwork.sdn.models.general.vehicles.VehiclesListResponse
-import com.softwareDrivingNetwork.sdn.models.login.SignInBody
-import com.softwareDrivingNetwork.sdn.models.login.SignInResponseDay
 
 class VehiclesViewModel(var generalRepo: GeneralRepo, var loginRepo: LoginRepo) : ViewModel() {
 

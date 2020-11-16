@@ -14,10 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".features.drawer_tabs.vehicles.VehiclesActivity"></activity>
         <activity android:name=".features.notification.NotificationActivity" />
-        <activity android:name=".features.services_chosen.ServicesChosenActivity"
-
-            />
+        <activity android:name=".features.services_chosen.ServicesChosenActivity" />
         <activity android:name=".features.drawer_tabs.drivers.DriversActivity" /> <!-- <meta-data -->
         <!-- android:name="com.google.android.gms.version" -->
         <!-- android:value="@integer/google_play_services_version" /> -->
@@ -26,7 +25,7 @@
             android:value="@string/google_maps_key" />
 
         <activity android:name=".features.drawer_tabs.cameras.CamerasActivity" />
-        <activity android:name=".features.drawer_tabs.vehicles.VehiclesActivity" />
+        <activity android:name=".features.drawer_tabs.cut_of_engine_vehicles.CutOfEngineVehiclesActivity" />
         <activity android:name=".features.login.LoginActivity" />
         <activity
             android:name=".features.splash.SplashActivity"
@@ -40,9 +39,7 @@
         <activity
             android:name=".features.home.MainActivity"
             android:theme="@style/noActionBarThem"
-            android:windowSoftInputMode="adjustResize"
-
-            />
+            android:windowSoftInputMode="adjustResize" />
         <activity android:name=".features.drawer_tabs.history.HistoryTracks" />
     </application>
 

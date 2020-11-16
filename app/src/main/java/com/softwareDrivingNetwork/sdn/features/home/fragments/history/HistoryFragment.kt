@@ -20,9 +20,11 @@ import com.softwareDrivingNetwork.sdn.common.BaseFragment
 import com.softwareDrivingNetwork.sdn.common.Constants
 import com.softwareDrivingNetwork.sdn.common.Constants.FROM_EDIT_TEXT
 import com.softwareDrivingNetwork.sdn.common.Constants.TO_EDIT_TEXT
+import com.softwareDrivingNetwork.sdn.features.home.fragments.CameraLocation
 import com.softwareDrivingNetwork.sdn.features.home.fragments.SharedViewModel
 import com.softwareDrivingNetwork.sdn.features.home.fragments.TimeStart
 import com.softwareDrivingNetwork.sdn.features.home.fragments.live_tracking.liveTracking
+import com.softwareDrivingNetwork.sdn.features.home.fragments.live_tracking.liveTracking.Companion.cameraLocation
 import kotlinx.android.synthetic.main.fragment_history.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -72,9 +74,19 @@ class HistoryFragment : BaseFragment() {
         }
 
         tv_start.setOnClickListener {
-            if (!::startDate.isInitialized || !::endDate.isInitialized){
+            if (!::startDate.isInitialized || !::endDate.isInitialized) {
                 Toast.makeText(activity, "choose Dates Please", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
+            }
+            if (cameraLocation.lat == null) {
+                Toast.makeText(
+                    activity,
+                    "Choose Camera or Vehicle Please",
+                    Toast.LENGTH_SHORT
+                )
+                    .show()
+                return@setOnClickListener
+
             }
             val itemStart = TimeStart(startDate, endDate, playSpeed, minimumSpeed)
             model.shareTime(itemStart)
@@ -114,7 +126,8 @@ class HistoryFragment : BaseFragment() {
 
     }
 
-    private fun setDataToEditText(
+
+        private fun setDataToEditText(
         sdf: SimpleDateFormat,
         cal: Calendar,
         format: SimpleDateFormat,

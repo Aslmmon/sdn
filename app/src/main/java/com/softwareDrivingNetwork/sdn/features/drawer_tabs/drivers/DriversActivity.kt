@@ -4,14 +4,11 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.softwareDrivingNetwork.sdn.R
 import com.softwareDrivingNetwork.sdn.common.BaseActivity
 import com.softwareDrivingNetwork.sdn.features.drawer_tabs.drivers.adapter.DriverAdapter
-import com.softwareDrivingNetwork.sdn.features.drawer_tabs.vehicles.VehiclesViewModel
-import com.softwareDrivingNetwork.sdn.features.drawer_tabs.vehicles.adapter.VehiclesAdapter
+import com.softwareDrivingNetwork.sdn.features.drawer_tabs.cut_of_engine_vehicles.VehiclesViewModel
 import kotlinx.android.synthetic.main.activity_drivers.*
-import kotlinx.android.synthetic.main.activity_vehicles.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class DriversActivity : BaseActivity() {

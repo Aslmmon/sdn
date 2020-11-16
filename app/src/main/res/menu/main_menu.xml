@@ -17,33 +17,38 @@
         </menu>
     </item>
 
-    <item android:title="@string/fleet_reports_title">
-        <menu>
-            <group android:checkableBehavior="single">
-<!--                <item-->
-<!--                    android:id="@+id/captured_events"-->
-<!--                    android:icon="@drawable/ic_live_tracking"-->
-<!--                    android:title="@string/captured_events_title" />-->
+<!--    <item android:title="@string/fleet_reports_title">-->
+<!--        <menu>-->
+<!--            <group android:checkableBehavior="single">-->
+<!--&lt;!&ndash;                <item&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:id="@+id/captured_events"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:icon="@drawable/ic_live_tracking"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:title="@string/captured_events_title" />&ndash;&gt;-->
 
-                <item
-                    android:id="@+id/nav_notification"
-                    android:icon="@drawable/ic_history"
-                    android:title="@string/notification_title" />
-            </group>
-        </menu>
-    </item>
+<!--                <item-->
+<!--                    android:id="@+id/nav_notification"-->
+<!--                    android:icon="@drawable/ic_history"-->
+<!--                    android:title="@string/notification_title" />-->
+<!--            </group>-->
+<!--        </menu>-->
+<!--    </item>-->
 
     <item android:title="@string/settings_title">
         <menu>
             <group android:checkableBehavior="single">
                 <item
+                    android:id="@+id/cut_of_engine"
+                    android:icon="@drawable/ic_vehicles"
+                    android:title="@string/cut_of_engine" />
+
+                <item
                     android:id="@+id/vehicles"
                     android:icon="@drawable/ic_vehicles"
                     android:title="@string/vehicles_title" />
-                <item
-                    android:id="@+id/cameras"
-                    android:icon="@drawable/ic_cameras"
-                    android:title="@string/camera_title" />
+<!--                <item-->
+<!--                    android:id="@+id/cameras"-->
+<!--                    android:icon="@drawable/ic_cameras"-->
+<!--                    android:title="@string/camera_title" />-->
                 <item
                     android:id="@+id/drivers"
                     android:icon="@drawable/ic_driver"

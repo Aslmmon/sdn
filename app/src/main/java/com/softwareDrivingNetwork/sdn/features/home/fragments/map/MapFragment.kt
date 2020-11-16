@@ -2,8 +2,6 @@ package com.softwareDrivingNetwork.sdn.features.home.fragments.map
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -20,23 +18,16 @@ import com.sdn.aivimapandroid.map.AiviMapCreator
 import com.sdn.aivimapandroid.map.AiviMapFragment
 import com.softwareDrivingNetwork.sdn.SDNApp
 import com.softwareDrivingNetwork.sdn.common.Constants
-import com.softwareDrivingNetwork.sdn.features.drawer_tabs.vehicles.VehiclesViewModel
+import com.softwareDrivingNetwork.sdn.features.drawer_tabs.cut_of_engine_vehicles.VehiclesViewModel
 import com.softwareDrivingNetwork.sdn.features.home.fragments.SharedViewModel
 import com.softwareDrivingNetwork.sdn.features.home.fragments.TimeStart
 import com.softwareDrivingNetwork.sdn.models.User
 import com.softwareDrivingNetwork.sdn.models.login.SignInBody
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.*
-import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.Dispatchers.Main
 import org.json.JSONArray
 import org.json.JSONObject
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
-import java.lang.Runnable
-import java.text.DateFormat
-import java.text.SimpleDateFormat
-import java.util.*
 
 
 class MapFragment : AiviMapFragment() {

@@ -3,7 +3,6 @@ package com.softwareDrivingNetwork.sdn.features.home
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout.SimpleDrawerListener
 import androidx.navigation.Navigation.findNavController
@@ -15,11 +14,10 @@ import com.google.android.material.navigation.NavigationView
 import com.softwareDrivingNetwork.sdn.R
 import com.softwareDrivingNetwork.sdn.common.BaseActivity
 import com.softwareDrivingNetwork.sdn.common.Constants
-import com.softwareDrivingNetwork.sdn.common.Navigation.goToCamerasActivity
 import com.softwareDrivingNetwork.sdn.common.Navigation.goToDriversActivity
 import com.softwareDrivingNetwork.sdn.common.Navigation.goToLoginActivityWithClearFlags
-import com.softwareDrivingNetwork.sdn.common.Navigation.goToNotificationActivity
-import com.softwareDrivingNetwork.sdn.common.Navigation.goToVehiclesActivity
+import com.softwareDrivingNetwork.sdn.common.Navigation.goToCutOfEngineVehiclesActivity
+import com.softwareDrivingNetwork.sdn.common.Navigation.goToVehiclesAcitivity
 import com.softwareDrivingNetwork.sdn.common.showCustomAlertDialog
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -50,7 +48,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         val navController = findNavController(this, R.id.nav_host_fragment)
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.cameraVehicleChooser, R.id.nav_live_track,R.id.historyFragment
+                R.id.cameraVehicleChooser, R.id.nav_live_track, R.id.historyFragment
             )
         )
         // NavigationUI.setupActionBarWithNavController(this, navController)
@@ -124,9 +122,10 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                     )
                 })
 
-                R.id.vehicles -> goToVehiclesActivity(this)
+                R.id.cut_of_engine -> goToCutOfEngineVehiclesActivity(this)
+                R.id.vehicles -> goToVehiclesAcitivity(this)
 //                R.id.cameras -> goToCamerasActivity(this)
-//                R.id.drivers -> goToDriversActivity(this)
+                R.id.drivers -> goToDriversActivity(this)
 //                R.id.nav_notification -> goToNotificationActivity(this)
             }
         }

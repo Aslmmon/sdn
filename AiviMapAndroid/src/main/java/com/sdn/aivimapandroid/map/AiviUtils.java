@@ -35,8 +35,10 @@ public class AiviUtils {
     }
 
     static Bitmap getCarBitmap(Context context) {
-        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_car);
-        return Bitmap.createScaledBitmap(bitmap, 50, 100, false);
+        if (context != null) {
+            Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_car);
+            return Bitmap.createScaledBitmap(bitmap, 50, 100, false);
+        }else return null;
     }
 
     static float getRotation(LatLng start, LatLng end) {

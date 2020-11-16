@@ -6,7 +6,7 @@ import androidx.lifecycle.Observer
 import com.softwareDrivingNetwork.sdn.R
 import com.softwareDrivingNetwork.sdn.common.BaseActivity
 import com.softwareDrivingNetwork.sdn.features.drawer_tabs.cameras.adapter.CameraAdapter
-import com.softwareDrivingNetwork.sdn.features.drawer_tabs.vehicles.VehiclesViewModel
+import com.softwareDrivingNetwork.sdn.features.drawer_tabs.cut_of_engine_vehicles.VehiclesViewModel
 import kotlinx.android.synthetic.main.activity_cameras.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.nio.channels.Selector

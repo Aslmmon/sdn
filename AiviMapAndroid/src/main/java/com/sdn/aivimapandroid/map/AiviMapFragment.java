@@ -84,6 +84,11 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         if (mMap == null) {
             this.mMap = googleMap;
+            /**
+             * toolbar of Map is False
+             */
+            this.mMap.getUiSettings().setMapToolbarEnabled(false);
+
         }
         this.mMap.setInfoWindowAdapter(new CustomWindowMarker(requireActivity()));
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {

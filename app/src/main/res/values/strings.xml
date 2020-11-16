@@ -45,6 +45,7 @@
     <string name="are_you_sure_you_want_to_log_out_title">Are you Sure you want to log out ?</string>
     <string name="settings_title">Settings</string>
     <string name="vehicles_title">Vehicles</string>
+    <string name="cut_of_engine">Cut off Engine </string>
 
     <string name="cameras_title">Cameras</string>
     <string name="general_services_title">General Services</string>
@@ -70,8 +71,10 @@
     <string name="start_title">Start</string>
     <string name="play_speed_title">Play Speed</string>
     <string name="min_speed_title">Min Speed</string>
+    <string name="drivername_title">Driver name :</string>
 
     <string-array name="cameras_array">
+        <item>Choose Type </item>
         <item>Camera</item>
         <item>Vehicle</item>
     </string-array>
