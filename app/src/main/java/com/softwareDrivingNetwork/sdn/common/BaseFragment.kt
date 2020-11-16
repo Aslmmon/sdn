@@ -89,6 +89,9 @@ abstract class BaseFragment : Fragment() {
         activity?.toolbar?.navigationIcon = null
 
     }
+    fun clearUserData(){
+        sharedPrefsEditor.clear().apply()
+    }
     fun getUserData(): User? {
         val gson = GsonBuilder().create()
         val json = sharedPreferences.getString(Constants.USER_DATA, "")

@@ -83,7 +83,7 @@
                 android:layout_height="match_parent"
                 android:stepSize="1"
                 android:valueFrom="1"
-                android:valueTo="10"
+                android:valueTo="8"
                 app:layout_constraintEnd_toEndOf="@id/til_to"
                 app:layout_constraintStart_toStartOf="@id/tv_play_speed"
                 app:layout_constraintTop_toBottomOf="@id/tv_play_speed" />
@@ -102,7 +102,7 @@
                 android:layout_height="match_parent"
                 android:stepSize="1"
                 android:valueFrom="0"
-                android:valueTo="250"
+                android:valueTo="150"
                 app:layout_constraintEnd_toEndOf="@id/til_to"
                 app:layout_constraintStart_toStartOf="@id/tv_minimum_speed"
                 app:layout_constraintTop_toBottomOf="@id/tv_minimum_speed" />

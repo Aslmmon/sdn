@@ -26,7 +26,7 @@
         android:backgroundTint="@android:color/holo_orange_light"
         android:src="@drawable/tracking"
         app:fabSize="normal"
-        app:layout_constraintBottom_toTopOf="@id/fab_update_camera"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
 

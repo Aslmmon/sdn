@@ -14,6 +14,7 @@ import com.softwareDrivingNetwork.sdn.R
 import com.softwareDrivingNetwork.sdn.common.BaseFragment
 import com.softwareDrivingNetwork.sdn.common.Constants
 import com.softwareDrivingNetwork.sdn.common.Constants.OPEN_HISTORY_FRAGMENT
+import com.softwareDrivingNetwork.sdn.common.Navigation
 import com.softwareDrivingNetwork.sdn.common.setSafeOnClickListener
 import com.softwareDrivingNetwork.sdn.features.drawer_tabs.cut_of_engine_vehicles.VehiclesViewModel
 import com.softwareDrivingNetwork.sdn.features.home.fragments.CameraLocation
@@ -102,6 +103,15 @@ class liveTracking() : BaseFragment() {
 
         vehiclesViewModel.errorResponse.observe(viewLifecycleOwner, Observer {
             if (it == "no data found") submitListData(mutableListOf())
+            if (it == "Authentication failed, invalid token") {
+                Toast.makeText(
+                    requireContext(),
+                    "Login Again Please, Token Expired",
+                    Toast.LENGTH_SHORT
+                ).show()
+                Navigation.goToLoginActivityWithClearFlags(requireContext())
+                clearUserData()
+            }
             dismissProgressDialog()
             Log.e("data", it)
         })

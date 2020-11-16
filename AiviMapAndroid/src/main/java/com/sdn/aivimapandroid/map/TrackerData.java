@@ -3,13 +3,12 @@ package com.sdn.aivimapandroid.map;
 public class TrackerData {
     private String latitude;
     private String longtitude;
-    private String id;
-    private String speed;
-    private String snd_mileage;
-    private String device_mileage;
-    private String date;
+    private String Plate;
 
-    public TrackerData() {
+    public TrackerData(String latitude, String longtitude, String plate) {
+        this.latitude = latitude;
+        this.longtitude = longtitude;
+        Plate = plate;
     }
 }
 

@@ -1,16 +1,13 @@
 package com.softwareDrivingNetwork.sdn.features.home.fragments.history
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
@@ -20,7 +17,6 @@ import com.softwareDrivingNetwork.sdn.common.BaseFragment
 import com.softwareDrivingNetwork.sdn.common.Constants
 import com.softwareDrivingNetwork.sdn.common.Constants.FROM_EDIT_TEXT
 import com.softwareDrivingNetwork.sdn.common.Constants.TO_EDIT_TEXT
-import com.softwareDrivingNetwork.sdn.features.home.fragments.CameraLocation
 import com.softwareDrivingNetwork.sdn.features.home.fragments.SharedViewModel
 import com.softwareDrivingNetwork.sdn.features.home.fragments.TimeStart
 import com.softwareDrivingNetwork.sdn.features.home.fragments.live_tracking.liveTracking
@@ -127,7 +123,7 @@ class HistoryFragment : BaseFragment() {
     }
 
 
-        private fun setDataToEditText(
+    private fun setDataToEditText(
         sdf: SimpleDateFormat,
         cal: Calendar,
         format: SimpleDateFormat,

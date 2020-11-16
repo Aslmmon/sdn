@@ -235,18 +235,27 @@ class MapFragment : AiviMapFragment() {
             val speedData = data.getString("speed")
             val sdnMileage = data.getString("sdn_mileage")
             val device_mileage = data.getString("dev_mileage")
+            val vehicleData = data.get("vehicle") as JSONObject
+
+            val plate_numbner = vehicleData.getString("plate_no")
             val date = data.getString("locTime")
-            listOfLatlngs.add(LatLng(latitude.toDouble(), longtitude.toDouble()))
+            Log.i("plate", plate_numbner)
 
-            val aiviMapCreator =
-                AiviMapCreator.AiviMapBuilder(activity).setLatLngs(listOfLatlngs.distinct())
-                    .setSpecificLatLng(LatLng(latitude.toDouble(), longtitude.toDouble()))
-                    .setSpeed(speedData).setDevice_mileage(device_mileage)
-                    .setSDN_mileage(sdnMileage)
-                    .setId(objectId)
-                    .setDate(date).build()
+            val isSameData = listOfLatlngs.any { data -> data.latitude == latitude.toDouble() }
+            Log.i("isSameData", isSameData.toString())
 
-            showPathOfLocations(aiviMapCreator)
+            if (!isSameData) {
+                listOfLatlngs.add(LatLng(latitude.toDouble(), longtitude.toDouble()))
+                val aiviMapCreator =
+                    AiviMapCreator.AiviMapBuilder(activity).setLatLngs(listOfLatlngs.distinct())
+                        .setSpecificLatLng(LatLng(latitude.toDouble(), longtitude.toDouble()))
+                        .setSpeed(speedData).setDevice_mileage(device_mileage)
+                        .setSDN_mileage(sdnMileage)
+                        .setId(plate_numbner)
+                        .setDate(date).build()
+
+                showPathOfLocations(aiviMapCreator)
+            }
         }
     }
 

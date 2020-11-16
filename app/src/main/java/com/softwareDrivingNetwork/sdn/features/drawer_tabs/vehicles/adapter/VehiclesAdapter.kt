@@ -63,8 +63,8 @@ class VehiclesAdapter(private val interaction: Interaction? = null) :
 
         @SuppressLint("SetTextI18n")
         fun bind(item: VehiclerModel) = with(itemView) {
-
-            itemView.tv_location_vehicle.text = item.locationLng?.let {
+            if(item.locationLat != null)
+                itemView.tv_location_vehicle.text = item.locationLng?.let {
                 item.locationLat?.let { it1 ->
                     AiviUtils.getCompleteAddressString(
                         itemView.context, it1,
@@ -72,6 +72,8 @@ class VehiclesAdapter(private val interaction: Interaction? = null) :
                     )
                 }
             }
+            else itemView.tv_location_vehicle.visibility = View.GONE
+
             itemView.tv_vehicle_name_vehicle.text = item.vehicleName
             if (item.driverName == null) itemView.tv_driver_name_in_vehicle.text =
                 resources.getString(R.string.drivername_title) + "No Driver Name"

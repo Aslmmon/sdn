@@ -10,6 +10,7 @@
         android:id="@+id/rv_vehicles"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:nestedScrollingEnabled="true"
         tools:listitem="@layout/vehicle_item_cut_of_engine_layout"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -17,6 +17,8 @@ public class AiviMapCreator {
     private final LatLng specificLatLng;
     private final int playSpeed;
 
+
+
     private AiviMapCreator(AiviMapBuilder builder) {
         this.listLocation = builder.listneeded;
         this.speed = builder.speed;
@@ -69,6 +71,7 @@ public class AiviMapCreator {
         private String date="";
         private String speed="0";
         private int playSpeed = 1;
+        private List response;
         private LatLng specificLatLng= new LatLng(0.2,0.0);
 
         private Context context;

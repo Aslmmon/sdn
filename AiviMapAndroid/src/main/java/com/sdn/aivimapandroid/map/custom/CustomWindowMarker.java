@@ -48,7 +48,7 @@ public class CustomWindowMarker implements GoogleMap.InfoWindowAdapter {
                 if (!aiviMapCreator.getSpeed().isEmpty())
                     speed.setText("Speed : " + aiviMapCreator.getSpeed()  + " Km/hr ");
                 if (!aiviMapCreator.getId().toString().equals(""))
-                    name.setText("Name : " + aiviMapCreator.getId().toString());
+                    name.setText("Plate : " + aiviMapCreator.getId().toString());
                 if (!aiviMapCreator.getDate().isEmpty())
                     date.setText("Date :" + AiviUtils.splitDate(aiviMapCreator.getDate().toString(), "T"));
                 if (!String.valueOf(aiviMapCreator.getSpecificLatLng()).isEmpty()) {
