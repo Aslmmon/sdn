@@ -114,7 +114,9 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 }
 
                 R.id.nav_history_track -> {
-                    findNavController(R.id.nav_host_fragment).navigate(R.id.goToHistory)
+                    if (findNavController(R.id.nav_host_fragment).currentDestination?.id != R.id.historyFragment) {
+                        findNavController(R.id.nav_host_fragment).navigate(R.id.goToHistory)
+                    }
                 }
                 R.id.log_out -> showCustomAlertDialog(onYesClicked = {
                     if (clearAllSavedLocalData()) goToLoginActivityWithClearFlags(
