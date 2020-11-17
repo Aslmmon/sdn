@@ -16,7 +16,7 @@ public class AiviMapCreator {
     private final String date;
     private final LatLng specificLatLng;
     private final int playSpeed;
-
+    private final List<TrackerData> trackerDataList;
 
 
     private AiviMapCreator(AiviMapBuilder builder) {
@@ -28,6 +28,7 @@ public class AiviMapCreator {
         this.date = builder.date;
         this.specificLatLng = builder.specificLatLng;
         this.playSpeed = builder.playSpeed;
+        this.trackerDataList = builder.trackerData;
 
 
     }
@@ -64,15 +65,19 @@ public class AiviMapCreator {
         return playSpeed;
     }
 
+    public List<TrackerData> getTrackerDataList() {
+        return trackerDataList;
+    }
+
     public static class AiviMapBuilder {
-        private String snd_mileage="0";
-        private String device_mileage ="0";
-        private String id ="0";
-        private String date="";
-        private String speed="0";
+        private String snd_mileage = "0";
+        private String device_mileage = "0";
+        private String id = "0";
+        private String date = "";
+        private String speed = "0";
         private int playSpeed = 1;
-        private List response;
-        private LatLng specificLatLng= new LatLng(0.2,0.0);
+        private LatLng specificLatLng = new LatLng(0.2, 0.0);
+        private List<TrackerData> trackerData;
 
         private Context context;
         private List<LatLng> listneeded;
@@ -95,7 +100,7 @@ public class AiviMapCreator {
         }
 
         public AiviMapBuilder setSpeed(String speed) {
-            if(speed != null) this.speed = speed;
+            if (speed != null) this.speed = speed;
             return this;
         }
 
@@ -110,8 +115,9 @@ public class AiviMapCreator {
             this.device_mileage = device_mileage;
             return this;
         }
+
         public AiviMapBuilder setPlaySpeed(int playSpeed) {
-            this.playSpeed=playSpeed;
+            this.playSpeed = playSpeed;
             return this;
         }
 
@@ -127,6 +133,11 @@ public class AiviMapCreator {
             return this;
         }
 
+        public AiviMapBuilder setTrackerData(List<TrackerData> trackerData) {
+            this.trackerData = trackerData;
+            return this;
+        }
+
         //Return the finally consrcuted User object
         public AiviMapCreator build() {
             AiviMapCreator aiviMapCreator = new AiviMapCreator(this);
@@ -135,6 +146,7 @@ public class AiviMapCreator {
         }
 
         private void validateUserObject(AiviMapCreator aiviMapCreator) {
+            //if(aiviMapCreator.getTrackerDataList() && )
         }
 
 

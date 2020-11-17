@@ -16,6 +16,7 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.sdn.aivimapandroid.map.AiviMapCreator
 import com.sdn.aivimapandroid.map.AiviMapFragment
+import com.sdn.aivimapandroid.map.TrackerData
 import com.softwareDrivingNetwork.sdn.SDNApp
 import com.softwareDrivingNetwork.sdn.common.Constants
 import com.softwareDrivingNetwork.sdn.features.drawer_tabs.cut_of_engine_vehicles.VehiclesViewModel
@@ -40,6 +41,8 @@ class MapFragment : AiviMapFragment() {
     var initialLatlng: LatLng? = null
     var unitId: String? = null
     var listOfLatlngs = mutableListOf<LatLng>()
+    var listOfTrackerData = mutableListOf<TrackerData>()
+
     private val sharedPreferences: SharedPreferences by inject()
     var gson = Gson()
     private val model: SharedViewModel by activityViewModels()
@@ -105,13 +108,24 @@ class MapFragment : AiviMapFragment() {
             if (it.data.isNotEmpty()) {
                 it.data.forEach {
                     listOfLatlngs.add(LatLng(it.lat, it.lng))
+                    listOfTrackerData.add(
+                        TrackerData(
+                            it.lat.toString(),
+                            it.lng.toString(),
+                            it.objectid,
+                            it.loc_time,
+                            it.speed
+                        )
+                    )
                 }
 
                 val aiviMapCreator =
                     timeStart?.playSpeed?.let { it1 ->
                         AiviMapCreator.AiviMapBuilder(activity)
                             .setLatLngs(listOfLatlngs.distinct())
-                            .setPlaySpeed(it1).build()
+                            .setPlaySpeed(it1)
+                            .setTrackerData(listOfTrackerData)
+                            .build()
                     }
 
                 showPathOfLocationsWithDelay(aiviMapCreator)

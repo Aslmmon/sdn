@@ -115,15 +115,31 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
                 Runnable runnable = new Runnable() {
                     @Override
                     public void run() {
+
+
                         if (counter++ < list.size()) {
                             attachClickListeners(list);
                             neededList.add(list.get(counter));
-
-//                            TrackerData trackerData = TrackerData(neededList.get(counter).latitude,
-//                                    neededList.get(counter).longitude,neededList.get(counter))
                             counter++;
                             requireActivity().runOnUiThread(new Runnable() {
                                 public void run() {
+
+                                    if (mMap != null) {
+                                        if (getActivity() != null) {
+                                            mMap.setInfoWindowAdapter(new CustomWindowMarker(requireActivity(), true, counter));
+                                            mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                                                @Override
+                                                public boolean onMarkerClick(Marker marker) {
+                                                    if (marker.isInfoWindowShown()) {
+                                                        marker.hideInfoWindow();
+                                                        return true;
+                                                    }
+                                                    return false;
+                                                }
+                                            });
+                                        }
+                                    }
+
                                     setDrawToLinePolygon(neededList);
 
                                     Gson gson = new Gson();
@@ -193,7 +209,7 @@ public class AiviMapFragment extends Fragment implements OnMapReadyCallback {
             @SuppressLint("SetTextI18n")
             @Override
             public void run() {
-                mMap.setInfoWindowAdapter(new CustomWindowMarker(requireActivity()));
+                mMap.setInfoWindowAdapter(new CustomWindowMarker(requireActivity(), false, counter));
                 mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                     @Override
                     public boolean onMarkerClick(Marker marker) {
